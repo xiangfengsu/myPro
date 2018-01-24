@@ -1,7 +1,7 @@
 import moment from 'moment';
 import config from '../config';
 
-logs('config', config);
+// logs('config', config);
 const { detailPagePathList } = config;
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;

@@ -14,6 +14,7 @@ export default class UploadImg extends Component {
       carouserImages: [],
       carouserFirstIndex: 0
     };
+    this.uploadTotalCounts = 0;
   }
   handleCancel = () => this.setState({ previewVisible: false })
 
@@ -82,15 +83,32 @@ export default class UploadImg extends Component {
     }
   }
   beforeUpload = (file, fileList) => {
-    const { maxFileSize } = this.props;
+    const { maxFileSize, maxLength } = this.props;
     const { size } = file;
     const maxSize = maxFileSize * 1024 * 1024;
+    const preFileListLength = this.state.fileList.length;
+    const currFileListLength = fileList.length;
+    const num = preFileListLength + currFileListLength - maxLength;
+    const currFileIndex = fileList.findIndex(f => f.uid === file.uid);
     if (size > maxSize) {
       message.error(`文件大小不能超过${maxFileSize}M`);
       file.flag = true;
       return false;
     }
-    return true;
+    if (num > 0) {
+      const maxCanUploadFileNum = currFileListLength - num;
+      for (let i = 0; i < currFileListLength; i++) {
+        if (currFileIndex >= maxCanUploadFileNum) {
+          message.error(`${file.name}不能上传，最多上传${maxLength}张`);
+          file.flag = true;
+          return false;
+        } else {
+          return true;
+        }
+      }
+    } else {
+      return true;
+    }
   }
   onRemove = (file) => {
     Modal.confirm({
@@ -103,7 +121,6 @@ export default class UploadImg extends Component {
           const index = fileList.indexOf(file);
           const newFileList = fileList.slice();
           newFileList.splice(index, 1);
-          // logs('newFileList', newFileList);
           this.triggerChange({ fileList: newFileList });
           return {
             fileList: newFileList,
