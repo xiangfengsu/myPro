@@ -13,7 +13,6 @@ import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
 import { getRoutes, formatter, menuDataPathFormater, menuAuthority } from '../utils/utils';
 import Authorized from '../utils/Authorized';
-import { getMenuData } from '../common/fetchMenu';
 import logo from '../assets/logo.svg';
 import config from '../config';
 const { Content } = Layout;
@@ -84,7 +83,7 @@ class BasicLayout extends React.PureComponent {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href);
-    const redirect = urlParams.searchParams.get('redirect') || '/formItemType/formItemTypePage';
+    const redirect = urlParams.searchParams.get('redirect') || config.defaultRedirectSubMenu;
     // Remove the parameters in the url
     urlParams.searchParams.delete('redirect');
     window.history.pushState(null, 'redirect', urlParams.href);
@@ -157,9 +156,7 @@ class BasicLayout extends React.PureComponent {
         <SiderMenu
           logo={logo}
           title={config.title}
-          // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
-          // If you do not have the Authorized parameter
-          // you will be forced to jump to the 403 interface without permission
+          defaultCollapsedSubMenu={config.defaultCollapsedSubMenu}
           Authorized={Authorized}
           menuData={menuDatas}
           collapsed={collapsed}

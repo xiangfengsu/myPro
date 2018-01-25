@@ -170,7 +170,7 @@ export const FormItems = [{
   acceptType: '*', //.jpg,.png,.pdf,.mp4,.gif,.word
   listType: 'text', // 1:text  2:picture 3:picture-card
   maxFileSize: 3,// 单位是M
-  maxLength: 3,
+  maxFileCounts: 3,
   colSpan: 12,
 },
 {
@@ -185,7 +185,7 @@ export const FormItems = [{
   acceptType: '*', //.jpg,.png,.pdf,.mp4,.gif,.word
   listType: 'picture', // 1:text  2:picture 3:picture-card
   maxFileSize: 3,// 单位是M
-  maxLength: 3,
+  maxFileCounts: 3,
   colSpan: 12
 },
 {
@@ -200,7 +200,7 @@ export const FormItems = [{
   acceptType: '*', //.jpg,.png,.pdf,.mp4,.gif,.word
   listType: 'picture-card', // 1:text  2:picture 3:picture-card
   maxFileSize: 3,// 单位是M
-  maxLength: 2,
+  maxFileCounts: 2,
   colSpan: 12
 },
 {

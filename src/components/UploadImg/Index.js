@@ -83,12 +83,12 @@ export default class UploadImg extends Component {
     }
   }
   beforeUpload = (file, fileList) => {
-    const { maxFileSize, maxLength } = this.props;
+    const { maxFileSize, maxFileCounts } = this.props;
     const { size } = file;
     const maxSize = maxFileSize * 1024 * 1024;
     const preFileListLength = this.state.fileList.length;
     const currFileListLength = fileList.length;
-    const num = preFileListLength + currFileListLength - maxLength;
+    const num = preFileListLength + currFileListLength - maxFileCounts;
     const currFileIndex = fileList.findIndex(f => f.uid === file.uid);
     if (size > maxSize) {
       message.error(`文件大小不能超过${maxFileSize}M`);
@@ -99,7 +99,7 @@ export default class UploadImg extends Component {
       const maxCanUploadFileNum = currFileListLength - num;
       for (let i = 0; i < currFileListLength; i++) {
         if (currFileIndex >= maxCanUploadFileNum) {
-          message.error(`${file.name}不能上传，最多上传${maxLength}张`);
+          message.error(`${file.name}不能上传，最多上传${maxFileCounts}张`);
           file.flag = true;
           return false;
         } else {
@@ -151,7 +151,7 @@ export default class UploadImg extends Component {
   }
   render() {
     const { previewVisible, previewImage, fileList, carouserImages, carouserFirstIndex } = this.state;
-    const { action, maxLength, multiple, acceptType, listType } = this.props;
+    const { action, maxFileCounts, multiple, acceptType, listType } = this.props;
     return (
       <div className="clearfix">
         <Upload
@@ -165,7 +165,7 @@ export default class UploadImg extends Component {
           beforeUpload={this.beforeUpload}
           onRemove={this.onRemove}
         >
-          {fileList.length >= maxLength ? null : this.renderUploadBtn()}
+          {fileList.length >= maxFileCounts ? null : this.renderUploadBtn()}
         </Upload>
         {
           carouserImages.length > 0 ? (

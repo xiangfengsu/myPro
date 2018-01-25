@@ -303,7 +303,7 @@ export const renderFormItem = (item, form, dispatch) => {
       })(
         <UploadImg
           action={item.action}
-          maxLength={item.maxLength}
+          maxFileCounts={item.maxLength || item.maxFileCounts}
           multiple={item.multiple}
           acceptType={item.acceptType}
           maxFileSize={item.maxFileSize}
