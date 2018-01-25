@@ -15,4 +15,5 @@ export const menuData = [{
     name: '标准列表页',
     path: 'channel'
   }]
-}];
+}
+];

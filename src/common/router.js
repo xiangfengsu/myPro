@@ -81,7 +81,6 @@ export const getRouterData = (app) => {
       name: '标准列表页',
       component: dynamicWrapper(app, ['channel', 'dictionary'], () => import('../routes/TableList/Index')),
     },
-
     '/exception/403': {
       name: '403',
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
