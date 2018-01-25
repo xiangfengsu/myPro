@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Button, Input, Tabs } from 'antd';
 
-import { renderFormItem } from '../../../common/formItem';
+import { renderFormItem } from '../../common/formItem';
 import styles from './Index.less';
 
-import { FormItems } from '../pageConfig';
+import { FormItems } from './pageConfig';
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const formItemLayout = {

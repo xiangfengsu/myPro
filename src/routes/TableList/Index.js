@@ -7,7 +7,7 @@ import styles from './Index.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import SearchForms from '../../components/GeneralSearchForm/Index';
 import TableList from '../../components/GeneralTableList/Index';
-import DetailFormInfo from './ModalDetailForm/Index';
+import DetailFormInfo from './ModalDetailForm';
 
 import Authorized from '../../utils/Authorized';
 import { PageConfig } from './pageConfig.js';
@@ -15,9 +15,10 @@ import { formaterObjectValue, formItemAddInitValue } from '../../utils/utils';
 
 const FormItem = Form.Item;
 
-@connect(state => ({
-  currentUser: state.user.currentUser,
-  channel: state.channel,
+@connect(({ user, channel, loading }) => ({
+  currentUser: user.currentUser,
+  channel,
+  loading: loading.models.channel
 }))
 @Form.create()
 export default class Index extends PureComponent {
@@ -106,12 +107,8 @@ export default class Index extends PureComponent {
         render: (text, record) => (
           <div>
             <a onClick={() => { this.showModalVisibel('update', record) }}>编辑</a>
-
-            {/* <Link to={`/generaltable/channelDetail/${record.id}`} >
-              编辑
-            </Link> */}
             &nbsp;
-                        <Popconfirm
+            <Popconfirm
               title="确定删除吗？"
               onConfirm={() => { this.deleteTableRowHandle(record.id) }}
             >
@@ -124,14 +121,15 @@ export default class Index extends PureComponent {
     return columns;
   }
   renderTable = () => {
+    const { channel, loading } = this.props;
     const { tableColumns } = PageConfig;
-    const { data: { list, pagination }, loading } = this.props.channel;
+    const { data: { list, pagination } } = channel;
     const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
     const tableProps = {
+      loading,
       dataSource: list,
       columns: newTableColumns,
       pagination: Object.assign(pagination, { pageSize: 10 }),
-      loading,
       handleTableChange: (current) => {
         const { dispatch } = this.props;
         const { formValues } = this.state;
@@ -146,7 +144,6 @@ export default class Index extends PureComponent {
         });
 
       },
-      // size: 'small'
       bordered: false
     };
     return (<TableList {...tableProps} />);
