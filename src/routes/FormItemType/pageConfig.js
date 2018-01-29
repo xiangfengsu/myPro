@@ -191,7 +191,7 @@ export const FormItems = [{
 {
   formType: 'upload',
   disabled: false,
-  isRequired: false,
+  isRequired: true,
   key: 'upload2',
   label: 'upload-listType-picture-card',
   placeholder: 'upload-listType-picture-card',

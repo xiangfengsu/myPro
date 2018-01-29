@@ -293,12 +293,22 @@ export const renderFormItem = (item, form, dispatch) => {
         )
       break;
     case 'upload':
+      // initialValue {uid:-1,type:'png',url:'',status:'done',thumbUrl:''}
       const UploadImg = require('../components/UploadImg/Index').default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [{
           required: item.isRequired,
-          message: `${item.label}不能为空`
+          message: `${item.label}不能为空`,
+          validator: (rule, value, callback) => {
+            if (item.isRequired && !value) {
+              callback('')
+            }
+            if (item.isRequired && value && value.fileList && value.fileList.length === 0) {
+              callback('')
+            }
+            callback();
+          }
         }]
       })(
         <UploadImg
