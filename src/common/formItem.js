@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Switch, Select, TimePicker, Upload, DatePicker } from 'antd';
+import { Form, Input, InputNumber, Switch, Select, TreeSelect, TimePicker, Upload, DatePicker } from 'antd';
 
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
@@ -153,6 +153,23 @@ export const renderFormItem = (item, form, dispatch) => {
             })
           }
         </Select>
+        )
+      break;
+    case 'selectTree':
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [{
+          required: item.isRequired,
+          message: `${item.label}不能为空`
+        }]
+      })(
+        <TreeSelect
+          placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
+          getPopupContainer={() => item.popupContainer && document.getElementById(item.popupContainer) || document.body}
+          treeData={item.treeData}
+          treeCheckable={item.isShowCheckBox}
+          treeDefaultExpandedKeys={item.treeDefaultExpandedKeys}
+        />
         )
       break;
     case 'selectDynamic':

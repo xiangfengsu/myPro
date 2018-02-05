@@ -106,6 +106,65 @@ export const FormItems = [{
   hasFeedback: true
 
 }, {
+  formType: 'selectTree',
+  disabled: false,
+  isRequired: false,
+  initialValue: ['渠道', '渠道管理'],
+  key: 'selectTree',
+  label: 'selectTree',
+  placeholder: 'selectTree',
+  isShowCheckBox: true,  // 单选 false  多选 true
+  treeDefaultExpandedKeys: ['渠道', '渠道管理'],
+  treeData: [{
+    label: '渠道',
+    value: '渠道',
+    key: '渠道',
+    children: [{
+      label: '渠道管理',
+      value: '渠道管理',
+      key: '渠道管理',
+      children: [{
+        label: '新增渠道',
+        value: '新增渠道',
+        key: '新增渠道',
+      }, {
+        label: '修改渠道',
+        value: '修改渠道',
+        key: '修改渠道',
+      }, {
+        label: '删除渠道',
+        value: '删除渠道',
+        key: '删除渠道',
+      }]
+    }],
+  }, {
+    label: '评估管理',
+    value: '评估管理',
+    key: '评估管理',
+    children: [{
+      label: '评估复核管理',
+      value: '评估复核管理',
+      key: '评估复核管理',
+      children: [{
+        label: '去处理',
+        value: '去处理',
+        key: '去处理',
+      }]
+    }, {
+      label: '评估经理复核管理',
+      value: '评估经理复核管理',
+      key: '评估经理复核管理',
+      children: [{
+        label: '去处理',
+        value: '去处理',
+        key: '去处理',
+      }]
+    }]
+  }],
+  popupContainer: 'scorllArea',
+  hasFeedback: true
+
+}, {
   formType: 'datePicker',
   showTime: false,
 
