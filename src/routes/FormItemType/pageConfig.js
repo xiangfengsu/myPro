@@ -53,6 +53,38 @@ export const FormItems = [{
   hasFeedback: true
 
 }, {
+  formType: 'select',
+  disabled: false,
+  isRequired: false,
+  multiple: true,
+  key: 'selectMultiple',
+  label: 'selectMultiple',
+  placeholder: 'selectMultiple',
+  selectOptions: [{
+    key: 'select1',
+    value: 'select1'
+  }, {
+    key: 'select2',
+    value: 'select2'
+  }],
+  popupContainer: 'scorllArea',
+  hasFeedback: true
+
+}, {
+  formType: 'selectDynamic',
+  disabled: false,
+  isRequired: false,
+  multiple: true,
+  key: 'selectMultipleDynamic',
+  label: 'selectMultipleDynamic',
+  placeholder: 'selectMultipleDynamic',
+  dictionaryKey: 'selectMultipleDynamic',
+  fetchUrl: '/api/selectLists2',
+  // initialValue: '其他',
+  popupContainer: 'scorllArea',
+  hasFeedback: true
+
+}, {
   formType: 'selectDynamic',
   disabled: false,
   isRequired: false,
@@ -68,6 +100,7 @@ export const FormItems = [{
 }, {
   formType: 'selectGroup',
   key: 'selectGroup',
+
   label: 'selectGroup',
   placeholder: 'selectGroup',
   selectOptions: [{
@@ -94,6 +127,7 @@ export const FormItems = [{
 
 }, {
   formType: 'selectDynamicGroup',
+  multiple: true,
   disabled: false,
   isRequired: false,
   key: 'selectGroupDynamic',
@@ -102,65 +136,6 @@ export const FormItems = [{
   dictionaryKey: 'selectGroupDynamic',
   fetchUrl: '/api/selectGroupLists',
   // initialValue: '其他',
-  popupContainer: 'scorllArea',
-  hasFeedback: true
-
-}, {
-  formType: 'selectTree',
-  disabled: false,
-  isRequired: false,
-  initialValue: ['渠道', '渠道管理'],
-  key: 'selectTree',
-  label: 'selectTree',
-  placeholder: 'selectTree',
-  isShowCheckBox: true,  // 单选 false  多选 true
-  treeDefaultExpandedKeys: ['渠道', '渠道管理'],
-  treeData: [{
-    label: '渠道',
-    value: '渠道',
-    key: '渠道',
-    children: [{
-      label: '渠道管理',
-      value: '渠道管理',
-      key: '渠道管理',
-      children: [{
-        label: '新增渠道',
-        value: '新增渠道',
-        key: '新增渠道',
-      }, {
-        label: '修改渠道',
-        value: '修改渠道',
-        key: '修改渠道',
-      }, {
-        label: '删除渠道',
-        value: '删除渠道',
-        key: '删除渠道',
-      }]
-    }],
-  }, {
-    label: '评估管理',
-    value: '评估管理',
-    key: '评估管理',
-    children: [{
-      label: '评估复核管理',
-      value: '评估复核管理',
-      key: '评估复核管理',
-      children: [{
-        label: '去处理',
-        value: '去处理',
-        key: '去处理',
-      }]
-    }, {
-      label: '评估经理复核管理',
-      value: '评估经理复核管理',
-      key: '评估经理复核管理',
-      children: [{
-        label: '去处理',
-        value: '去处理',
-        key: '去处理',
-      }]
-    }]
-  }],
   popupContainer: 'scorllArea',
   hasFeedback: true
 
@@ -218,6 +193,44 @@ export const FormItems = [{
   popupContainer: 'scorllArea'
 },
 {
+  formType: 'checkboxGroup',
+  disabled: false,
+  isRequired: false,
+  itemColSpan: 4,
+  options: [
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Pear', value: 'Pear' },
+    { label: 'Orange', value: 'Orange' },
+    { label: 'Apple1', value: 'Apple1' },
+    { label: 'Pear1', value: 'Pear1' },
+    { label: 'Orange1', value: 'Orange1' },
+    { label: 'Orange2', value: 'Orange3' },
+  ],
+  key: 'checkbox',
+  label: 'checkbox',
+  colSpan: 24,
+  // popupContainer: 'scorllArea'
+},
+{
+  formType: 'radioGroup',
+  disabled: false,
+  isRequired: false,
+  itemColSpan: 4,
+  options: [
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Pear', value: 'Pear' },
+    { label: 'Orange', value: 'Orange' },
+    { label: 'Apple1', value: 'Apple1' },
+    { label: 'Pear1', value: 'Pear1' },
+    { label: 'Orange1', value: 'Orange1' },
+    { label: 'Orange2', value: 'Orange3' },
+  ],
+  key: 'radioGroup',
+  label: 'radioGroup',
+  colSpan: 24,
+  // popupContainer: 'scorllArea'
+},
+{
   formType: 'upload',
   disabled: false,
   isRequired: false,
@@ -228,9 +241,9 @@ export const FormItems = [{
   multiple: true,
   acceptType: '*', //.jpg,.png,.pdf,.mp4,.gif,.word
   listType: 'text', // 1:text  2:picture 3:picture-card
-  maxFileSize: 3,// 单位是M
+  maxFileSize: 10,// 单位是M
   maxFileCounts: 3,
-  colSpan: 12,
+  colSpan: 24,
 },
 {
   formType: 'upload',
@@ -243,14 +256,14 @@ export const FormItems = [{
   multiple: true,
   acceptType: '*', //.jpg,.png,.pdf,.mp4,.gif,.word
   listType: 'picture', // 1:text  2:picture 3:picture-card
-  maxFileSize: 3,// 单位是M
+  maxFileSize: 10,// 单位是M
   maxFileCounts: 3,
-  colSpan: 12
+  colSpan: 24
 },
 {
   formType: 'upload',
   disabled: false,
-  isRequired: true,
+  isRequired: false,
   key: 'upload2',
   label: 'upload-listType-picture-card',
   placeholder: 'upload-listType-picture-card',
@@ -258,9 +271,9 @@ export const FormItems = [{
   multiple: true,
   acceptType: '*', //.jpg,.png,.pdf,.mp4,.gif,.word
   listType: 'picture-card', // 1:text  2:picture 3:picture-card
-  maxFileSize: 3,// 单位是M
-  maxFileCounts: 2,
-  colSpan: 12
+  maxFileSize: 10,// 单位是M
+  maxFileCounts: 5,
+  colSpan: 24
 },
 {
   formType: 'textArea',

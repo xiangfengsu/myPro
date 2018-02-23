@@ -17,7 +17,7 @@ const cleanArray = (arr) => {
 @connect(state => ({
   dictionary: state.dictionary,
 }))
-export default class DynamicSelect extends Component {
+export default class CustomCheckBox extends Component {
   constructor(props) {
     super(props);
     const { value, multiple } = this.props;

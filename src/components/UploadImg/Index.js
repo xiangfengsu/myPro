@@ -47,6 +47,7 @@ export default class UploadImg extends Component {
 
   handleChange = ({ file, fileList }) => {
     if (file.flag) return;
+    const { listType } = this.props;
     const status = file.status;
     if (status === 'done') {
       message.success(`${file.name} 上传成功！.`);
@@ -59,6 +60,16 @@ export default class UploadImg extends Component {
       }
       return true;
     });
+    if (listType === 'text') {
+      fileList = fileList.map((file) => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
+    }
+
+    logs(fileList);
     if (!('value' in this.props)) {
       this.setState({ fileList });
     }
@@ -160,7 +171,7 @@ export default class UploadImg extends Component {
           multiple={multiple}
           listType={listType}
           fileList={fileList}
-          onPreview={this.handlePreview}
+          onPreview={listType === 'text' ? null : this.handlePreview}
           onChange={this.handleChange}
           beforeUpload={this.beforeUpload}
           onRemove={this.onRemove}

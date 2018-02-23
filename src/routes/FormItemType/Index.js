@@ -92,7 +92,7 @@ export default class Index extends PureComponent {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('values ', values);
       }

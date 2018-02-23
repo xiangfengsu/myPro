@@ -1,8 +1,11 @@
-import { Form, Input, InputNumber, Switch, Select, TreeSelect, TimePicker, Upload, DatePicker } from 'antd';
+import { Row, Col, Form, Input, InputNumber, Switch, Select, TreeSelect, TimePicker, Upload, DatePicker, Checkbox, Radio } from 'antd';
 
 const FormItem = Form.Item;
 const MonthPicker = DatePicker.MonthPicker;
 const RangePicker = DatePicker.RangePicker;
+const CheckboxGroup = Checkbox.Group;
+const RadioGroup = Radio.Group;
+
 
 const validateNumber = (value, prevValue, allValues) => {
   if (!value) {
@@ -38,7 +41,24 @@ const validateMoney = (value, prevValue, allValues) => {
     return prevValue;
   }
 }
+const validatorSelect = (rule, value, callback, item, setFieldsValue) => {
+  // logs('value', value);
+  const multiple = item.multiple;
+  if (multiple && value && value.length === 0) {
+    setFieldsValue({
+      [item.key]: undefined
+    });
+    callback();
+  }
+  if (item.isRequired && value === undefined) {
+    callback('')
+  }
+  if (item.isRequired && multiple && value && value.length === 0) {
+    callback('')
+  }
 
+  callback();
+}
 export const renderFormItem = (item, form, dispatch) => {
   const { getFieldDecorator, setFieldsValue } = form;
   let InputType = null;
@@ -134,10 +154,12 @@ export const renderFormItem = (item, form, dispatch) => {
         initialValue: item.initialValue,
         rules: [{
           required: item.isRequired,
-          message: `${item.label}不能为空`
+          message: `${item.label}不能为空`,
+          validator: (rule, value, callback) => { validatorSelect(rule, value, callback, item, setFieldsValue) }
         }]
       })(
         <Select
+          mode={item.multiple ? 'multiple' : ''}
           placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
           getPopupContainer={() => item.popupContainer && document.getElementById(item.popupContainer) || document.body}
         >
@@ -155,34 +177,20 @@ export const renderFormItem = (item, form, dispatch) => {
         </Select>
         )
       break;
-    case 'selectTree':
-      InputType = getFieldDecorator(item.key, {
-        initialValue: item.initialValue,
-        rules: [{
-          required: item.isRequired,
-          message: `${item.label}不能为空`
-        }]
-      })(
-        <TreeSelect
-          placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
-          getPopupContainer={() => item.popupContainer && document.getElementById(item.popupContainer) || document.body}
-          treeData={item.treeData}
-          treeCheckable={item.isShowCheckBox}
-          treeDefaultExpandedKeys={item.treeDefaultExpandedKeys}
-        />
-        )
-      break;
+
     case 'selectDynamic':
       const DynamicSelect = require('../components/DynamicSelect/Index').default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [{
           required: item.isRequired,
-          message: `${item.label}不能为空`
+          message: `${item.label}不能为空`,
+          validator: (rule, value, callback) => { validatorSelect(rule, value, callback, item, setFieldsValue) }
         }]
       })(<DynamicSelect
         dispatch={dispatch}
         dictionaryKey={item.dictionaryKey}
+        multiple={item.multiple}
         placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
         fetchUrl={item.fetchUrl}
         popupContainer={item.popupContainer && document.getElementById(item.popupContainer) || document.body}
@@ -193,10 +201,12 @@ export const renderFormItem = (item, form, dispatch) => {
         initialValue: item.initialValue,
         rules: [{
           required: item.isRequired,
-          message: `${item.label}不能为空`
+          message: `${item.label}不能为空`,
+          validator: (rule, value, callback) => { validatorSelect(rule, value, callback, item, setFieldsValue) }
         }]
       })(
         <Select
+          mode={item.multiple ? 'multiple' : ''}
           placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
           getPopupContainer={() => item.popupContainer && document.getElementById(item.popupContainer) || document.body}
         >
@@ -229,11 +239,13 @@ export const renderFormItem = (item, form, dispatch) => {
         initialValue: item.initialValue,
         rules: [{
           required: item.isRequired,
-          message: `${item.label}不能为空`
+          message: `${item.label}不能为空`,
+          validator: (rule, value, callback) => { validatorSelect(rule, value, callback, item, setFieldsValue) }
         }]
       })(
         <DynamicSelectGroup
           dispatch={dispatch}
+          multiple={item.multiple}
           dictionaryKey={item.dictionaryKey}
           placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
           fetchUrl={item.fetchUrl}
@@ -307,6 +319,53 @@ export const renderFormItem = (item, form, dispatch) => {
           style={{ width: '100%' }}
           getCalendarContainer={() => item.popupContainer && document.getElementById(item.popupContainer) || document.body}
         />
+        )
+      break;
+    case 'checkboxGroup':
+
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [{
+          required: item.isRequired,
+          message: `${item.label}不能为空`
+        }]
+      })(
+        <CheckboxGroup style={{ width: '100%' }} >
+          <Row>
+            {
+              item.options && item.options.map((checkitem, i) => {
+                return (
+                  <Col span={item.itemColSpan || 6} key={`${checkitem.value}_${i}`}>
+                    <Checkbox value={checkitem.value}>{checkitem.label}</Checkbox>
+                  </Col>
+                );
+              })
+            }
+          </Row>
+        </CheckboxGroup>
+        )
+      break;
+    case 'radioGroup':
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [{
+          required: item.isRequired,
+          message: `${item.label}不能为空`
+        }]
+      })(
+        <RadioGroup style={{ width: '100%' }} >
+          <Row>
+            {
+              item.options && item.options.map((checkitem, i) => {
+                return (
+                  <Col span={item.itemColSpan || 6} key={`${checkitem.value}_${i}`}>
+                    <Radio value={checkitem.value}>{checkitem.label}</Radio>
+                  </Col>
+                );
+              })
+            }
+          </Row>
+        </RadioGroup>
         )
       break;
     case 'upload':

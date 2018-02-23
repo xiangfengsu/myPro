@@ -5,17 +5,32 @@ import { connect } from 'dva';
 
 import { Select, Input } from 'antd';
 const Option = Select.Option;
-
+const cleanArray = (arr) => {
+  if (!(arr instanceof Array)) {
+    arr = [];
+  }
+  return arr.filter(function (e) {
+    return (e !== undefined && e !== null && e !== '');
+  });
+}
 @connect(state => ({
   dictionary: state.dictionary,
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
-    const value = this.props.value || {};
-    this.state = {
-      selectValue: value.selectValue
-    };
+    const { value, multiple } = this.props;
+    if (value !== undefined) {
+      const arrValue = (value + '').split(',');
+      this.state = {
+        selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value
+      };
+    } else {
+      this.state = {
+        selectValue: value
+      };
+    }
+
   }
   componentDidMount() {
     const { dispatch, fetchUrl, dictionaryKey } = this.props;
@@ -29,11 +44,18 @@ export default class DynamicSelect extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const value = nextProps.value;
-      if (value) {
-        this.setState(value);
+      const { value, multiple } = nextProps;
+      // logs('value22', value);
+      if (value !== undefined) {
+        const arrValue = (value + '').split(',');
+        // logs('arrValue', arrValue);
+        this.setState({
+          selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value
+        })
       } else {
-        this.setState({ selectValue: undefined });
+        this.setState({
+          selectValue: value
+        });
       }
     }
   }
@@ -41,21 +63,22 @@ export default class DynamicSelect extends Component {
     if (!('value' in this.props)) {
       this.setState({ selectValue });
     }
-    this.triggerChange({ selectValue });
+    this.triggerChange(selectValue);
   }
   triggerChange = (changedValue) => {
     const onChange = this.props.onChange;
     if (onChange) {
-      onChange(Object.assign({}, this.state, changedValue));
+      onChange(changedValue);
     }
   }
   render() {
     const state = this.state;
-    const { dictionary = {}, dictionaryKey, placeholder, popupContainer } = this.props;
+    const { dictionary = {}, dictionaryKey, placeholder, popupContainer, multiple } = this.props;
     return (
       <Select
-        value={state.selectValue}
+        value={multiple ? cleanArray(state.selectValue) : state.selectValue}
         placeholder={placeholder}
+        mode={multiple ? 'multiple' : ''}
         style={{ width: '100%' }}
         onChange={this.handleChange}
         getPopupContainer={() => popupContainer}
