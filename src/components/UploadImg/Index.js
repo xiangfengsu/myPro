@@ -94,8 +94,8 @@ export default class UploadImg extends Component {
     }
   }
   beforeUpload = (file, fileList) => {
-    const { maxFileSize, maxFileCounts } = this.props;
     const { size } = file;
+    const { maxFileSize, maxFileCounts } = this.props;
     const maxSize = maxFileSize * 1024 * 1024;
     const preFileListLength = this.state.fileList.length;
     const currFileListLength = fileList.length;

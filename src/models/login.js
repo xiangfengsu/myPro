@@ -1,3 +1,4 @@
+import { routerRedux } from 'dva/router';
 import { fakeAccountLogin } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { getCookie, setCookie, delCookie } from '../utils/cookie';
@@ -33,6 +34,7 @@ export default {
       if (validateCode === 100) {
         logs('#####');
         setCookie(encodeHandle('name'), encodeHandle('name'));
+        // yield put(routerRedux.push('/formItemType/formItemTypePage'))
         window.location.reload();
       }
     },

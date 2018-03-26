@@ -1,0 +1,49 @@
+@import "~antd/lib/style/themes/default.less";
+.tags_con{
+  height: 44px;
+  z-index: -1;
+  overflow: hidden;
+  background: #f0f2f5;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  .tags_outer_scroll_con{
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    .tags_inner_scroll_body{
+      position: absolute;
+      padding: 6px 24px;
+      overflow: visible;
+      white-space: nowrap;
+      transition: transform .3s ease;
+    }
+    .close_all_tag_con{
+      position: absolute;
+      right: 0;
+      top: 0;
+      box-sizing: border-box;
+      padding-top: 8px;
+      text-align: center;
+      width: 110px;
+      height: 100%;
+      background: white;
+      box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+    
+  }
+  .tagsText{
+    margin-right: 9px;
+    height: 32px;
+    display: inline-block;
+  }
+  .dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: #1890ff;
+    margin-right: 12px;
+  }
+  
+}

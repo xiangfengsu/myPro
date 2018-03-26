@@ -2,11 +2,8 @@
 export const menuData = [{
   name: '表单类型',
   icon: 'book',
-  path: 'formItemType',
-  children: [{
-    name: '表单类型页',
-    path: 'formItemTypePage'
-  }]
+  path: 'formItemType/formItemTypePage',
+  children: []
 }, {
   name: '通用查询页',
   icon: 'search',

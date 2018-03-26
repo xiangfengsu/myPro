@@ -3,7 +3,7 @@ const config = {
   title: '中后台系统脚手架',
   defaultCollapsedSubMenu: 'formItemType',
   defaultRedirectSubMenu: '/formItemType/formItemTypePage',
-  isLocalMenus: true,
+  isLocalMenus: false,
   localMenus: menuData,
   autoLogin: false,
   hasPhoneLogin: false,
