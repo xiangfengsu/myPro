@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { Tag, Menu, Dropdown, Icon, Button } from "antd";
 import { Link } from "dva/router";
 
+import config from '../../config';
 import styles from "./index.less";
 
 const { CheckableTag } = Tag;
@@ -68,7 +69,7 @@ export default class TagsPageOpend extends PureComponent {
   };
   tagOptionsHandle = ({ item, key, keyPath }) => {
     const {currentPagePath } = this.props;
-    const indexPath = '/dashboard/analysis';
+    const indexPath = config.defaultRedirectSubMenu;
     if (key === "clearAllTags") {
       this.props.dispatch({
         type: "global/removeAllPageOpendTags"

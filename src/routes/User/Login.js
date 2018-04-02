@@ -109,7 +109,7 @@ export default class LoginPage extends Component {
                 }
                 <UserName name="userName" placeholder="admin" />
                 <Password name="password" placeholder="admin" />
-                <ImgCaptcha name="imgcaptcha" placeholder="123" />
+                <ImgCaptcha name="imgcaptcha" placeholder="123" captcha={'http://fhmcar.chunlvbank.com/FHM_car300/code.do?t=1514361580358222'} />
                 {/* <div style={{ marginBottom: 24 }}>
             <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
             <a style={{ float: 'right' }} href="">忘记密码</a>

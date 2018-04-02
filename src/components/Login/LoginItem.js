@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Form, Button, Row, Col } from 'antd';
-import omit from 'omit.js';
-import styles from './index.less';
-import map from './map';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Form, Button, Row, Col } from "antd";
+import omit from "omit.js";
+import styles from "./index.less";
+import map from "./map";
+import QRcode from "../../components/QRcode/index";
 
 const FormItem = Form.Item;
 
 function generator({ defaultProps, defaultRules, type }) {
-  return (WrappedComponent) => {
+  return WrappedComponent => {
     return class BasicComponent extends Component {
       static contextTypes = {
         form: PropTypes.object,
-        updateActive: PropTypes.func,
+        updateActive: PropTypes.func
       };
       constructor(props) {
         super(props);
         this.state = {
-          count: 0,
+          count: 0
         };
       }
       componentDidMount() {
@@ -41,12 +42,18 @@ function generator({ defaultProps, defaultRules, type }) {
             clearInterval(this.interval);
           }
         }, 1000);
-      }
+      };
       render() {
         const { getFieldDecorator } = this.context.form;
         const options = {};
         let otherProps = {};
-        const { onChange, defaultValue, rules, name, ...restProps } = this.props;
+        const {
+          onChange,
+          defaultValue,
+          rules,
+          name,
+          ...restProps
+        } = this.props;
         const { count } = this.state;
         options.rules = rules || defaultRules;
         if (onChange) {
@@ -56,24 +63,25 @@ function generator({ defaultProps, defaultRules, type }) {
           options.initialValue = defaultValue;
         }
         otherProps = restProps || otherProps;
-        if (type === 'ImgCaptcha') {
+        if (type === "ImgCaptcha") {
+          const { captcha } = this.props;
           return (
             <FormItem>
               <Row gutter={8}>
-                <Col span={14} >
+                <Col span={14}>
                   {getFieldDecorator(name, options)(
                     <WrappedComponent {...defaultProps} {...otherProps} />
                   )}
                 </Col>
                 <Col span={8} offset={2}>
-                  <img src="http://fhmcar.chunlvbank.com/FHM_car300/code.do?t=1514361580358" style={{ height: 40, }} />
+                  <QRcode captcha={captcha} />
                 </Col>
               </Row>
             </FormItem>
           );
         }
-        if (type === 'Captcha') {
-          const inputProps = omit(otherProps, ['onGetCaptcha']);
+        if (type === "Captcha") {
+          const inputProps = omit(otherProps, ["onGetCaptcha"]);
           return (
             <FormItem>
               <Row gutter={8}>
@@ -89,7 +97,7 @@ function generator({ defaultProps, defaultRules, type }) {
                     size="large"
                     onClick={this.onGetCaptcha}
                   >
-                    {count ? `${count} s` : '获取验证码'}
+                    {count ? `${count} s` : "获取验证码"}
                   </Button>
                 </Col>
               </Row>
@@ -109,11 +117,11 @@ function generator({ defaultProps, defaultRules, type }) {
 }
 
 const LoginItem = {};
-Object.keys(map).forEach((item) => {
+Object.keys(map).forEach(item => {
   LoginItem[item] = generator({
     defaultProps: map[item].props,
     defaultRules: map[item].rules,
-    type: item,
+    type: item
   })(map[item].component);
 });
 

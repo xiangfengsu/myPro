@@ -1,7 +1,6 @@
 import '@babel/polyfill';
 import 'url-polyfill';
 import dva from 'dva';
-
 import createHistory from 'history/createHashHistory';
 // user BrowserHistory
 // import createHistory from 'history/createBrowserHistory';
@@ -23,7 +22,7 @@ if (window.console) {
 
 // 1. Initialize
 const app = dva({
-  history: createHistory(),
+  history: createHistory()
 });
 
 // 2. Plugins

@@ -1,33 +1,93 @@
-import { menuData } from '../src/common/menu';
+import { menuData } from "../src/common/menu";
 module.exports = {
-  'GET /api/currentUser': {
+  "GET /api/currentUser": {
     $desc: "获取当前用户接口",
     $params: {
       pageSize: {
-        desc: '分页',
-        exp: 2,
-      },
+        desc: "分页",
+        exp: 2
+      }
     },
     $body: {
-      name: 'Serati Ma',
-      avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-      userid: '00000001',
-      notifyCount: 12,
-      menuData: menuData,
-      btnAuth: ['新建渠道', '删除渠道列表', '编辑渠道列表', '评估复核去处理']
-    },
+      body: {
+        menu: [{
+          path: "formItemType/formItemTypePage",
+          children: [],
+          icon: "book",
+          name: "表单类型",
+          menutype: 1,
+          id: 1
+      },{
+        name: '通用查询页',
+        icon: 'search',
+        path: 'generaltable',
+        menutype: 1,
+        id: 2,
+        children: [{
+          name: '标准列表页',
+          path: 'channel',
+          icon: '',
+          menutype: 2,
+          id: 3,
+        }]
+      }],
+        btn: [],
+        user: {
+          createtime: 1522318223000,
+          sysRoleList: [
+            {
+              createtime: 1522388938000,
+              rolename: "系统管理员",
+              remark: "系统管理员",
+              id: 5,
+              menuids: "",
+              updatetime: "",
+              status: 1
+            }
+          ],
+          deptid: 4,
+          mobile: "18516670899",
+          remark: "",
+          avatar:"https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
+          sysDept: {
+            createtime: 1522318223000,
+            children: "",
+            deptorder: 1,
+            name: "总公司",
+            remark: "总公司",
+            id: 4,
+            updatetime: "",
+            parentid: 0,
+            status: 1
+          },
+          uid: "42caaea",
+          password: "be98207ac6d9de9ce8f53ada21922be3",
+          nickname: "系统管理员",
+          id: 1,
+          menuids: "",
+          updatetime: 1522649182000,
+          account: "admin",
+          email: "admin@ebaochina.com",
+          issys: 1,
+          status: 1,
+          username: "admin"
+        }
+      },
+      code: 200,
+      message: ""
+    }
   },
-  'POST /api/login/account': (req, res) => {
+  "POST /api/login/account": (req, res) => {
     // validateCode 100: 登录成功  101: 验证码错误 102: 用户名或密码错误
     const { password, userName, imgcaptcha, remember } = req.body;
-    if (imgcaptcha === '123') {
-      if (password === 'admin' && userName === 'admin') {
+    if (imgcaptcha === "123") {
+      if (password === "admin" && userName === "admin") {
         res.send({
           status: 200,
           body: {
             validateCode: 100
           },
-          errorMes: ''
+          errorMes: ""
         });
         return;
       } else {
@@ -36,7 +96,7 @@ module.exports = {
           body: {
             validateCode: 102
           },
-          errorMes: ''
+          errorMes: ""
         });
         return;
       }
@@ -46,12 +106,12 @@ module.exports = {
         body: {
           validateCode: 101
         },
-        errorMes: ''
+        errorMes: ""
       });
       return;
     }
   },
-  'POST /api/register': (req, res) => {
-    res.send({ status: 'ok', currentAuthority: 'user' });
-  },
+  "POST /api/register": (req, res) => {
+    res.send({ status: "ok", currentAuthority: "user" });
+  }
 };
