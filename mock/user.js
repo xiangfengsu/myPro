@@ -78,23 +78,21 @@ module.exports = {
     }
   },
   "POST /api/login/account": (req, res) => {
-    // validateCode 100: 登录成功  101: 验证码错误 102: 用户名或密码错误
+    // validateCode 200: 登录成功    100: 验证码错误 101: 用户名或密码错误
     const { password, userName, imgcaptcha, remember } = req.body;
     if (imgcaptcha === "123") {
       if (password === "admin" && userName === "admin") {
         res.send({
-          status: 200,
+          code: 200,
           body: {
-            validateCode: 100
           },
           errorMes: ""
         });
         return;
       } else {
         res.send({
-          status: 200,
+          code: 101,
           body: {
-            validateCode: 102
           },
           errorMes: ""
         });
@@ -102,9 +100,8 @@ module.exports = {
       }
     } else {
       res.send({
-        status: 200,
+        code: 100,
         body: {
-          validateCode: 101
         },
         errorMes: ""
       });
@@ -113,5 +110,12 @@ module.exports = {
   },
   "POST /api/register": (req, res) => {
     res.send({ status: "ok", currentAuthority: "user" });
+  },
+  "GET /sys/logout": (req, res) => {
+    res.send({ 
+      code:200,
+      body:{},
+      message:''
+    });
   }
 };

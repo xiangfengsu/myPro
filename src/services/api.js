@@ -77,3 +77,15 @@ export async function fakeRegister(params) {
 export async function queryNotices() {
   return request('/api/notices');
 }
+
+
+export async function accountLogin(params,url) {
+  return request(url, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function accountLoginOut(url) {
+  return request(url);
+}

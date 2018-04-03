@@ -25,12 +25,12 @@ const createData = function (status = 200, pageNum = 1, pageSize = 10, ) {
   });
   const { data, pagination } = dataList;
   Object.assign(mockData, {
-    status,
+    code:status,
     body: {
       list: data,
       pagination
     },
-    errorMes: ''
+    message: ''
   });
   return mockData;
 }

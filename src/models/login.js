@@ -1,63 +1,66 @@
-import { routerRedux } from 'dva/router';
-import { fakeAccountLogin } from '../services/api';
-import { setAuthority } from '../utils/authority';
-import { getCookie, setCookie, delCookie } from '../utils/cookie';
-import { encodeHandle, decodeHandle } from '../utils/base64';
+import { accountLogin, accountLoginOut } from "../services/api";
+import { setAuthority } from "../utils/authority";
+import { getCookie, setCookie, delCookie } from "../utils/cookie";
+import { encodeHandle, decodeHandle } from "../utils/base64";
 export default {
-  namespace: 'login',
+  namespace: "login",
 
   state: {
-    type: 'account',
+    type: "account",
     status: undefined,
-    errorMessage: ''
+    errorMessage: ""
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      const { status, body: { validateCode } } = response;
+      const response = yield call(accountLogin, payload, "/api/login/account");
+      const { code } = response;
       const errorMessage = {
-        100: '登录成功',
-        101: '验证码错误',
-        102: '用户名或密码错误'
+        200: "登录成功",
+        100: "验证码错误",
+        101: "用户名或密码错误"
       };
       yield put({
-        type: 'changeLoginStatus',
+        type: "changeLoginStatus",
         payload: {
           type: payload.type,
-          status: validateCode - 0 > 100 ? 'error' : 'ok',
-          errorMessage: errorMessage[validateCode]
-        },
+          status: code !== 200 ? "error" : "ok",
+          errorMessage: errorMessage[code]
+        }
       });
       // Login successfully
-      logs('validateCode', validateCode);
-      if (validateCode === 100) {
-        logs('#####');
-        setCookie(encodeHandle('name'), encodeHandle('name'));
-        // yield put(routerRedux.push('/formItemType/formItemTypePage'))
+      logs("code", code);
+      if (code === 200) {
+        setCookie(encodeHandle("name"), encodeHandle("name"));
         window.location.reload();
       }
     },
-    *logout(_, { put, select }) {
-      try {
-        // get location pathname
-        const urlParams = new URL(window.location.href);
-        const pathname = yield select(state => state.routing.location.pathname);
-        // add the parameters in the url
-        urlParams.searchParams.set('redirect', pathname);
-        window.history.pushState(null, 'login', urlParams.href);
-      } finally {
-        yield put({
-          type: 'changeLoginStatus',
-          payload: {
-            status: false,
-            errorMessage: ''
-          },
-        });
-        delCookie(encodeHandle('name'));
-        window.location.reload();
+    *logout(_, { call,put, select }) {
+      const response = yield call(accountLoginOut, "/sys/logout");
+      const { code } = response;
+      if (code === 200) {
+        try {
+          // get location pathname
+          const urlParams = new URL(window.location.href);
+          const pathname = yield select(
+            state => state.routing.location.pathname
+          );
+          // add the parameters in the url
+          urlParams.searchParams.set("redirect", pathname);
+          window.history.pushState(null, "login", urlParams.href);
+        } finally {
+          yield put({
+            type: "changeLoginStatus",
+            payload: {
+              status: false,
+              errorMessage: ""
+            }
+          });
+          delCookie(encodeHandle("name"));
+          window.location.reload();
+        }
       }
-    },
+    }
   },
 
   reducers: {
@@ -66,6 +69,6 @@ export default {
         ...state,
         ...payload
       };
-    },
-  },
+    }
+  }
 };

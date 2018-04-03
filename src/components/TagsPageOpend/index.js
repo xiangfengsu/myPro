@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import { routerRedux } from "dva/router";
 import classNames from "classnames";
 import { Tag, Menu, Dropdown, Icon, Button } from "antd";
 import { Link } from "dva/router";
 
-import config from '../../config';
+import config from "../../config";
 import styles from "./index.less";
 
 const { CheckableTag } = Tag;
@@ -23,19 +23,24 @@ export default class TagsPageOpend extends PureComponent {
   };
   componentDidMount() {
     this.props.dispatch({
-      type:'global/changePageOpenedListGeneral'
+      type: "global/changePageOpenedListGeneral"
     });
   }
-  componentDidUpdate(){
-    if(!this.props.isWheel){
-      const { pageOpenedList,currentPagePath } = this.props;
+  componentDidUpdate() {
+    if (!this.props.isWheel) {
+      const { pageOpenedList, currentPagePath } = this.props;
       const currentTagRef = this.refs[`tagsPageOpened_${currentPagePath}`];
-      const domNode = ReactDOM.findDOMNode(currentTagRef)
-      domNode&&this.moveToView(domNode);
+      const domNode = ReactDOM.findDOMNode(currentTagRef);
+      domNode && this.moveToView(domNode);
     }
   }
   linkTo = item => {
-    this.props.dispatch(routerRedux.push(item.path));
+    const { currentPagePath } = this.props;
+    if(currentPagePath === item.path){
+      this.props.dispatch(routerRedux.replace(item.path));
+    }else{
+      this.props.dispatch(routerRedux.push(item.path));
+    }
   };
   tagOnClose = (e, item) => {
     const { pageOpenedList, currentPagePath, dispatch } = this.props;
@@ -68,15 +73,14 @@ export default class TagsPageOpend extends PureComponent {
     }
   };
   tagOptionsHandle = ({ item, key, keyPath }) => {
-    const {currentPagePath } = this.props;
+    const { currentPagePath } = this.props;
     const indexPath = config.defaultRedirectSubMenu;
     if (key === "clearAllTags") {
       this.props.dispatch({
         type: "global/removeAllPageOpendTags"
       });
       this.linkTo({
-        path: indexPath,
-        name: "分析页"
+        path: indexPath
       });
     } else {
       this.props.dispatch({
@@ -87,7 +91,7 @@ export default class TagsPageOpend extends PureComponent {
   handlescroll = event => {
     event.stopPropagation();
     this.props.dispatch({
-      type:'global/changeMouseWheelStatus'
+      type: "global/changeMouseWheelStatus"
     });
     const e = event.nativeEvent;
     const type = e.type;
@@ -129,49 +133,58 @@ export default class TagsPageOpend extends PureComponent {
           style={tagStyle}
           onClose={e => this.tagOnClose(e, item)}
         >
-        <div 
-          style={{display:'inline-block'}}
-          onClick={() => {
-            this.linkTo(item);
-          }}
-        >
-          <span
+          <div
+            style={{ display: "inline-block" }}
+            onClick={() => {
+              this.linkTo(item);
+            }}
+          >
+            <span
               className={styles.dot}
               style={{
                 backgroundColor:
                   item.path === currentPagePath ? "#1890ff" : "#f0f2f5"
               }}
             />
-            <span
-              className={styles.tagsText}
-              
-            >
-              {item.name}
-            </span>
-        </div>
-          
+            <span className={styles.tagsText}>{item.name}</span>
+          </div>
         </Tag>
       );
     });
   };
-  moveToView =(tag)=> {
+  moveToView = tag => {
     if (tag.offsetLeft < -this.state.tagBodyLeft) {
-        // 标签在可视区域左侧
-        this.setState({
-          tagBodyLeft:-tag.offsetLeft + 10
-        });
-    } else if (tag.offsetLeft + 10 > -this.state.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.state.tagBodyLeft + this.scrollCon.offsetWidth - 100) {
-        // 标签在可视区域
-        this.setState({
-          tagBodyLeft:Math.min(0, this.scrollCon.offsetWidth - 100 - tag.offsetWidth - tag.offsetLeft - 20)
-        });
+      // 标签在可视区域左侧
+      this.setState({
+        tagBodyLeft: -tag.offsetLeft + 10
+      });
+    } else if (
+      tag.offsetLeft + 10 > -this.state.tagBodyLeft &&
+      tag.offsetLeft + tag.offsetWidth <
+        -this.state.tagBodyLeft + this.scrollCon.offsetWidth - 100
+    ) {
+      // 标签在可视区域
+      this.setState({
+        tagBodyLeft: Math.min(
+          0,
+          this.scrollCon.offsetWidth -
+            100 -
+            tag.offsetWidth -
+            tag.offsetLeft -
+            20
+        )
+      });
     } else {
-        // 标签在可视区域右侧
-        this.setState({
-          tagBodyLeft: -(tag.offsetLeft - (this.scrollCon.offsetWidth - 100 - tag.offsetWidth) + 20)
-        });
+      // 标签在可视区域右侧
+      this.setState({
+        tagBodyLeft: -(
+          tag.offsetLeft -
+          (this.scrollCon.offsetWidth - 100 - tag.offsetWidth) +
+          20
+        )
+      });
     }
-}
+  };
   render() {
     const { tagBodyLeft } = this.state;
     const menu = (
