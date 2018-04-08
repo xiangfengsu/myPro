@@ -5,9 +5,18 @@ import CheckPermissions from './CheckPermissions';
  * 默认不能访问任何页面
  * default is "NULL"
  */
-const Exception403 = () => (
-  <Exception type="403" style={{ minHeight: 500, height: '80%' }} />
-);
+const Exception403 = () => <Exception type="403" style={{ minHeight: 500, height: '80%' }} />;
+
+// Determine whether the incoming component has been instantiated
+// AuthorizedRoute is already instantiated
+// Authorized  render is already instantiated, children is no instantiated
+// Secured is not instantiated
+const checkIsInstantiation = target => {
+  if (!React.isValidElement(target)) {
+    return target;
+  }
+  return () => target;
+};
 
 /**
  * 用于判断是否拥有权限访问此view权限
@@ -38,11 +47,8 @@ const authorize = (authority, error) => {
     throw new Error('authority is required');
   }
   return function decideAuthority(targer) {
-    return CheckPermissions(
-      authority,
-      targer,
-      classError || Exception403
-    );
+    const component = CheckPermissions(authority, targer, classError || Exception403);
+    return checkIsInstantiation(component);
   };
 };
 

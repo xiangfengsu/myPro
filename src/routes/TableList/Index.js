@@ -4,14 +4,14 @@ import { Link } from 'dva/router';
 import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from 'antd';
 import styles from './Index.less';
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import SearchForms from '../../components/GeneralSearchForm/Index';
-import TableList from '../../components/GeneralTableList/Index';
+import PageHeaderLayout from 'src/layouts/PageHeaderLayout';
+import SearchForms from 'components/GeneralSearchForm/Index';
+import TableList from 'components/GeneralTableList/Index';
 import DetailFormInfo from './ModalDetailForm';
 
-import Authorized from '../../utils/Authorized';
+import Authorized from 'utils/Authorized';
 import { PageConfig } from './pageConfig.js';
-import { formaterObjectValue, formItemAddInitValue } from '../../utils/utils';
+import { formaterObjectValue, formItemAddInitValue } from 'utils/utils';
 
 const FormItem = Form.Item;
 

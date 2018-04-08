@@ -13,6 +13,8 @@ export default {
   },
   alias: {
     'components': path.resolve(__dirname, 'src/components/'),
+    'src':path.resolve(__dirname,'src/'),
+    'utils':path.resolve(__dirname,'src/utils/')
   },
   ignoreMomentLocale: true,
   theme: './src/theme.js',

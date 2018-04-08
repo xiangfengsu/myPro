@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Button, Input, Tabs, Popover, Modal, message } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from 'src/layouts/PageHeaderLayout';
 import { renderFormItem } from '../../common/formItem';
 
 import SyntaxHighlighter from 'react-syntax-highlighter/prism';
