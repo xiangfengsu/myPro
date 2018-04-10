@@ -1,6 +1,6 @@
 {
-  "name": "ant-design-pro",
-  "version": "1.1.0",
+  "name": "big-strong",
+  "version": "1.2.0",
   "description": "An out-of-box UI solution for enterprise applications",
   "private": true,
   "scripts": {
@@ -82,7 +82,7 @@
     "stylelint-config-standard": "^18.0.0"
   },
   "optionalDependencies": {
-    "nightmare": "^2.10.0"
+    "puppeteer": "^1.1.1"
   },
   "lint-staged": {
     "**/*.{js,jsx}": "lint-staged:js",
