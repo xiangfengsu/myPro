@@ -7,6 +7,7 @@ const config = {
   localMenus: menuData,
   autoLogin: false,
   hasPhoneLogin: false,
+  hasTagsPage:true,
   detailPagePathList: [{
     key: '/generaltable/channel',
     detailPathChild: ['/generaltable/channelDetail/:id']

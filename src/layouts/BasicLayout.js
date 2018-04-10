@@ -7,18 +7,18 @@ import { Route, Redirect, Switch, routerRedux } from "dva/router";
 import { ContainerQuery } from "react-container-query";
 import classNames from "classnames";
 import { enquireScreen } from "enquire-js";
-import TagsPageOpend from "../components/TagsPageOpend";
-import GlobalHeader from "../components/GlobalHeader";
-import GlobalFooter from "../components/GlobalFooter";
-import SiderMenu from "../components/SiderMenu";
+import TagsPageOpend from "components/TagsPageOpend";
+import GlobalHeader from "components/GlobalHeader";
+import GlobalFooter from "components/GlobalFooter";
+import SiderMenu from "components/SiderMenu";
 import NotFound from "../routes/Exception/404";
 import {
   getRoutes,
   formatter,
   menuDataPathFormater,
   menuAuthority
-} from "../utils/utils";
-import Authorized from "../utils/Authorized";
+} from "utils/utils";
+import Authorized from "utils/Authorized";
 import logo from "../assets/logo.svg";
 import config from "../config";
 const { Content, Header, Footer } = Layout;
@@ -166,7 +166,6 @@ class BasicLayout extends React.PureComponent {
       config.isLocalMenus ? config.localMenus : currentUser["menuData"]
     );
     const formaterMenuDatas = menuDataPathFormater(menuDatas);
-    // logs('menuDatas', menuDatas);
     const layout = (
       <Layout>
         <SiderMenu
@@ -184,7 +183,7 @@ class BasicLayout extends React.PureComponent {
           <Header
             style={{
               padding: 0,
-              height: "108px",
+              height: config.hasTagsPage?'108px':'64px',
               lineHeight: "normal"
             }}
           >
@@ -200,13 +199,18 @@ class BasicLayout extends React.PureComponent {
               onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
             />
-            <TagsPageOpend
-              isWheel={this.props.isWheel}
-              dispatch={this.props.dispatch}
-              menuData={menuDatas}
-              pageOpenedList={this.props.pageOpenedList}
-              currentPagePath={this.props.currentPagePath}
-            />
+            {
+              config.hasTagsPage?(
+                <TagsPageOpend
+                  isWheel={this.props.isWheel}
+                  dispatch={this.props.dispatch}
+                  menuData={menuDatas}
+                  pageOpenedList={this.props.pageOpenedList}
+                  currentPagePath={this.props.currentPagePath}
+                />
+              ):null
+            }
+            
           </Header>
           <Content style={{ margin: "24px 24px 0", height: "100%" }}>
             <div style={{ minHeight: "calc(100vh - 260px)" }}>

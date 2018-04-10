@@ -1,25 +1,14 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "dva";
-import {
-  Form,
-  Row,
-  Col,
-  Card,
-  Modal,
-  Button,
-  Input,
-  Popconfirm,
-  message
-} from "antd";
+import { Form,Row,Col,Card,Modal,Button,Input,Popconfirm,message } from "antd";
 import cloneDeep from "lodash/cloneDeep";
 import styles from "./Index.less";
 
-import TreeTable from "../../../components/TreeTable/Index";
+import TreeTable from "components/TreeTable/Index";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
 import { PageConfig } from "./pageConfig.js";
-import department from "../../../models/department";
 
 import DetailFormInfo from "./ModalDetailForm";
 // import Authorized from '../../../utils/Authorized';

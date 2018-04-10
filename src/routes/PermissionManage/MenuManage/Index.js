@@ -4,7 +4,7 @@ import { connect } from "dva";
 import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from "antd";
 import styles from "./Index.less";
 import cloneDeep from "lodash/cloneDeep";
-import TreeTable from "../../../components/TreeTable/Index";
+import TreeTable from "components/TreeTable/Index";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
 import { PageConfig } from "./pageConfig.js";
@@ -14,7 +14,7 @@ import DetailFormInfo from "./ModalDetailForm";
 import {
   formaterObjectValue,
   formItemAddInitValue
-} from "../../../utils/utils";
+} from "utils/utils";
 
 const FormItem = Form.Item;
 

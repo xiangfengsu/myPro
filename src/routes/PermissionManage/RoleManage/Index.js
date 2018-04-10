@@ -16,21 +16,19 @@ import cloneDeep from "lodash/cloneDeep";
 
 import styles from "./Index.less";
 
-import SearchForms from "../../../components/GeneralSearchForm/Index";
-import TableList from "../../../components/GeneralTableList/Index";
+import SearchForms from "components/GeneralSearchForm/Index";
+import TableList from "components/GeneralTableList/Index";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
 import { PageConfig } from "./pageConfig.js";
 
 import DetailFormInfo from "./ModalDetailForm";
 
-import MenuTree from "../../../components/TreeSelectModal/Index";
-// import Authorized from '../../../utils/Authorized';
+import MenuTree from "components/TreeSelectModal/Index";
 import {
   formaterObjectValue,
   formItemAddInitValue
-} from "../../../utils/utils";
-
+} from "utils/utils";
 const FormItem = Form.Item;
 
 @connect(({ user, loading, rolemanage, dictionary }) => ({
