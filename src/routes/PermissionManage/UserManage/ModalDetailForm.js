@@ -39,6 +39,7 @@ export default class DetailFormInfo extends PureComponent {
     });
   }
   render() {
+    // console.log(this.props);
     return (
       <Card bordered={false} loading={false}>
         <Form>

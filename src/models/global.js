@@ -158,7 +158,7 @@ export default {
     setup({ history, dispatch }) {
       return history.listen(({ pathname, search }) => {
         // console.log(pathname);
-        if (pathname.indexOf("/user") === -1) {
+        if (pathname.indexOf("/user/") === -1) {
           dispatch({
             type: "changePageOpenedListGeneral",
             payload: pathname

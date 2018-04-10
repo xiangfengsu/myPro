@@ -11,6 +11,5 @@ const config = {
     key: '/generaltable/channel',
     detailPathChild: ['/generaltable/channelDetail/:id']
   }]
-
 };
 export default config;

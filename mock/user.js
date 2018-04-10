@@ -10,27 +10,7 @@ module.exports = {
     },
     $body: {
       body: {
-        menu: [{
-          path: "formItemType/formItemTypePage",
-          children: [],
-          icon: "book",
-          name: "表单类型",
-          menutype: 1,
-          id: 1
-      },{
-        name: '通用查询页',
-        icon: 'search',
-        path: 'generaltable',
-        menutype: 1,
-        id: 2,
-        children: [{
-          name: '标准列表页',
-          path: 'channel',
-          icon: '',
-          menutype: 2,
-          id: 3,
-        }]
-      }],
+        menu: menuData,
         btn: [],
         user: {
           createtime: 1522318223000,

@@ -6,20 +6,20 @@ import cloneDeep from "lodash/cloneDeep";
 
 import styles from "./Index.less";
 
-import TableList from "../../../components/GeneralTableList/Index";
+import TableList from "components/GeneralTableList/Index";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
-import SearchForms from "../../../components/GeneralSearchForm/Index";
+import SearchForms from "components/GeneralSearchForm/Index";
 
 import { PageConfig } from "./pageConfig.js";
 
 import DetailFormInfo from "./ModalDetailForm";
 
-import MenuTree from "../../../components/TreeSelectModal/Index";
+import MenuTree from "components/TreeSelectModal/Index";
 import {
   formaterObjectValue,
   formItemAddInitValue
-} from "../../../utils/utils";
+} from "utils/utils";
 
 const FormItem = Form.Item;
 

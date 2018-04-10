@@ -81,6 +81,26 @@ export const getRouterData = (app) => {
       name: '标准列表页',
       component: dynamicWrapper(app, ['channel', 'dictionary'], () => import('../routes/TableList/Index')),
     },
+    '/permission/department': {
+      name: '部门管理',
+      component: dynamicWrapper(app, ['department'], () => import('../routes/PermissionManage/Department/Index')),
+    },
+    '/permission/menumanage': {
+      name: '菜单管理',
+      component: dynamicWrapper(app, ['menumanage'], () => import('../routes/PermissionManage/MenuManage/Index')),
+    },
+    '/permission/rolemanage': {
+      name: '角色管理',
+      component: dynamicWrapper(app, ['rolemanage'], () => import('../routes/PermissionManage/RoleManage/Index')),
+    },
+    '/permission/usermanage': {
+      name: '用户管理',
+      component: dynamicWrapper(app, ['usermanage'], () => import('../routes/PermissionManage/UserManage/Index')),
+    },
+    '/permission/systemlog': {
+      name: '系统日志',
+      component: dynamicWrapper(app, ['systemlog'], () => import('../routes/PermissionManage/SystemLog/Index')),
+    },
     '/exception/403': {
       name: '403',
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
