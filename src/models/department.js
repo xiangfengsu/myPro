@@ -1,4 +1,5 @@
 import { create, query, update, remove } from "../services/generalApi";
+import { PageConfig } from "../routes/PermissionManage/Department/pageConfig";
 import { message } from "antd";
 import { showStautsMessageHandle } from "../utils/statusCode";
 function formatter(data = []) {
@@ -42,8 +43,6 @@ export default {
       }
     },
     *update({ payload }, { call, put, select }) {
-      const page = yield select(state => state.channel.data.pagination.current);
-      Object.assign(payload, { page });
       const response = yield call(update, payload, "/sys/dept/update");
       if (response) {
         const { code, body, message = "" } = response;
@@ -90,8 +89,6 @@ export default {
       }
     },
     *remove({ payload }, { call, put, select }) {
-      const page = yield select(state => state.channel.data.pagination.current);
-      Object.assign(payload, { page });
       const response = yield call(remove, payload, "/sys/dept/del");
       if (response) {
         const { code = 200, body, message = "" } = response;

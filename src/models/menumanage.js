@@ -42,8 +42,6 @@ export default {
       }
     },
     *update({ payload }, { call, put, select }) {
-      const page = yield select(state => state.channel.data.pagination.current);
-      Object.assign(payload, { page });
       const response = yield call(update, payload, "/sys/menu/update");
       if (response) {
         const { code = 200, body, message = "" } = response;
@@ -90,8 +88,6 @@ export default {
       }
     },
     *remove({ payload }, { call, put, select }) {
-      const page = yield select(state => state.channel.data.pagination.current);
-      Object.assign(payload, { page });
       const response = yield call(remove, payload, "/sys/menu/del");
       if (response) {
         const { code = 200, body, message = "" } = response;

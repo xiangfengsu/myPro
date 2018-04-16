@@ -32,7 +32,7 @@ export default {
       }
     },
     *update({ payload }, { call, put, select }) {
-      const page = yield select(state => state.channel.data.pagination.current);
+      const page = yield select(state => state.usermanage.data.pagination.current);
       Object.assign(payload, { page });
       const response = yield call(update, payload, "/sys/user/update");
       if (response) {
@@ -80,7 +80,7 @@ export default {
       }
     },
     *remove({ payload }, { call, put, select }) {
-      const page = yield select(state => state.channel.data.pagination.current);
+      const page = yield select(state => state.usermanage.data.pagination.current);
       Object.assign(payload, { page });
       const response = yield call(remove, payload, "/sys/user/del");
       if (response) {
