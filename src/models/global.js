@@ -1,6 +1,7 @@
 import { queryNotices } from "../services/api";
 import { formatter } from "../utils/utils";
 import { menuData } from "../common/menu";
+import config from "../config";
 function menuDataPathFormater(menuData) {
   const list = [];
   (function dataFormater(menuData) {
@@ -61,7 +62,8 @@ export default {
       } 
       const { user, global } = yield select(state => state);
       if (user) {
-        const tagsList = menuDataPathFormater(formatter(user.currentUser.menuData));
+        const meunData = config.isLocalMenus?config.localMenus:user.currentUser.menuData;
+        const tagsList = menuDataPathFormater(formatter(meunData));
         const currentPathList = tagsList.filter(tag => {
           return tag.path === global.currentPagePath;
         });
@@ -157,7 +159,6 @@ export default {
   subscriptions: {
     setup({ history, dispatch }) {
       return history.listen(({ pathname, search }) => {
-        // console.log(pathname);
         if (pathname.indexOf("/user/") === -1) {
           dispatch({
             type: "changePageOpenedListGeneral",
