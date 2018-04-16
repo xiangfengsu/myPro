@@ -83,19 +83,19 @@ export const getRouterData = (app) => {
     },
     '/permission/department': {
       name: '部门管理',
-      component: dynamicWrapper(app, ['department'], () => import('../routes/PermissionManage/Department/Index')),
+      component: dynamicWrapper(app, ['department','dictionary'], () => import('../routes/PermissionManage/Department/Index')),
     },
     '/permission/menumanage': {
       name: '菜单管理',
-      component: dynamicWrapper(app, ['menumanage'], () => import('../routes/PermissionManage/MenuManage/Index')),
+      component: dynamicWrapper(app, ['menumanage','dictionary'], () => import('../routes/PermissionManage/MenuManage/Index')),
     },
     '/permission/rolemanage': {
       name: '角色管理',
-      component: dynamicWrapper(app, ['rolemanage'], () => import('../routes/PermissionManage/RoleManage/Index')),
+      component: dynamicWrapper(app, ['rolemanage','dictionary'], () => import('../routes/PermissionManage/RoleManage/Index')),
     },
     '/permission/usermanage': {
       name: '用户管理',
-      component: dynamicWrapper(app, ['usermanage'], () => import('../routes/PermissionManage/UserManage/Index')),
+      component: dynamicWrapper(app, ['usermanage','dictionary'], () => import('../routes/PermissionManage/UserManage/Index')),
     },
     '/permission/systemlog': {
       name: '系统日志',
