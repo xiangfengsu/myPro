@@ -2,6 +2,7 @@ import fetch from 'dva/fetch';
 import { notification } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
+import config from '../config.js';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据',
@@ -48,25 +49,36 @@ export default function request(url, options) {
   };
   const newOptions = { ...defaultOptions, ...options };
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
-    newOptions.headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-      ...newOptions.headers,
-    };
-    newOptions.body = JSON.stringify(newOptions.body);
+    if (!(newOptions.body instanceof FormData)) {
+      newOptions.headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
+        ...newOptions.headers,
+      };
+      newOptions.body = JSON.stringify(newOptions.body);
+    } else {
+      // newOptions.body is FormData
+      newOptions.headers = {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+        ...newOptions.headers,
+      };
+    }
   }
 
-  return fetch(url, newOptions)
+  return fetch(`${config.domain}${url}`, newOptions)
     .then(checkStatus)
     .then((response) => {
       if (newOptions.method === 'DELETE' || response.status === 204) {
         return response.text();
       }
+      
       return response.json();
     })
     .catch((e) => {
       const { dispatch } = store;
       const status = e.name;
+      // logs('status',e);
       if (status === 401) {
         dispatch({
           type: 'login/logout',
