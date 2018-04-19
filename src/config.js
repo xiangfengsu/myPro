@@ -11,6 +11,7 @@ const config = {
   detailPagePathList: [{
     key: '/generaltable/channel',
     detailPathChild: ['/generaltable/channelDetail/:id']
-  }]
+  }],
+  domain:''
 };
 export default config;

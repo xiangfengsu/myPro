@@ -13,10 +13,16 @@ const { Tab, UserName, Password, Mobile, Captcha, ImgCaptcha, Submit } = Login;
   login,
   submitting: loading.effects['login/login'],
 }))
+
 export default class LoginPage extends Component {
+  constructor(props){
+    super(props);
+    this.captchaImgUrl = 'http://fhmcar.chunlvbank.com/FHM_car300/code.do';
+  }
   state = {
     type: 'account',
     autoLogin: false,
+    captchaUrl:this.captchaImgUrl
   }
 
   componentDidMount() {
@@ -53,10 +59,15 @@ export default class LoginPage extends Component {
       <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
     );
   }
-
+  captchaRefreshHandle=()=>{
+    const t = new Date().getTime();
+    this.setState({
+      captchaUrl:`${this.captchaImgUrl}?t=${t}`
+    });
+  }
   render() {
     const { login, submitting } = this.props;
-    const { type } = this.state;
+    const { type,captchaUrl } = this.state;
     return (
       <div className={styles.main}>
         {
@@ -107,9 +118,9 @@ export default class LoginPage extends Component {
                   !login.submitting &&
                   this.renderMessage(login.errorMessage)
                 }
-                <UserName name="userName" placeholder="admin" />
-                <Password name="password" placeholder="admin" />
-                <ImgCaptcha name="imgcaptcha" placeholder="123" captcha={'http://fhmcar.chunlvbank.com/FHM_car300/code.do?t=1514361580358222'} />
+                <UserName name="username" placeholder="请输入账号" />
+                <Password name="password" placeholder="请输入密码" />
+                <ImgCaptcha name="code" placeholder="请输入验证码" captcha={`${config.domain}/sys/vcode`} />
                 {/* <div style={{ marginBottom: 24 }}>
             <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
             <a style={{ float: 'right' }} href="">忘记密码</a>
