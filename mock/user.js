@@ -59,9 +59,9 @@ module.exports = {
   },
   "POST /api/login/account": (req, res) => {
     // validateCode 200: 登录成功    100: 验证码错误 101: 用户名或密码错误
-    const { password, userName, imgcaptcha, remember } = req.body;
-    if (imgcaptcha === "123") {
-      if (password === "admin" && userName === "admin") {
+    const { password, username, code, remember } = req.body;
+    if (code === "123") {
+      if (password === "admin" && username === "admin") {
         res.send({
           code: 200,
           body: {
