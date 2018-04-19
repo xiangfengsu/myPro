@@ -12,6 +12,7 @@ const config = {
     key: '/generaltable/channel',
     detailPathChild: ['/generaltable/channelDetail/:id']
   }],
-  domain:''
+  domain:'',
+  // domain:'http://localhost:1337/182.254.132.199:9000'
 };
 export default config;
