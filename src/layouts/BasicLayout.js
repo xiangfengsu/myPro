@@ -22,7 +22,7 @@ import Authorized from "utils/Authorized";
 import logo from "../assets/logo.svg";
 import config from "../config";
 const { Content, Header, Footer } = Layout;
-const { AuthorizedRoute } = Authorized;
+const { AuthorizedRoute, check } = Authorized;
 
 const query = {
   "screen-xs": {
@@ -88,11 +88,21 @@ class BasicLayout extends React.PureComponent {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href);
-    const redirect =
-      urlParams.searchParams.get("redirect") || config.defaultRedirectSubMenu;
+
+    const redirect = urlParams.searchParams.get('redirect');
     // Remove the parameters in the url
-    urlParams.searchParams.delete("redirect");
-    window.history.pushState(null, "redirect", urlParams.href);
+    if (redirect) {
+      urlParams.searchParams.delete('redirect');
+      window.history.replaceState(null, 'redirect', urlParams.href);
+    } else {
+      return config.defaultRedirectSubMenu;
+      // const { routerData } = this.props;
+      // // get the first authorized route path in routerData
+      // const authorizedPath = Object.keys(routerData).find(
+      //   item => check(routerData[item].authority, item) && item !== '/'
+      // );
+      // return authorizedPath;
+    }
     return redirect;
   };
   getRedirectData = () => {

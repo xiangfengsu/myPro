@@ -81,6 +81,10 @@ export const getRouterData = (app) => {
       name: '标准列表页',
       component: dynamicWrapper(app, ['channel', 'dictionary'], () => import('../routes/TableList/Index')),
     },
+    '/generaltable/channelDetail/:id': {
+      name: '详情页',
+      component: dynamicWrapper(app, ['channel', 'dictionary'], () => import('../routes/TableList/Index')),
+    },
     '/permission/department': {
       name: '部门管理',
       component: dynamicWrapper(app, ['department','dictionary'], () => import('../routes/PermissionManage/Department/Index')),

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link,routerRedux } from 'dva/router';
 import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from 'antd';
 import styles from './Index.less';
 
@@ -100,12 +100,19 @@ export default class Index extends PureComponent {
       payload: { id }
     });
   }
+  gotoDetail=()=>{
+    this.props.dispatch(routerRedux.push('/generaltable/channelDetail/123'));
+    
+  }
   extraTableColumnRender = () => {
     const columns = [
       {
         title: '操作',
         render: (text, record) => (
           <div>
+            {/* <a onClick={this.gotoDetail}>详情</a> */}
+            <Link to="/generaltable/channelDetail/123">详情</Link>
+            &nbsp;
             <a onClick={() => { this.showModalVisibel('update', record) }}>编辑</a>
             &nbsp;
             <Popconfirm

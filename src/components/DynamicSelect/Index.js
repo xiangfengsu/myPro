@@ -22,7 +22,7 @@ export default class DynamicSelect extends Component {
     super(props);
     const { value, multiple } = this.props;
     if (value !== undefined) {
-      const arrValue = (value + '').split(',');
+      const arrValue = Array.isArray(value)?value:(value + '').split(',');
       this.state = {
         selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value
       };
@@ -48,8 +48,7 @@ export default class DynamicSelect extends Component {
       const { value, multiple } = nextProps;
       // logs('value22', value);
       if (value !== undefined) {
-        const arrValue = (value + '').split(',');
-        // logs('arrValue', arrValue);
+        const arrValue = Array.isArray(value)?value:(value + '').split(',');
         this.setState({
           selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value
         })
