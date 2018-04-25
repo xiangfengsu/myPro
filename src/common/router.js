@@ -105,6 +105,10 @@ export const getRouterData = (app) => {
       name: '系统日志',
       component: dynamicWrapper(app, ['systemlog'], () => import('../routes/PermissionManage/SystemLog/Index')),
     },
+    '/account/settings':{
+      name: '个人中心',
+      component: dynamicWrapper(app, ['user','settings'], () => import('../routes/Account/Settings/Index')),
+    },
     '/exception/403': {
       name: '403',
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),

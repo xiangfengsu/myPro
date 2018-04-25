@@ -66,6 +66,12 @@ export const statusCode = {
     delete:{
       "200": "删除成功",
     }
+  },
+  settings:{
+    update:{
+      "200": "密码修改成功",
+      "-1": "原密码错误",
+    }
   }
 };
 export function showStautsMessageHandle(router, type, code) {

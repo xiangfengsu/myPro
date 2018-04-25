@@ -155,7 +155,7 @@ export function formatter(data = [], parentPath = '', parentAuthority) {
 }
 export function menuDataPathFormater(menuData) {
   const list = [];
-  const exceptionPath = ['/exception', '/exception/403', '/exception/404', '/exception/500'];
+  const exceptionPath = ['/account/settings','/exception', '/exception/403', '/exception/404', '/exception/500'];
   (function dataFormater(menuData) {
     menuData.forEach(item => {
       if (item.children) {

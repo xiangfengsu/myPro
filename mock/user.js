@@ -1,6 +1,6 @@
 import { menuData } from "../src/common/menu";
 module.exports = {
-  "GET /api/currentUser": {
+  "GET /sys/currentUser": {
     $desc: "获取当前用户接口",
     $params: {
       pageSize: {
@@ -88,10 +88,17 @@ module.exports = {
       return;
     }
   },
-  "POST /api/register": (req, res) => {
+  "POST /sys/register": (req, res) => {
     res.send({ status: "ok", currentAuthority: "user" });
   },
   "GET /sys/logout": (req, res) => {
+    res.send({ 
+      code:200,
+      body:{},
+      message:''
+    });
+  },
+  "POST /sys/modify/password":(req, res)=>{
     res.send({ 
       code:200,
       body:{},

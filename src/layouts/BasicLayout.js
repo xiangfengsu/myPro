@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Layout, Icon, message,Spin } from "antd";
+import { Layout, Icon, message, Spin } from "antd";
 import DocumentTitle from "react-document-title";
 import { connect } from "dva";
 import { Route, Redirect, Switch, routerRedux } from "dva/router";
@@ -89,11 +89,11 @@ class BasicLayout extends React.PureComponent {
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href);
 
-    const redirect = urlParams.searchParams.get('redirect');
+    const redirect = urlParams.searchParams.get("redirect");
     // Remove the parameters in the url
     if (redirect) {
-      urlParams.searchParams.delete('redirect');
-      window.history.replaceState(null, 'redirect', urlParams.href);
+      urlParams.searchParams.delete("redirect");
+      window.history.replaceState(null, "redirect", urlParams.href);
     } else {
       return config.defaultRedirectSubMenu;
       // const { routerData } = this.props;
@@ -152,6 +152,10 @@ class BasicLayout extends React.PureComponent {
         type: "login/logout"
       });
     }
+    if (key === "setting") {
+      this.props.dispatch(routerRedux.push("/account/settings"));
+      return;
+    }
   };
   handleNoticeVisibleChange = visible => {
     if (visible) {
@@ -193,7 +197,7 @@ class BasicLayout extends React.PureComponent {
           <Header
             style={{
               padding: 0,
-              height: config.hasTagsPage?'108px':'64px',
+              height: config.hasTagsPage ? "108px" : "64px",
               lineHeight: "normal"
             }}
           >
@@ -209,18 +213,15 @@ class BasicLayout extends React.PureComponent {
               onMenuClick={this.handleMenuClick}
               onNoticeVisibleChange={this.handleNoticeVisibleChange}
             />
-            {
-              config.hasTagsPage?(
-                <TagsPageOpend
-                  isWheel={this.props.isWheel}
-                  dispatch={this.props.dispatch}
-                  menuData={menuDatas}
-                  pageOpenedList={this.props.pageOpenedList}
-                  currentPagePath={this.props.currentPagePath}
-                />
-              ):null
-            }
-            
+            {config.hasTagsPage ? (
+              <TagsPageOpend
+                isWheel={this.props.isWheel}
+                dispatch={this.props.dispatch}
+                menuData={menuDatas}
+                pageOpenedList={this.props.pageOpenedList}
+                currentPagePath={this.props.currentPagePath}
+              />
+            ) : null}
           </Header>
           <Content style={{ margin: "24px 24px 0", height: "100%" }}>
             <div style={{ minHeight: "calc(100vh - 260px)" }}>
@@ -294,6 +295,6 @@ export default connect(({ user, global, loading }) => ({
   notices: global.notices,
   currentPagePath: global.currentPagePath,
   pageOpenedList: global.pageOpenedList,
-  isWheel:global.isWheel,
-  isFetched:user.currentUser.menuData
+  isWheel: global.isWheel,
+  isFetched: user.currentUser.menuData
 }))(BasicLayout);
