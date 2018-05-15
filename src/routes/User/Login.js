@@ -120,7 +120,7 @@ export default class LoginPage extends Component {
                 }
                 <UserName name="username" placeholder="请输入账号" />
                 <Password name="password" placeholder="请输入密码" />
-                <ImgCaptcha name="code" placeholder="请输入验证码" captcha={`${config.domain}/sys/vcode`} />
+                <ImgCaptcha name="code" placeholder="请输入验证码" captcha={config.vcodeUrl} />
                 {/* <div style={{ marginBottom: 24 }}>
             <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
             <a style={{ float: 'right' }} href="">忘记密码</a>

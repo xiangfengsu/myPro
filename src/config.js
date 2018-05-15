@@ -12,6 +12,7 @@ const config = {
     key: '/generaltable/channel',
     detailPathChild: ['/generaltable/channelDetail/:id']
   }],
+  vcodeUrl:'http://newfhmcar.chunlvbank.com/FHM_car300/code.do', // ${config.domain}/sys/vcode  
   domain:'',
   // domain:'http://localhost:1337/182.254.132.199:9000'
 };
