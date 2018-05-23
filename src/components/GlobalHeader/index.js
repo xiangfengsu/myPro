@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
-import { Layout, Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider } from 'antd';
-import moment from 'moment';
-import groupBy from 'lodash/groupBy';
-import Debounce from 'lodash-decorators/debounce';
-import { Link } from 'dva/router';
-import NoticeIcon from '../NoticeIcon';
-import styles from './index.less';
-
+import React, { PureComponent } from "react";
+import { Layout, Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider } from "antd";
+import moment from "moment";
+import groupBy from "lodash/groupBy";
+import Debounce from "lodash-decorators/debounce";
+import { Link } from "dva/router";
+import NoticeIcon from "../NoticeIcon";
+import styles from "./index.less";
+import avatar from "../../assets/avatar.png";
 const { Header } = Layout;
 
 export default class GlobalHeader extends PureComponent {
@@ -18,7 +18,7 @@ export default class GlobalHeader extends PureComponent {
     if (notices.length === 0) {
       return {};
     }
-    const newNotices = notices.map((notice) => {
+    const newNotices = notices.map(notice => {
       const newNotice = { ...notice };
       if (newNotice.datetime) {
         newNotice.datetime = moment(notice.datetime).fromNow();
@@ -28,59 +28,70 @@ export default class GlobalHeader extends PureComponent {
         newNotice.key = newNotice.id;
       }
       if (newNotice.extra && newNotice.status) {
-        const color = ({
-          todo: '',
-          processing: 'blue',
-          urgent: 'red',
-          doing: 'gold',
-        })[newNotice.status];
-        newNotice.extra = <Tag color={color} style={{ marginRight: 0 }}>{newNotice.extra}</Tag>;
+        const color = {
+          todo: "",
+          processing: "blue",
+          urgent: "red",
+          doing: "gold"
+        }[newNotice.status];
+        newNotice.extra = (
+          <Tag color={color} style={{ marginRight: 0 }}>
+            {newNotice.extra}
+          </Tag>
+        );
       }
       return newNotice;
     });
-    return groupBy(newNotices, 'type');
+    return groupBy(newNotices, "type");
   }
   toggle = () => {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
     this.triggerResizeEvent();
-  }
+  };
   @Debounce(600)
-  triggerResizeEvent() { // eslint-disable-line
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, false);
+  triggerResizeEvent() {
+    // eslint-disable-line
+    const event = document.createEvent("HTMLEvents");
+    event.initEvent("resize", true, false);
     window.dispatchEvent(event);
   }
   render() {
     const {
-      currentUser, collapsed, fetchingNotices, isMobile, logo,
-      onNoticeVisibleChange, onMenuClick, onNoticeClear,
+      currentUser,
+      collapsed,
+      fetchingNotices,
+      isMobile,
+      logo,
+      onNoticeVisibleChange,
+      onMenuClick,
+      onNoticeClear
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item key="setting"><Icon type="user" />个人中心</Menu.Item>
+        <Menu.Item key="setting">
+          <Icon type="user" />个人中心
+        </Menu.Item>
         {/* <Menu.Item key="setting"><Icon type="setting" />设置</Menu.Item> */}
         {/* <Menu.Item key="triggerError"><Icon type="close-circle" />触发报错</Menu.Item> */}
         <Menu.Divider />
-        <Menu.Item key="logout"><Icon type="logout" />退出登录</Menu.Item>
+        <Menu.Item key="logout">
+          <Icon type="logout" />退出登录
+        </Menu.Item>
       </Menu>
     );
     const noticeData = this.getNoticeData();
     return (
       <Header className={styles.header}>
-        {isMobile && (
-          [
-            (
-              <Link to="/" className={styles.logo} key="logo">
-                <img src={logo} alt="logo" width="32" />
-              </Link>
-            ),
-            <Divider type="vertical" key="line" />,
-          ]
-        )}
+        {isMobile && [
+          <Link to="/" className={styles.logo} key="logo">
+            <img src={logo} alt="logo" width="32" />
+          </Link>,
+          <Divider type="vertical" key="line" />
+        ]}
         <Icon
           className={styles.trigger}
-          type={collapsed ? 'menu-unfold' : 'menu-fold'}
+          type={collapsed ? "menu-unfold" : "menu-fold"}
           onClick={this.toggle}
         />
         <div className={styles.right}>
@@ -117,11 +128,13 @@ export default class GlobalHeader extends PureComponent {
           {currentUser.nickname ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
-                <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
+                <Avatar size="default" className={styles.avatar} src={avatar} />
                 <span className={styles.name}>{currentUser.name}</span>
               </span>
             </Dropdown>
-          ) : <Spin size="small" style={{ marginLeft: 8 }} />}
+          ) : (
+            <Spin size="default" style={{ marginLeft: 8 }} />
+          )}
         </div>
       </Header>
     );

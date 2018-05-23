@@ -1,13 +1,11 @@
-import React from 'react';
-import { routerRedux, Switch } from 'dva/router';
-import { LocaleProvider, Spin } from 'antd';
-import zhCN from 'antd/lib/locale-provider/zh_CN';
-import dynamic from 'dva/dynamic';
-import { getRouterData } from './common/router';
-import Authorized from './utils/Authorized';
-import { getCookie, setCookie } from './utils/cookie';
-import { encodeHandle, decodeHandle } from './utils/base64';
-import styles from './index.less';
+import React from "react";
+import { routerRedux, Route, Switch } from "dva/router";
+import { LocaleProvider, Spin } from "antd";
+import zhCN from "antd/lib/locale-provider/zh_CN";
+import dynamic from "dva/dynamic";
+import { getRouterData } from "./common/router";
+import Authorized from "./utils/Authorized";
+import styles from "./index.less";
 
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
@@ -17,23 +15,17 @@ dynamic.setDefaultLoadingComponent(() => {
 
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
-  const UserLayout = routerData['/user'].component;
-  const BasicLayout = routerData['/'].component;
-  const isAuthenticated = getCookie(encodeHandle('name'));
+  const UserLayout = routerData["/user"].component;
+  const BasicLayout = routerData["/"].component;
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
         <Switch>
-          <AuthorizedRoute
-            path="/user"
-            render={props => <UserLayout {...props} />}
-            authority={() => !isAuthenticated}
-            redirectPath="/"
-          />
+          <Route path="/user" component={UserLayout} />
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}
-            authority={() => isAuthenticated}
+            authority={() => true}
             redirectPath="/user/login"
           />
         </Switch>

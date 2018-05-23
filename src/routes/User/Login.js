@@ -1,135 +1,87 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Link } from 'dva/router';
-import { Checkbox, Alert, Icon } from 'antd';
-import Login from '../../components/Login';
-import styles from './Login.less';
-import config from '../../config';
+import React, { Component } from "react";
+import { connect } from "dva";
+import { Link } from "dva/router";
+import { Checkbox, Alert, Icon } from "antd";
+import Login from "components/Login";
+import styles from "./Login.less";
 
-const { autoLogin, hasPhoneLogin } = config;
 const { Tab, UserName, Password, Mobile, Captcha, ImgCaptcha, Submit } = Login;
 
 @connect(({ login, loading }) => ({
   login,
-  submitting: loading.effects['login/login'],
+  submitting: loading.effects["login/login"]
 }))
-
 export default class LoginPage extends Component {
-  constructor(props){
-    super(props);
-    this.captchaImgUrl = 'http://fhmcar.chunlvbank.com/FHM_car300/code.do';
-  }
   state = {
-    type: 'account',
-    autoLogin: false,
-    captchaUrl:this.captchaImgUrl
-  }
+    type: "account",
+    autoLogin: true
+  };
 
-  componentDidMount() {
-    this.setState({
-      autoLogin
-    });
-  }
-
-  onTabChange = (type) => {
+  onTabChange = type => {
     this.setState({ type });
-  }
+  };
 
   handleSubmit = (err, values) => {
     const { type } = this.state;
     if (!err) {
       this.props.dispatch({
-        type: 'login/login',
+        type: "login/login",
         payload: {
           ...values,
-          type,
-        },
+          type
+        }
       });
     }
-  }
+  };
 
-  changeAutoLogin = (e) => {
+  changeAutoLogin = e => {
     this.setState({
-      autoLogin: e.target.checked,
+      autoLogin: e.target.checked
     });
-  }
+  };
 
-  renderMessage = (content) => {
+  renderMessage = content => {
     return (
-      <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
+      <Alert
+        style={{ marginBottom: 24 }}
+        message={content}
+        type="error"
+        showIcon
+      />
     );
-  }
-  captchaRefreshHandle=()=>{
-    const t = new Date().getTime();
-    this.setState({
-      captchaUrl:`${this.captchaImgUrl}?t=${t}`
-    });
-  }
+  };
+
   render() {
     const { login, submitting } = this.props;
-    const { type,captchaUrl } = this.state;
+    const { type } = this.state;
     return (
       <div className={styles.main}>
-        {
-          hasPhoneLogin ? (
-            <Login
-              defaultActiveKey={type}
-              onTabChange={this.onTabChange}
-              onSubmit={this.handleSubmit}
-              hasPhoneLogin={hasPhoneLogin}
-            >
-              <Tab key="account" tab="账户登录">
-                {
-                  login.status === 'error' &&
-                  login.type === 'account' &&
-                  !login.submitting &&
-                  this.renderMessage(login.errorMessage)
-                }
-                <UserName name="userName" placeholder="admin" />
-                <Password name="password" placeholder="admin" />
-                <ImgCaptcha name="imgcaptcha" placeholder="123" />
-              </Tab>
-              <Tab key="mobile" tab="手机号登录">
-                {
-                  login.status === 'error' &&
-                  login.type === 'mobile' &&
-                  !login.submitting &&
-                  this.renderMessage(login.errorMessage)
-                }
-                <Mobile name="mobile" />
-                <Captcha name="captcha" />
-              </Tab>
-              {/* <div style={{ marginBottom: 24 }}>
-            <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
-            <a style={{ float: 'right' }} href="">忘记密码</a>
+        <Login
+          defaultActiveKey={type}
+          onTabChange={this.onTabChange}
+          onSubmit={this.handleSubmit}
+        >
+          {login.status === "error" &&
+            login.type === "account" &&
+            !login.submitting &&
+            this.renderMessage(login.errorMessage)}
+          <UserName name="username" placeholder="admin/user" />
+          <Password name="password" placeholder="888888/123456" />
+          <ImgCaptcha
+            name="code"
+            placeholder="123"
+            captcha={`http://newfhmcar.chunlvbank.com/FHM_car300/code.do`}
+          />
+          {/* <div>
+            <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
+              自动登录
+            </Checkbox>
+            <a style={{ float: 'right' }} href="">
+              忘记密码
+            </a>
           </div> */}
-              <Submit loading={submitting}>登录</Submit>
-            </Login>
-          ) : (
-              <Login
-                defaultActiveKey={type}
-                onTabChange={this.onTabChange}
-                onSubmit={this.handleSubmit}
-                hasPhoneLogin={hasPhoneLogin}
-              >
-                {
-                  login.status === 'error' &&
-                  login.type === 'account' &&
-                  !login.submitting &&
-                  this.renderMessage(login.errorMessage)
-                }
-                <UserName name="username" placeholder="请输入账号" />
-                <Password name="password" placeholder="请输入密码" />
-                <ImgCaptcha name="code" placeholder="请输入验证码" captcha={config.vcodeUrl} />
-                {/* <div style={{ marginBottom: 24 }}>
-            <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
-            <a style={{ float: 'right' }} href="">忘记密码</a>
-          </div> */}
-                <Submit loading={submitting}>登录</Submit>
-              </Login>
-            )
-        }
-
+          <Submit loading={submitting}>登录</Submit>
+        </Login>
       </div>
     );
   }

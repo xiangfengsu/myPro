@@ -16,14 +16,15 @@ import {
   getRoutes,
   formatter,
   menuDataPathFormater,
+  menuDataPathToArray,
   menuAuthority
 } from "utils/utils";
 import Authorized from "utils/Authorized";
 import logo from "../assets/logo.svg";
+import avatar from "../assets/avatar.png";
 import config from "../config";
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
-
 const query = {
   "screen-xs": {
     maxWidth: 575
@@ -94,14 +95,23 @@ class BasicLayout extends React.PureComponent {
     if (redirect) {
       urlParams.searchParams.delete("redirect");
       window.history.replaceState(null, "redirect", urlParams.href);
+      return redirect;
     } else {
-      return config.defaultRedirectSubMenu;
-      // const { routerData } = this.props;
-      // // get the first authorized route path in routerData
-      // const authorizedPath = Object.keys(routerData).find(
-      //   item => check(routerData[item].authority, item) && item !== '/'
-      // );
-      // return authorizedPath;
+      const { currentUser } = this.props;
+      const menuDatas = config.isLocalMenus
+        ? config.localMenus
+        : currentUser["menuData"];
+      let redirectPath = "";
+      if (menuDatas && menuDatas.length > 0) {
+        const formaterMenuDatas = menuDataPathToArray(menuDatas);
+        for (let i = 0; i < formaterMenuDatas.length; i++) {
+          if (formaterMenuDatas[i].menutype === 2) {
+            redirectPath = formaterMenuDatas[i].path;
+            break;
+          }
+        }
+        return redirectPath;
+      }
     }
     return redirect;
   };
@@ -175,18 +185,33 @@ class BasicLayout extends React.PureComponent {
       location,
       isFetched
     } = this.props;
+    if (!isFetched) {
+      return (
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            margin: "auto",
+            paddingTop: 100,
+            textAlign: "center"
+          }}
+        >
+          <Spin size="large" />
+        </div>
+      );
+    }
     const bashRedirect = this.getBashRedirect();
-    const menuDatas = formatter(
-      config.isLocalMenus ? config.localMenus : currentUser["menuData"]
-    );
+    const menusList = config.isLocalMenus
+      ? config.localMenus
+      : currentUser["menuData"];
+    const menuDatas = formatter(menusList);
     const formaterMenuDatas = menuDataPathFormater(menuDatas);
     const layout = (
       <Layout>
         <SiderMenu
           logo={logo}
+          avatar={avatar}
           title={config.title}
-          defaultCollapsedSubMenu={config.defaultCollapsedSubMenu}
-          Authorized={Authorized}
           menuData={menuDatas}
           collapsed={collapsed}
           location={location}
@@ -217,7 +242,8 @@ class BasicLayout extends React.PureComponent {
               <TagsPageOpend
                 isWheel={this.props.isWheel}
                 dispatch={this.props.dispatch}
-                menuData={menuDatas}
+                menuData={menuDataPathToArray(menusList)}
+                location={location}
                 pageOpenedList={this.props.pageOpenedList}
                 currentPagePath={this.props.currentPagePath}
               />
@@ -263,21 +289,7 @@ class BasicLayout extends React.PureComponent {
         </Layout>
       </Layout>
     );
-    if (!isFetched) {
-      return (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            margin: "auto",
-            paddingTop: 100,
-            textAlign: "center"
-          }}
-        >
-          <Spin size="large" />
-        </div>
-      );
-    }
+
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <ContainerQuery query={query}>

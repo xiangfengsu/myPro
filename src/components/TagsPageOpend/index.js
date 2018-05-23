@@ -22,9 +22,25 @@ export default class TagsPageOpend extends PureComponent {
     tagBodyLeft: 0
   };
   componentDidMount() {
+    const { location: { pathname }, menuData } = this.props;
     this.props.dispatch({
-      type: "global/changePageOpenedListGeneral"
+      type: "global/changePageOpenedListGeneral",
+      payload: {
+        pathname,
+        menuData
+      }
     });
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.props.dispatch({
+        type: "global/changePageOpenedListGeneral",
+        payload: {
+          pathname: nextProps.location.pathname,
+          menuData: nextProps.menuData
+        }
+      });
+    }
   }
   componentDidUpdate() {
     if (!this.props.isWheel) {
@@ -36,9 +52,9 @@ export default class TagsPageOpend extends PureComponent {
   }
   linkTo = item => {
     const { currentPagePath } = this.props;
-    if(currentPagePath === item.path){
+    if (currentPagePath === item.path) {
       this.props.dispatch(routerRedux.replace(item.path));
-    }else{
+    } else {
       this.props.dispatch(routerRedux.push(item.path));
     }
   };
@@ -74,13 +90,12 @@ export default class TagsPageOpend extends PureComponent {
   };
   tagOptionsHandle = ({ item, key, keyPath }) => {
     const { currentPagePath } = this.props;
-    const indexPath = config.defaultRedirectSubMenu;
     if (key === "clearAllTags") {
       this.props.dispatch({
         type: "global/removeAllPageOpendTags"
       });
       this.linkTo({
-        path: indexPath
+        path: "/"
       });
     } else {
       this.props.dispatch({
@@ -126,7 +141,7 @@ export default class TagsPageOpend extends PureComponent {
     return pageOpenedList.map((item, i) => {
       return (
         <Tag
-          closable={i === 0 ? false : true}
+          closable={i === 0 && pageOpenedList.length === 1 ? false : true}
           ref={`tagsPageOpened_${item.path}`}
           name={item.path}
           key={`tag_${item.path}`}

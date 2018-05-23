@@ -1,7 +1,8 @@
-import { queryNotices } from "../services/api";
 import { formatter } from "../utils/utils";
 import { menuData } from "../common/menu";
 import config from "../config";
+import pathToRegexp from "path-to-regexp";
+
 function menuDataPathFormater(menuData) {
   const list = [];
   (function dataFormater(menuData) {
@@ -54,24 +55,15 @@ export default {
       });
     },
     *changePageOpenedListGeneral({ payload }, { put, select }) {
-      if (payload !== undefined) {
-        yield put({
-          type: "saveCurrentPagePath",
-          payload
-        });
-      } 
-      const { user, global } = yield select(state => state);
-      if (user) {
-        const meunData = config.isLocalMenus?config.localMenus:user.currentUser.menuData;
-        const tagsList = menuDataPathFormater(formatter(meunData));
-        const currentPathList = tagsList.filter(tag => {
-          return tag.path === global.currentPagePath;
-        });
+      const { pathname, menuData } = payload;
+      const currentPathList = menuData.filter(item =>
+        pathToRegexp(item.path).test(pathname)
+      );
+      if (currentPathList.length > 0) {
         yield put({
           type: "changePageOpenedList",
           payload: {
-            currentPathList,
-            currentPagePath: global.currentPagePath
+            currentPathList
           }
         });
       }
@@ -83,24 +75,6 @@ export default {
       return {
         ...state,
         collapsed: payload
-      };
-    },
-    saveNotices(state, { payload }) {
-      return {
-        ...state,
-        notices: payload
-      };
-    },
-    saveClearedNotices(state, { payload }) {
-      return {
-        ...state,
-        notices: state.notices.filter(item => item.type !== payload)
-      };
-    },
-    saveCurrentPagePath(state, { payload }) {
-      return {
-        ...state,
-        currentPagePath: payload
       };
     },
     removePageOpenedTag(state, { payload }) {
@@ -130,20 +104,26 @@ export default {
       };
     },
     changePageOpenedList(state, { payload }) {
-      const { pageOpenedList } = state;
-      const { currentPathList = [], currentPagePath } = payload;
-      const newPageOpenList = [];
-      if (pageOpenedList.length === 0) {
-        newPageOpenList.push(...currentPathList);
+      const { currentPathList } = payload;
+      const currPath = currentPathList[0].path;
+      let pageOpenedList = [];
+      let currentPagePath = "";
+      currentPagePath = currPath;
+      if (state.pageOpenedList.length === 0) {
+        pageOpenedList = [...currentPathList];
       } else {
-        const index = pageOpenedList.findIndex(item => {
-          return item.path === currentPagePath;
+        const isTagInAll = state.pageOpenedList.find(tag => {
+          return tag.path === currPath;
         });
-        if (index === -1) newPageOpenList.push(...currentPathList);
+        if (!isTagInAll) {
+          pageOpenedList = [...state.pageOpenedList, ...currentPathList];
+        } else {
+          pageOpenedList = [...state.pageOpenedList];
+        }
       }
       return {
         ...state,
-        pageOpenedList: [...pageOpenedList, ...newPageOpenList],
+        pageOpenedList,
         currentPagePath,
         isWheel: false
       };
@@ -158,14 +138,7 @@ export default {
 
   subscriptions: {
     setup({ history, dispatch }) {
-      return history.listen(({ pathname, search }) => {
-        if (pathname.indexOf("/user/") === -1) {
-          dispatch({
-            type: "changePageOpenedListGeneral",
-            payload: pathname
-          });
-        }
-      });
+      return history.listen(({ pathname, search }) => {});
     }
   }
 };
