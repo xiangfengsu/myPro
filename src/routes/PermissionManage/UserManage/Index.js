@@ -16,10 +16,7 @@ import { PageConfig } from "./pageConfig.js";
 import DetailFormInfo from "./ModalDetailForm";
 
 import MenuTree from "components/TreeSelectModal/Index";
-import {
-  formaterObjectValue,
-  formItemAddInitValue
-} from "utils/utils";
+import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 
 const FormItem = Form.Item;
 
@@ -182,7 +179,7 @@ export default class Index extends PureComponent {
       dataSource: list,
       pagination: Object.assign(pagination, { pageSize: 10 }),
       columns: newTableColumns,
-      handleTableChange: ({current}) => {
+      handleTableChange: ({ current }) => {
         const { dispatch } = this.props;
         const { formValues } = this.state;
         const payload = {
@@ -192,7 +189,7 @@ export default class Index extends PureComponent {
         };
         dispatch({
           type: "usermanage/fetch",
-          payload:this.queryParamsFormater(payload,4)
+          payload: this.queryParamsFormater(payload, 4)
         });
       },
       bordered: false

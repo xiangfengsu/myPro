@@ -12,7 +12,13 @@ const { AuthorizedRoute } = Authorized;
 dynamic.setDefaultLoadingComponent(() => {
   return <Spin size="large" className={styles.globalSpin} />;
 });
-
+const checkAuthority = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
+};
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData["/user"].component;

@@ -1,7 +1,17 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "dva";
-import { Form,Row,Col,Card,Modal,Button,Input,Popconfirm,message } from "antd";
+import {
+  Form,
+  Row,
+  Col,
+  Card,
+  Modal,
+  Button,
+  Input,
+  Popconfirm,
+  message
+} from "antd";
 import cloneDeep from "lodash/cloneDeep";
 import styles from "./Index.less";
 
@@ -139,7 +149,7 @@ export default class Index extends PureComponent {
           })
           .then(() => {
             const { statusCode } = this.props.department;
-            
+
             if (statusCode === 200) this.hideModalVisibel();
           });
       }

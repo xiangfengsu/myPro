@@ -12,11 +12,11 @@ require("fs")
       Object.assign(proxy, require("./mock/" + file));
     }
   });
-const noProxyAddress = {
-  "GET /*": "http://192.168.1.60:3000/mock/26/",
-  "POST /*": "http://192.168.1.60:3000/mock/26/",
-  "PUT /*": "http://192.168.1.60:3000/mock/26/",
-  "DELETE /*": "http://192.168.1.60:3000/mock/26/"
-};
-// export default noProxy ? {} : delay(proxy, 500);
-export default noProxyAddress;
+// const noProxyAddress = {
+//   "GET /*": "http://192.168.1.60:3000/mock/26/",
+//   "POST /*": "http://192.168.1.60:3000/mock/26/",
+//   "PUT /*": "http://192.168.1.60:3000/mock/26/",
+//   "DELETE /*": "http://192.168.1.60:3000/mock/26/"
+// };
+export default (noProxy ? {} : delay(proxy, 500));
+// export default noProxyAddress;

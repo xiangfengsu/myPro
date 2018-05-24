@@ -37,7 +37,7 @@ export default class BaseSetting extends PureComponent {
         type: "settings/update",
         payload: {
           ...fieldsValue,
-          cb: (statusCode) => {
+          cb: statusCode => {
             if (statusCode === 200) this.hideModalVisibel();
           }
         }

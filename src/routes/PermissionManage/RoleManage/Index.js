@@ -25,10 +25,7 @@ import { PageConfig } from "./pageConfig.js";
 import DetailFormInfo from "./ModalDetailForm";
 
 import MenuTree from "components/TreeSelectModal/Index";
-import {
-  formaterObjectValue,
-  formItemAddInitValue
-} from "utils/utils";
+import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 const FormItem = Form.Item;
 
 @connect(({ user, loading, rolemanage, dictionary }) => ({
@@ -195,7 +192,7 @@ export default class Index extends PureComponent {
       dataSource: list,
       columns: newTableColumns,
       pagination: Object.assign(pagination, { pageSize: 10 }),
-      handleTableChange: ({current}) => {
+      handleTableChange: ({ current }) => {
         const { dispatch } = this.props;
         const payload = {
           page: current,

@@ -11,10 +11,7 @@ import { PageConfig } from "./pageConfig.js";
 
 import DetailFormInfo from "./ModalDetailForm";
 // import Authorized from '../../../utils/Authorized';
-import {
-  formaterObjectValue,
-  formItemAddInitValue
-} from "utils/utils";
+import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 
 const FormItem = Form.Item;
 

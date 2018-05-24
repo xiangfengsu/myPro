@@ -11,10 +11,7 @@ import DetailFormInfo from "./ModalDetailForm";
 
 import Authorized from "utils/Authorized";
 import { PageConfig } from "./pageConfig.js";
-import {
-  formaterObjectValue,
-  formItemAddInitValue
-} from "utils/utils";
+import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 
 const FormItem = Form.Item;
 
@@ -29,7 +26,7 @@ export default class Index extends PureComponent {
     modalVisible: false,
     showModalType: "",
     formValues: {},
-    queryValues:{},
+    queryValues: {},
     currentItem: {},
     detailFormItems: PageConfig.detailFormItems
   };
@@ -139,7 +136,7 @@ export default class Index extends PureComponent {
       dataSource: list,
       columns: newTableColumns,
       pagination: Object.assign(pagination, { pageSize: 10 }),
-      handleTableChange: ({current}) => {
+      handleTableChange: ({ current }) => {
         const { dispatch } = this.props;
         const { formValues } = this.state;
         const payload = {
@@ -149,7 +146,7 @@ export default class Index extends PureComponent {
         };
         dispatch({
           type: "systemlog/fetch",
-          payload:this.queryParamsFormater(payload,4)
+          payload: this.queryParamsFormater(payload, 4)
         });
       },
       bordered: false

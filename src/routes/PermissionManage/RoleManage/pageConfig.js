@@ -75,11 +75,11 @@ export const PageConfig = {
   ],
   detailFormItems: [
     {
-      formType: 'input',
+      formType: "input",
       disabled: false,
       isRequired: false,
-      key: 'id',
-      label: 'id',
+      key: "id",
+      label: "id",
       colSpan: 0
     },
     {
