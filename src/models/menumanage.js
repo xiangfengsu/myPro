@@ -1,5 +1,4 @@
 import { create, query, update, remove } from "../services/generalApi";
-import { message } from "antd";
 import { showStautsMessageHandle } from "../utils/statusCode";
 
 function formatter(data = []) {

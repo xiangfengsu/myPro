@@ -41,10 +41,6 @@ export default class Index extends PureComponent {
     currentItem: PropTypes.object,
     form: PropTypes.object
   };
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({

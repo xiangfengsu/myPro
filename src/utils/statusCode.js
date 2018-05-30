@@ -1,5 +1,16 @@
 import { message } from "antd";
 export const statusCode = {
+  general: {
+    add: {
+      "200": "添加成功"
+    },
+    update: {
+      "200": "修改成功"
+    },
+    delete: {
+      "200": "删除成功"
+    }
+  },
   department: {
     add: {
       "200": "添加成功",

@@ -5,7 +5,6 @@ import {
   remove,
   queryPost
 } from "../services/generalApi";
-import { message } from "antd";
 import { showStautsMessageHandle } from "../utils/statusCode";
 export default {
   namespace: "usermanage",
@@ -14,7 +13,6 @@ export default {
       list: [],
       pagination: {}
     },
-    statusCode: 200,
     modalVisible: false,
     confirmLoading: false
   },
@@ -27,10 +25,11 @@ export default {
         yield put({
           type: "save",
           payload: {
-            data: body,
-            statusCode: code
+            data: body
           }
         });
+      } else {
+        showStautsMessageHandle("error");
       }
     },
     *update({ payload }, { call, put, select }) {
@@ -63,8 +62,7 @@ export default {
           yield put({
             type: "save",
             payload: {
-              data: body,
-              statusCode: code
+              data: body
             }
           });
         }
@@ -99,8 +97,7 @@ export default {
           yield put({
             type: "save",
             payload: {
-              data: body,
-              statusCode: code
+              data: body
             }
           });
         }
@@ -121,19 +118,13 @@ export default {
           yield put({
             type: "save",
             payload: {
-              data: body,
-              statusCode: code
-            }
-          });
-        } else {
-          yield put({
-            type: "changeCode",
-            payload: {
-              statusCode: code
+              data: body
             }
           });
         }
         showStautsMessageHandle("usermanage", "delete", code);
+      } else {
+        showStautsMessageHandle("error");
       }
     }
   },
@@ -146,12 +137,6 @@ export default {
       };
     },
     changgeConfirmLoading(state, { payload }) {
-      return {
-        ...state,
-        ...payload
-      };
-    },
-    changeCode(state, { payload }) {
       return {
         ...state,
         ...payload
@@ -170,8 +155,7 @@ export default {
                 roleids: item.sysRoleList && item.sysRoleList.map(rl => rl.id)
               };
             })
-        }),
-        statusCode: action.payload.statusCode
+        })
       };
     }
   }
