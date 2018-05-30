@@ -62,7 +62,7 @@ export default class TagsPageOpend extends PureComponent {
     const { pageOpenedList, currentPagePath, dispatch } = this.props;
     let lastPageObj = pageOpenedList[0];
     if (currentPagePath === item.path) {
-      let len = pageOpenedList.length;
+      const len = pageOpenedList.length;
       for (let i = 1; i < len; i++) {
         if (pageOpenedList[i].path === item.path) {
           if (i < len - 1) {
@@ -74,7 +74,7 @@ export default class TagsPageOpend extends PureComponent {
         }
       }
     } else {
-      let tagWidth = e.target.parentNode.offsetWidth;
+      const tagWidth = e.target.parentNode.offsetWidth;
       // console.log('tagWidth',tagWidth);
       this.setState({
         tagBodyLeft: Math.min(this.state.tagBodyLeft + tagWidth, 0)
@@ -117,22 +117,20 @@ export default class TagsPageOpend extends PureComponent {
     let left = 0;
     if (delta > 0) {
       left = Math.min(0, this.state.tagBodyLeft + delta);
-    } else {
-      if (this.scrollCon.offsetWidth - 100 < this.scrollBody.offsetWidth) {
-        if (
-          this.state.tagBodyLeft <
-          -(this.scrollBody.offsetWidth - this.scrollCon.offsetWidth + 100)
-        ) {
-          left = this.state.tagBodyLeft;
-        } else {
-          left = Math.max(
-            this.state.tagBodyLeft + delta,
-            this.scrollCon.offsetWidth - this.scrollBody.offsetWidth - 100
-          );
-        }
+    } else if (this.scrollCon.offsetWidth - 100 < this.scrollBody.offsetWidth) {
+      if (
+        this.state.tagBodyLeft <
+        -(this.scrollBody.offsetWidth - this.scrollCon.offsetWidth + 100)
+      ) {
+        left = this.state.tagBodyLeft;
       } else {
-        this.setState({ tagBodyLeft: 0 });
+        left = Math.max(
+          this.state.tagBodyLeft + delta,
+          this.scrollCon.offsetWidth - this.scrollBody.offsetWidth - 100
+        );
       }
+    } else {
+      this.setState({ tagBodyLeft: 0 });
     }
     this.setState({ tagBodyLeft: left });
   };
@@ -141,7 +139,7 @@ export default class TagsPageOpend extends PureComponent {
     return pageOpenedList.map((item, i) => {
       return (
         <Tag
-          closable={i === 0 && pageOpenedList.length === 1 ? false : true}
+          closable={!(i === 0 && pageOpenedList.length === 1)}
           ref={`tagsPageOpened_${item.path}`}
           name={item.path}
           key={`tag_${item.path}`}

@@ -26,6 +26,7 @@ import DetailFormInfo from "./ModalDetailForm";
 
 import MenuTree from "components/TreeSelectModal/Index";
 import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
+
 const FormItem = Form.Item;
 
 @connect(({ user, loading, rolemanage, dictionary }) => ({
@@ -253,7 +254,7 @@ export default class Index extends PureComponent {
     // type 1:查询  2:update|delete  3:save  4:分页
     const { data: { pagination } } = this.props.rolemanage;
     delete pagination.total;
-    let params = {
+    const params = {
       form: {},
       query: {},
       pagination: {
@@ -322,7 +323,7 @@ export default class Index extends PureComponent {
         </Card>
         <Modal
           // width={modalWidth}
-          destroyOnClose={true}
+          destroyOnClose
           visible={modalVisible}
           confirmLoading={confirmLoading}
           onCancel={() => this.hideModalVisibel()}

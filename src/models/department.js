@@ -2,6 +2,7 @@ import { create, query, update, remove } from "../services/generalApi";
 import { PageConfig } from "../routes/PermissionManage/Department/pageConfig";
 import { message } from "antd";
 import { showStautsMessageHandle } from "../utils/statusCode";
+
 function formatter(data = []) {
   return data.map(item => {
     const { id, name, parentid, updatetime, deptorder } = item;

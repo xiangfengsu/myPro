@@ -7,6 +7,7 @@ import { Link } from "dva/router";
 import NoticeIcon from "../NoticeIcon";
 import styles from "./index.less";
 import avatar from "../../assets/avatar.png";
+
 const { Header } = Layout;
 
 export default class GlobalHeader extends PureComponent {

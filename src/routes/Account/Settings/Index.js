@@ -72,7 +72,7 @@ export default class BaseSetting extends PureComponent {
         </Card>
         <Modal
           title="修改密码"
-          destroyOnClose={true}
+          destroyOnClose
           visible={modalVisible}
           onCancel={() => this.hideModalVisibel()}
           onOk={() => {

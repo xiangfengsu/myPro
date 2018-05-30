@@ -1,27 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { connect } from 'dva';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { connect } from "dva";
 
-import { TreeSelect, Tree, Tag, Card } from 'antd';
+import { TreeSelect, Tree, Tag, Card } from "antd";
+
 const TreeNode = Tree.TreeNode;
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
-const SHOW_CHILD = TreeSelect.SHOW_CHILD
+const SHOW_CHILD = TreeSelect.SHOW_CHILD;
 @connect(state => ({
-  dictionary: state.dictionary,
+  dictionary: state.dictionary
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
     const value = this.props.value;
     this.state = {
-      selectValue: value === undefined ? undefined : (value + '').split(',')
+      selectValue: value === undefined ? undefined : `${value}`.split(",")
     };
   }
   componentDidMount() {
     const { dispatch, dictionaryKey, fetchUrl } = this.props;
     dispatch({
-      type: 'dictionary/query',
+      type: "dictionary/query",
       payload: {
         fetchUrl,
         dictionaryKey
@@ -29,25 +30,26 @@ export default class DynamicSelect extends Component {
     });
   }
   componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps) {
+    if ("value" in nextProps) {
       const value = nextProps.value;
-      this.setState({ selectValue: value === undefined ? undefined : (value + '').split(',') });
+      this.setState({
+        selectValue: value === undefined ? undefined : `${value}`.split(",")
+      });
     }
   }
-  handleChange = (selectValue) => {
-
-    if (!('value' in this.props)) {
+  handleChange = selectValue => {
+    if (!("value" in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
-  }
-  triggerChange = (changedValue) => {
+  };
+  triggerChange = changedValue => {
     const onChange = this.props.onChange;
-    logs('changedValue', changedValue);
+    logs("changedValue", changedValue);
     if (onChange) {
       onChange(changedValue);
     }
-  }
+  };
   renderNodeDisabledSelectable = (menuType = 0) => {
     const { extraProp: { selectMenuTypeValue = 0 } } = this.props;
     const obj = {};
@@ -94,52 +96,87 @@ export default class DynamicSelect extends Component {
         break;
     }
     return obj;
-  }
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
+  };
+  renderTreeNodes = data => {
+    return data.map(item => {
       let iconType = null;
-      const { disabled, selectable } = this.renderNodeDisabledSelectable(item.menuType);
+      const { disabled, selectable } = this.renderNodeDisabledSelectable(
+        item.menuType
+      );
       if (item.menuType === 1) {
-        iconType = (<span><Tag color="#f50">目录</Tag>{item.value}</span>)
+        iconType = (
+          <span>
+            <Tag color="#f50">目录</Tag>
+            {item.value}
+          </span>
+        );
       } else if (item.menuType === 2) {
-        iconType = (<span><Tag color="#2db7f5">菜单</Tag>{item.value}</span>)
+        iconType = (
+          <span>
+            <Tag color="#2db7f5">菜单</Tag>
+            {item.value}
+          </span>
+        );
       } else if (item.menuType === 3) {
-        iconType = (<span><Tag color="#108ee9">按钮</Tag>{item.value}</span>)
+        iconType = (
+          <span>
+            <Tag color="#108ee9">按钮</Tag>
+            {item.value}
+          </span>
+        );
       } else {
         iconType = item.value;
       }
       if (item.children) {
         return (
-          <TreeNode title={iconType} value={item.key + ''} key={item.key} dataRef={item} disabled={disabled} selectable={selectable} >
+          <TreeNode
+            title={iconType}
+            value={`${item.key}`}
+            key={item.key}
+            dataRef={item}
+            disabled={disabled}
+            selectable={selectable}
+          >
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={iconType} value={item.key + ''} key={item.key} dataRef={item} disabled={disabled} selectable={selectable} />;
+      return (
+        <TreeNode
+          title={iconType}
+          value={`${item.key}`}
+          key={item.key}
+          dataRef={item}
+          disabled={disabled}
+          selectable={selectable}
+        />
+      );
     });
-  }
+  };
   render() {
     const state = this.state;
-    const { dictionary = {}, dictionaryKey, placeholder, popupContainer, disabled, multiple, showCheckedStrategy } = this.props;
-    let len = dictionary[dictionaryKey] && dictionary[dictionaryKey].length;
-    logs('this.props', this.props);
+    const {
+      dictionary = {},
+      dictionaryKey,
+      placeholder,
+      popupContainer,
+      disabled,
+      multiple,
+      showCheckedStrategy
+    } = this.props;
+    const len = dictionary[dictionaryKey] && dictionary[dictionaryKey].length;
+    logs("this.props", this.props);
     return (
       <Tree
         checkable
         defaultSelectedKeys={state.selectValue}
         defaultExpandedKeys={state.selectValue}
         placeholder={placeholder}
-        style={{ width: '100%' }}
+        style={{ width: "100%" }}
         onCheck={this.handleChange}
       >
-        {
-          len > 0 && this.renderTreeNodes(dictionary[dictionaryKey])
-        }
+        {len > 0 && this.renderTreeNodes(dictionary[dictionaryKey])}
       </Tree>
-
     );
   }
 }
-
-
-

@@ -209,7 +209,7 @@ export default class Index extends PureComponent {
         </Card>
         <Modal
           // width={modalWidth}
-          destroyOnClose={true}
+          destroyOnClose
           visible={modalVisible}
           confirmLoading={confirmLoading}
           onCancel={() => this.hideModalVisibel()}

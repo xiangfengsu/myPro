@@ -1,4 +1,5 @@
 import { menuData } from "./common/menu";
+
 const config = {
   title: "中后台系统脚手架",
   isLocalMenus: true,

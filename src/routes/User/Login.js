@@ -70,7 +70,7 @@ export default class LoginPage extends Component {
           <ImgCaptcha
             name="code"
             placeholder="123"
-            captcha={`http://newfhmcar.chunlvbank.com/FHM_car300/code.do`}
+            captcha="http://newfhmcar.chunlvbank.com/FHM_car300/code.do"
           />
           {/* <div>
             <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>

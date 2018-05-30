@@ -1,6 +1,7 @@
 import { update } from "../services/generalApi";
 import { showStautsMessageHandle } from "../utils/statusCode";
 import { message } from "antd";
+
 export default {
   namespace: "settings",
   state: {

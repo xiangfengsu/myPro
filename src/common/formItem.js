@@ -80,7 +80,7 @@ export const renderFormItem = (item, form, dispatch) => {
         rules: [
           {
             required: item.isRequired,
-            message: item.errorText || `邮箱格式不正确`,
+            message: item.errorText || "邮箱格式不正确",
             pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
           }
         ]

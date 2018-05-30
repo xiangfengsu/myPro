@@ -1,5 +1,6 @@
 import { Icon, Tag } from "antd";
 import Ellipsis from "../../../components/Ellipsis/";
+
 export const PageConfig = {
   name: "菜单管理",
   path: "permission/menumanage",

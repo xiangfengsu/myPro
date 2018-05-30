@@ -6,6 +6,7 @@ import {
   remove
 } from "../services/generalApi";
 import { message } from "antd";
+
 export default {
   namespace: "systemlog",
   state: {

@@ -1,42 +1,41 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { connect } from 'dva';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { connect } from "dva";
 
-import { Select, Input } from 'antd';
+import { Select, Input } from "antd";
 
 const Option = Select.Option;
-const cleanArray = (arr) => {
+const cleanArray = arr => {
   if (!(arr instanceof Array)) {
     arr = [];
   }
-  return arr.filter(function (e) {
-    return (e !== undefined && e !== null && e !== '');
+  return arr.filter(e => {
+    return e !== undefined && e !== null && e !== "";
   });
-}
+};
 @connect(state => ({
-  dictionary: state.dictionary,
+  dictionary: state.dictionary
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
     const { value, multiple } = this.props;
     if (value !== undefined) {
-      const arrValue = Array.isArray(value)?value:(value + '').split(',');
+      const arrValue = Array.isArray(value) ? value : `${value}`.split(",");
       this.state = {
-        selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value
+        selectValue: multiple ? (arrValue === "" ? undefined : arrValue) : value
       };
     } else {
       this.state = {
         selectValue: value
       };
     }
-
   }
   componentDidMount() {
     const { dispatch, fetchUrl, dictionaryKey } = this.props;
     dispatch({
-      type: 'dictionary/query',
+      type: "dictionary/query",
       payload: {
         fetchUrl,
         dictionaryKey
@@ -44,14 +43,16 @@ export default class DynamicSelect extends Component {
     });
   }
   componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps) {
+    if ("value" in nextProps) {
       const { value, multiple } = nextProps;
       // logs('value22', value);
       if (value !== undefined) {
-        const arrValue = Array.isArray(value)?value:(value + '').split(',');
+        const arrValue = Array.isArray(value) ? value : `${value}`.split(",");
         this.setState({
-          selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value
-        })
+          selectValue: multiple
+            ? arrValue === "" ? undefined : arrValue
+            : value
+        });
       } else {
         this.setState({
           selectValue: value
@@ -59,44 +60,45 @@ export default class DynamicSelect extends Component {
       }
     }
   }
-  handleChange = (selectValue) => {
-    if (!('value' in this.props)) {
+  handleChange = selectValue => {
+    if (!("value" in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
-  }
-  triggerChange = (changedValue) => {
+  };
+  triggerChange = changedValue => {
     const onChange = this.props.onChange;
     if (onChange) {
       onChange(changedValue);
     }
-  }
+  };
   render() {
     const state = this.state;
-    const { dictionary = {}, dictionaryKey, placeholder, popupContainer, multiple } = this.props;
+    const {
+      dictionary = {},
+      dictionaryKey,
+      placeholder,
+      popupContainer,
+      multiple
+    } = this.props;
     return (
       <Select
         value={multiple ? cleanArray(state.selectValue) : state.selectValue}
         placeholder={placeholder}
-        style={{ width: '100%' }}
+        style={{ width: "100%" }}
         onChange={this.handleChange}
-        mode={multiple ? 'multiple' : ''}
+        mode={multiple ? "multiple" : ""}
         getPopupContainer={() => popupContainer}
       >
-        {
-          dictionary[dictionaryKey] && dictionary[dictionaryKey].map((v, i) => {
+        {dictionary[dictionaryKey] &&
+          dictionary[dictionaryKey].map((v, i) => {
             return (
               <Option value={v.key} key={`${v.key}_${i}`}>
                 {v.value}
               </Option>
-            )
-          })
-        }
+            );
+          })}
       </Select>
-
     );
   }
 }
-
-
-

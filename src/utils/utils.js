@@ -227,7 +227,7 @@ export function menuAuthority(menuDatas, path) {
   let isAuthority = true;
   // logs('len', menuDatas.length);
   if (menuDatas.length > 4) {
-    isAuthority = menuDatas.indexOf(path) !== -1 ? true : false;
+    isAuthority = menuDatas.indexOf(path) !== -1;
   }
   return isAuthority;
 }
@@ -236,7 +236,7 @@ export function formaterObjectValue(obj) {
   if (!obj || Object.prototype.toString.call(obj) !== "[object Object]") {
     return newObj;
   }
-  for (let key in obj) {
+  for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       newObj[key] = obj[key] === undefined ? "" : obj[key];
     }
@@ -254,7 +254,7 @@ export function formItemAddInitValue(formItems, currentItem) {
   const currItemKeys = Object.keys(currentItem);
   if (currItemKeys.length > 0) {
     formItems.forEach(item => {
-      const index = currItemKeys.indexOf(item["key"]);
+      const index = currItemKeys.indexOf(item.key);
       if (index > -1) {
         newFormItems.push(
           Object.assign(item, {
@@ -284,7 +284,7 @@ export function cleanArray(arr) {
   if (!(arr instanceof Array)) {
     arr = [];
   }
-  return arr.filter(function(e) {
+  return arr.filter(e => {
     return e !== undefined && e !== null && e !== "";
   });
 }

@@ -1,15 +1,14 @@
-"use strict";
-
 const qs = require("qs");
 const mockjs = require("mockjs");
+
 const Random = mockjs.Random;
 const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   return {
     body: {
       dictionary: {
         status: {
-          "1": "正常",
-          "2": "已删除"
+          1: "正常",
+          2: "已删除"
         }
       },
       extra: {},
@@ -127,19 +126,19 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   };
 };
 module.exports = {
-  "POST /sys/user/list"(req, res) {
+  "POST /sys/user/list": function(req, res) {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/user/save"(req, res) {
+  "POST /sys/user/save": function(req, res) {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/user/update"(req, res) {
+  "POST /sys/user/update": function(req, res) {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/user/del"(req, res) {
+  "POST /sys/user/del": function(req, res) {
     const mockData = createData();
     res.json(mockData);
   }

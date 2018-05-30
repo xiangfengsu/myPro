@@ -6,6 +6,7 @@ import { renderFormItem } from "common/formItem";
 import styles from "./Index.less";
 
 import { FormItems } from "./pageConfig";
+
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const formItemLayout = {

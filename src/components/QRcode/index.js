@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+
 class QRcode extends Component {
   static propTypes = {
-    captcha:PropTypes.string.isRequired
-  }
+    captcha: PropTypes.string.isRequired
+  };
   static defaultProps = {
-    captcha:''
-  }
+    captcha: ""
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +27,12 @@ class QRcode extends Component {
       <img
         onClick={this.refreshCode}
         src={codeUrl}
-        style={{ width: "100px", height: "40px", cursor: "pointer" ,'border': '1px solid #d9d9d9'}}
+        style={{
+          width: "100px",
+          height: "40px",
+          cursor: "pointer",
+          border: "1px solid #d9d9d9"
+        }}
       />
     );
   }

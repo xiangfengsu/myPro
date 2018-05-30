@@ -1,4 +1,5 @@
 import { Icon, Tag } from "antd";
+
 export const PageConfig = {
   name: "部门管理",
   path: "permission/department",

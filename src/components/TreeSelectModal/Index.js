@@ -4,6 +4,7 @@ import { connect } from "dva";
 import { Tree, Card, Icon, Tag } from "antd";
 
 import styles from "./Index.less";
+
 const TreeNode = Tree.TreeNode;
 
 export default class Index extends PureComponent {
@@ -45,10 +46,10 @@ export default class Index extends PureComponent {
         return (
           <TreeNode
             title={iconType}
-            value={item.key + ""}
+            value={`${item.key}`}
             key={item.key}
             dataRef={item}
-            disableCheckbox={true}
+            disableCheckbox
             selectable={false}
           >
             {this.renderTreeNodes(item.children)}
@@ -58,10 +59,10 @@ export default class Index extends PureComponent {
       return (
         <TreeNode
           title={iconType}
-          value={item.key + ""}
+          value={`${item.key}`}
           key={item.key}
           dataRef={item}
-          disableCheckbox={true}
+          disableCheckbox
           selectable={false}
         />
       );
@@ -76,16 +77,16 @@ export default class Index extends PureComponent {
     const parentdepartmentids = Array.isArray(menuids)
       ? menuids.join(",").split(",")
       : menuids.split(",");
-    let len = menuStructure.length;
+    const len = menuStructure.length;
     console.log("parentdepartmentids", parentdepartmentids);
     return (
-      <Card bordered={false} loading={len === 0 ? true : false}>
+      <Card bordered={false} loading={len === 0}>
         {len > 0 ? (
           <div className="menuTreeBox">
             <Tree
               showLine
               checkable
-              checkStrictly={true}
+              checkStrictly
               onSelect={this.onSelect}
               defaultExpandedKeys={parentdepartmentids}
               defaultCheckedKeys={parentdepartmentids}

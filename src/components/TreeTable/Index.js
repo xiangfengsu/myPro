@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Table } from 'antd';
-
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { Table } from "antd";
 
 export default class Index extends PureComponent {
   render() {
@@ -11,7 +10,6 @@ export default class Index extends PureComponent {
         loading={loading}
         pagination={false}
         columns={columns}
-        
         dataSource={dataSource}
       />
     );

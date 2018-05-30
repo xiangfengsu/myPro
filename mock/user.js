@@ -1,4 +1,5 @@
 import { menuData } from "../src/common/menu";
+
 module.exports = {
   "GET /sys/currentUser": {
     $desc: "获取当前用户接口",
@@ -28,7 +29,8 @@ module.exports = {
           deptid: 4,
           mobile: "18516670899",
           remark: "",
-          avatar:"https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
+          avatar:
+            "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
           sysDept: {
             createtime: 1522318223000,
             children: "",
@@ -64,45 +66,39 @@ module.exports = {
       if (password === "admin" && username === "admin") {
         res.send({
           code: 200,
-          body: {
-          },
+          body: {},
           errorMes: ""
         });
-        return;
       } else {
         res.send({
           code: 101,
-          body: {
-          },
+          body: {},
           errorMes: ""
         });
-        return;
       }
     } else {
       res.send({
         code: 100,
-        body: {
-        },
+        body: {},
         errorMes: ""
       });
-      return;
     }
   },
   "POST /sys/register": (req, res) => {
     res.send({ status: "ok", currentAuthority: "user" });
   },
   "GET /sys/logout": (req, res) => {
-    res.send({ 
-      code:200,
-      body:{},
-      message:''
+    res.send({
+      code: 200,
+      body: {},
+      message: ""
     });
   },
-  "POST /sys/modify/password":(req, res)=>{
-    res.send({ 
-      code:200,
-      body:{},
-      message:''
+  "POST /sys/modify/password": (req, res) => {
+    res.send({
+      code: 200,
+      body: {},
+      message: ""
     });
   }
 };

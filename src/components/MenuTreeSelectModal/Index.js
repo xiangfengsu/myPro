@@ -1,20 +1,20 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'dva';
-import { Tree, Card, Icon, Tag } from 'antd';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
+import { connect } from "dva";
+import { Tree, Card, Icon, Tag } from "antd";
 
 const TreeNode = Tree.TreeNode;
 
 export default class Index extends PureComponent {
   state = {
     selectedNode: []
-  }
+  };
   componentDidMount() {
     const { parentId, parentName } = this.props;
     const selectedNode = [];
     if (parentId !== undefined && parentName !== undefined) {
       selectedNode.push({
-        key: parentId + '',
+        key: `${parentId}`,
         title: parentName
       });
     }
@@ -36,21 +36,22 @@ export default class Index extends PureComponent {
     this.setState({
       selectedNode
     });
-  }
+  };
 
   onCheck = (checkedKeys, info) => {
-    console.log('onCheck', checkedKeys, info);
-  }
+    console.log("onCheck", checkedKeys, info);
+  };
   getSelectedKey = () => {
     const { selectedNode } = this.state;
     return selectedNode;
-
-  }
-  renderNodeDisabledSelectable = (menuType) => {
+  };
+  renderNodeDisabledSelectable = menuType => {
     const { selectMenuTypeValue, currentItem } = this.props;
-    const selectType = currentItem.menutype ? currentItem.menutype : selectMenuTypeValue;
+    const selectType = currentItem.menutype
+      ? currentItem.menutype
+      : selectMenuTypeValue;
     const obj = {};
-    console.log('selectType',selectType);
+    console.log("selectType", selectType);
     switch (selectType) {
       case 1:
       case 2:
@@ -88,50 +89,81 @@ export default class Index extends PureComponent {
         break;
     }
     return obj;
-  }
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
-      const { disabled, selectable } = this.renderNodeDisabledSelectable(item.menuType);
+  };
+  renderTreeNodes = data => {
+    return data.map(item => {
+      const { disabled, selectable } = this.renderNodeDisabledSelectable(
+        item.menuType
+      );
       let iconType = null;
       if (item.menuType === 1) {
-        iconType = (<span><Tag color="#f50">目录</Tag>{item.value}</span>)
+        iconType = (
+          <span>
+            <Tag color="#f50">目录</Tag>
+            {item.value}
+          </span>
+        );
       } else if (item.menuType === 2) {
-        iconType = (<span><Tag color="#2db7f5">菜单</Tag>{item.value}</span>)
+        iconType = (
+          <span>
+            <Tag color="#2db7f5">菜单</Tag>
+            {item.value}
+          </span>
+        );
       } else if (item.menuType === 4) {
-        iconType = (<span><Tag color="#108ee9">按钮</Tag>{item.value}</span>)
+        iconType = (
+          <span>
+            <Tag color="#108ee9">按钮</Tag>
+            {item.value}
+          </span>
+        );
       } else {
         iconType = item.value;
       }
       if (item.children) {
         return (
-          <TreeNode title={iconType} key={item.key} dataRef={item} disabled={disabled} selectable={selectable}>
+          <TreeNode
+            title={iconType}
+            key={item.key}
+            dataRef={item}
+            disabled={disabled}
+            selectable={selectable}
+          >
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={iconType} key={item.key} dataRef={item} disabled={disabled} selectable={selectable} />;
+      return (
+        <TreeNode
+          title={iconType}
+          key={item.key}
+          dataRef={item}
+          disabled={disabled}
+          selectable={selectable}
+        />
+      );
     });
-  }
+  };
   render() {
     const { parentId, treeNodes = [] } = this.props;
-    let len = treeNodes.length;
+    const len = treeNodes.length;
     return (
-      <Card bordered={false} loading={len === 0 ? true : false}>
-        {
-          len > 0 ?
-            <Tree
-              // showLine
-              // checkable
-              // checkStrictly
-              onSelect={this.onSelect}
-              onCheck={this.onCheck}
-              defaultExpandedKeys={[parentId + '']}
-              defaultSelectedKeys={[parentId + '']}
-            >
-              {this.renderTreeNodes(treeNodes)}
-            </Tree>
-            : ' '
-        }
+      <Card bordered={false} loading={len === 0}>
+        {len > 0 ? (
+          <Tree
+            // showLine
+            // checkable
+            // checkStrictly
+            onSelect={this.onSelect}
+            onCheck={this.onCheck}
+            defaultExpandedKeys={[`${parentId}`]}
+            defaultSelectedKeys={[`${parentId}`]}
+          >
+            {this.renderTreeNodes(treeNodes)}
+          </Tree>
+        ) : (
+          " "
+        )}
       </Card>
     );
   }

@@ -234,7 +234,7 @@ export default class Index extends PureComponent {
     // type 1:查询  2:update|delete  3:save  4:分页
     const { data: { pagination } } = this.props.usermanage;
     delete pagination.total;
-    let params = {
+    const params = {
       form: {},
       query: {},
       pagination: {
@@ -307,7 +307,7 @@ export default class Index extends PureComponent {
         </Card>
         <Modal
           // width={modalWidth}
-          destroyOnClose={true}
+          destroyOnClose
           confirmLoading={confirmLoading}
           visible={modalVisible}
           onCancel={() => this.hideModalVisibel()}

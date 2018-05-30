@@ -6,6 +6,7 @@ import {
   queryPost
 } from "../services/generalApi";
 import { showStautsMessageHandle } from "../utils/statusCode";
+
 export default {
   namespace: "usermanage",
   state: {

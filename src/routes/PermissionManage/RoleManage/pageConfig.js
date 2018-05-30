@@ -1,5 +1,6 @@
 import { Icon, Tag } from "antd";
 import Ellipsis from "../../../components/Ellipsis/";
+
 export const PageConfig = {
   name: "角色管理",
   path: "permission/rolemanage",
@@ -91,7 +92,7 @@ export const PageConfig = {
       colSpan: 24
     },
     {
-      formType: "selectDynamicTree", //selectDynamicTree
+      formType: "selectDynamicTree", // selectDynamicTree
       disabled: false,
       isRequired: true,
       key: "menuids",

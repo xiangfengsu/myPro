@@ -105,7 +105,7 @@ export default class Index extends PureComponent {
     // type 1:查询  2:update|delete  3:save  4:分页
     const { data: { pagination } } = this.props.systemlog;
     delete pagination.total;
-    let params = {
+    const params = {
       form: {},
       query: {},
       pagination: {

@@ -23,6 +23,7 @@ import Authorized from "utils/Authorized";
 import logo from "../assets/logo.svg";
 import avatar from "../assets/avatar.png";
 import config from "../config";
+
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
 const query = {
@@ -100,7 +101,7 @@ class BasicLayout extends React.PureComponent {
       const { currentUser } = this.props;
       const menuDatas = config.isLocalMenus
         ? config.localMenus
-        : currentUser["menuData"];
+        : currentUser.menuData;
       let redirectPath = "";
       if (menuDatas && menuDatas.length > 0) {
         const formaterMenuDatas = menuDataPathToArray(menuDatas);
@@ -135,7 +136,7 @@ class BasicLayout extends React.PureComponent {
       }
     };
     formatter(
-      config.isLocalMenus ? config.localMenus : currentUser["menuData"]
+      config.isLocalMenus ? config.localMenus : currentUser.menuData
     ).forEach(getRedirect);
     return redirectData;
   };
@@ -164,7 +165,6 @@ class BasicLayout extends React.PureComponent {
     }
     if (key === "setting") {
       this.props.dispatch(routerRedux.push("/account/settings"));
-      return;
     }
   };
   handleNoticeVisibleChange = visible => {
@@ -203,7 +203,7 @@ class BasicLayout extends React.PureComponent {
     const bashRedirect = this.getBashRedirect();
     const menusList = config.isLocalMenus
       ? config.localMenus
-      : currentUser["menuData"];
+      : currentUser.menuData;
     const menuDatas = formatter(menusList);
     const formaterMenuDatas = menuDataPathFormater(menuDatas);
     const layout = (

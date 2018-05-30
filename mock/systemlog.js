@@ -1,14 +1,13 @@
-"use strict";
-
 const qs = require("qs");
 const mockjs = require("mockjs");
+
 const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   return {
     body: {
       dictionary: {
         status: {
-          "1": "正常",
-          "2": "已删除"
+          1: "正常",
+          2: "已删除"
         }
       },
       extra: {},
@@ -155,7 +154,7 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   };
 };
 module.exports = {
-  "POST /sys/log/list"(req, res) {
+  "POST /sys/log/list": function(req, res) {
     const mockData = createData();
     res.json(mockData);
   }
