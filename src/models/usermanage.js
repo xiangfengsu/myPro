@@ -14,7 +14,9 @@ export default {
       list: [],
       pagination: {}
     },
-    statusCode: 200
+    statusCode: 200,
+    modalVisible: false,
+    confirmLoading: false
   },
 
   effects: {
@@ -32,35 +34,68 @@ export default {
       }
     },
     *update({ payload }, { call, put, select }) {
-      const page = yield select(state => state.usermanage.data.pagination.current);
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: true
+        }
+      });
+      const page = yield select(
+        state => state.usermanage.data.pagination.current
+      );
       Object.assign(payload, { page });
       const response = yield call(update, payload, "/sys/user/update");
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: false
+        }
+      });
       if (response) {
         const { code = 200, body, message = "" } = response;
         if (code === 200) {
           yield put({
+            type: "modalVisible",
+            payload: {
+              modalVisible: false
+            }
+          });
+          yield put({
             type: "save",
             payload: {
               data: body,
-              statusCode: code
-            }
-          });
-        } else {
-          yield put({
-            type: "changeCode",
-            payload: {
               statusCode: code
             }
           });
         }
         showStautsMessageHandle("usermanage", "update", code);
+      } else {
+        showStautsMessageHandle("error");
       }
     },
     *add({ payload, callback }, { call, put }) {
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: true
+        }
+      });
       const response = yield call(create, payload, "/sys/user/save");
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: false
+        }
+      });
       if (response) {
         const { code = 200, body, message = "" } = response;
         if (code === 200) {
+          yield put({
+            type: "modalVisible",
+            payload: {
+              modalVisible: false
+            }
+          });
           yield put({
             type: "save",
             payload: {
@@ -68,19 +103,16 @@ export default {
               statusCode: code
             }
           });
-        } else {
-          yield put({
-            type: "changeCode",
-            payload: {
-              statusCode: code
-            }
-          });
         }
         showStautsMessageHandle("usermanage", "add", code);
+      } else {
+        showStautsMessageHandle("error");
       }
     },
     *remove({ payload }, { call, put, select }) {
-      const page = yield select(state => state.usermanage.data.pagination.current);
+      const page = yield select(
+        state => state.usermanage.data.pagination.current
+      );
       Object.assign(payload, { page });
       const response = yield call(remove, payload, "/sys/user/del");
       if (response) {
@@ -107,6 +139,18 @@ export default {
   },
 
   reducers: {
+    modalVisible(state, { payload }) {
+      return {
+        ...state,
+        ...payload
+      };
+    },
+    changgeConfirmLoading(state, { payload }) {
+      return {
+        ...state,
+        ...payload
+      };
+    },
     changeCode(state, { payload }) {
       return {
         ...state,

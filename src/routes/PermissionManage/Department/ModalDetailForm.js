@@ -13,8 +13,6 @@ import {
   message
 } from "antd";
 
-import TreeSelectModal from "../../../components/TreeSelectModal/Index";
-
 import { renderFormItem } from "../../../common/formItem";
 import styles from "./Index.less";
 
@@ -83,23 +81,6 @@ export default class DetailFormInfo extends PureComponent {
         <Form>
           <Row gutter={24}>{this.renderFormItem()}</Row>
         </Form>
-        <Modal
-          destroyOnClose={true}
-          visible={modalVisible}
-          maskStyle={{ backgroundColor: "transparent" }}
-          onCancel={() => this.hideModalVisibel()}
-          onOk={() => {
-            this.modalOkHandle();
-          }}
-        >
-          <TreeSelectModal
-            {...this.props}
-            hideModalVisibel={this.hideModalVisibel}
-            ref={ref => {
-              this.treeSelectModal = ref;
-            }}
-          />
-        </Modal>
       </Card>
     );
   }

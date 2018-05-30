@@ -1,9 +1,14 @@
-import Nightmare from 'nightmare';
+import puppeteer from "puppeteer";
 
-describe('Homepage', () => {
-  it('it should have logo text', async () => {
-    const page = Nightmare().goto('http://localhost:8000');
-    const text = await page.wait('h1').evaluate(() => document.body.innerHTML).end();
-    expect(text).toContain('<h1>Ant Design Pro</h1>');
+describe("Homepage", () => {
+  it("it should have logo text", async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto("http://localhost:8000");
+    await page.waitForSelector("h1");
+    const text = await page.evaluate(() => document.body.innerHTML);
+    expect(text).toContain("<h1>中后台系统脚手架</h1>");
+    await page.close();
+    browser.close();
   });
 });

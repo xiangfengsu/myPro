@@ -29,7 +29,6 @@ const FormItem = Form.Item;
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    modalVisible: false,
     showModalType: "",
     formValues: {},
     queryValues: {},
@@ -58,28 +57,35 @@ export default class Index extends PureComponent {
     const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
     this.setState({ detailFormItems });
   };
+  changeModalVisibel = flag => {
+    this.props.dispatch({
+      type: "usermanage/modalVisible",
+      payload: {
+        modalVisible: flag
+      }
+    });
+  };
   showModalVisibel = (type, record, isShowMenuTree = false) => {
-    logs("record", record);
     if (!isShowMenuTree) {
       this.updateFormItems(type, record);
+      this.changeModalVisibel(true);
       this.setState({
         showModalType: type,
-        modalVisible: true,
         currentItem: record,
         isShowMenuTree
       });
     } else {
       this.queryStructorTreeHandle();
+      this.changeModalVisibel(true);
       this.setState({
-        modalVisible: true,
         currentItem: record,
         isShowMenuTree
       });
     }
   };
   hideModalVisibel = () => {
+    this.changeModalVisibel(false);
     this.setState({
-      modalVisible: false,
       currentItem: {}
     });
   };
@@ -144,9 +150,7 @@ export default class Index extends PureComponent {
       },
       handleSearchSubmit: formValues => {
         const { createtime, channeltype } = formValues;
-        const params = Object.assign(formValues, {
-          // createtime: createtime ? createtime.format("YYYY-MM-DD") : ""
-        });
+        const params = Object.assign(formValues, {});
         const payload = formaterObjectValue(params);
         this.setState({
           queryValues: payload
@@ -206,29 +210,18 @@ export default class Index extends PureComponent {
     if (!isShowMenuTree) {
       this.modalForm.validateFields((err, fieldsValue) => {
         if (err) return;
-        logs("fieldsValue", fieldsValue);
         const { showModalType } = this.state;
         const fields = formaterObjectValue(fieldsValue);
         if (showModalType === "create") {
-          this.props
-            .dispatch({
-              type: "usermanage/add",
-              payload: this.queryParamsFormater(fields, 3)
-            })
-            .then(() => {
-              const { statusCode } = this.props.usermanage;
-              if (statusCode === 200) this.hideModalVisibel();
-            });
+          this.props.dispatch({
+            type: "usermanage/add",
+            payload: this.queryParamsFormater(fields, 3)
+          });
         } else if (showModalType === "update") {
-          this.props
-            .dispatch({
-              type: "usermanage/update",
-              payload: this.queryParamsFormater(fields, 2)
-            })
-            .then(() => {
-              const { statusCode } = this.props.usermanage;
-              if (statusCode === 200) this.hideModalVisibel();
-            });
+          this.props.dispatch({
+            type: "usermanage/update",
+            payload: this.queryParamsFormater(fields, 2)
+          });
         }
       });
     } else {
@@ -285,7 +278,7 @@ export default class Index extends PureComponent {
   };
   render() {
     const {
-      modalVisible,
+      // modalVisible,
       detailFormItems,
       isShowMenuTree,
       currentItem
@@ -294,6 +287,7 @@ export default class Index extends PureComponent {
       form: { getFieldDecorator },
       currentUser: { btnAuth = [] },
       loading,
+      usermanage: { modalVisible, confirmLoading },
       dictionary
     } = this.props;
     return (
@@ -318,6 +312,7 @@ export default class Index extends PureComponent {
         <Modal
           // width={modalWidth}
           destroyOnClose={true}
+          confirmLoading={confirmLoading}
           visible={modalVisible}
           onCancel={() => this.hideModalVisibel()}
           onOk={() => {

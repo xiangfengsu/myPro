@@ -23,7 +23,6 @@ const FormItem = Form.Item;
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    modalVisible: false,
     showModalType: "",
     formValues: {},
     queryValues: {},
@@ -75,57 +74,6 @@ export default class Index extends PureComponent {
     };
     return <SearchForms {...props} />;
   };
-  showModalVisibel = (type, record) => {
-    const { detailFormItems } = this.state;
-    const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
-    console.log(newDetailFormItems);
-    this.setState({
-      showModalType: type,
-      modalVisible: true,
-      currentItem: record,
-      detailFormItems: newDetailFormItems
-    });
-  };
-  hideModalVisibel = () => {
-    this.setState({
-      modalVisible: false,
-      currentItem: {}
-    });
-  };
-  deleteTableRowHandle = id => {
-    this.props.dispatch({
-      type: "systemlog/remove",
-      payload: { id }
-    });
-  };
-  extraTableColumnRender = () => {
-    const columns = [
-      {
-        title: "操作",
-        render: (text, record) => (
-          <div>
-            <a
-              onClick={() => {
-                this.showModalVisibel("update", record);
-              }}
-            >
-              编辑
-            </a>
-            &nbsp;
-            <Popconfirm
-              title="确定删除吗？"
-              onConfirm={() => {
-                this.deleteTableRowHandle(record.id);
-              }}
-            >
-              <a>删除</a>
-            </Popconfirm>
-          </div>
-        )
-      }
-    ];
-    return columns;
-  };
   renderTable = () => {
     const { systemlog, loading } = this.props;
     const { tableColumns } = PageConfig;
@@ -152,26 +100,6 @@ export default class Index extends PureComponent {
       bordered: false
     };
     return <TableList {...tableProps} />;
-  };
-  modalOkHandle = () => {
-    this.modalForm.validateFields((err, fieldsValue) => {
-      if (err) return;
-      logs("fieldsValue", fieldsValue);
-      const { showModalType, currentItem } = this.state;
-      if (showModalType === "create") {
-        this.props.dispatch({
-          type: "systemlog/add",
-          payload: fieldsValue
-        });
-      } else if (showModalType === "update") {
-        this.props.dispatch({
-          type: "systemlog/update",
-          payload: Object.assign(currentItem, fieldsValue)
-        });
-      }
-
-      this.hideModalVisibel();
-    });
   };
   queryParamsFormater = (fields, type) => {
     // type 1:查询  2:update|delete  3:save  4:分页
@@ -216,7 +144,6 @@ export default class Index extends PureComponent {
     return params;
   };
   render() {
-    const { modalVisible, detailFormItems } = this.state;
     const modalWidth = document.documentElement.clientWidth - 300;
     const {
       form: { getFieldDecorator },
@@ -233,22 +160,6 @@ export default class Index extends PureComponent {
             </div>
           </div>
         </Card>
-        <Modal
-          // width={modalWidth}
-          destroyOnClose={true}
-          visible={modalVisible}
-          onCancel={() => this.hideModalVisibel()}
-          onOk={() => {
-            this.modalOkHandle();
-          }}
-        >
-          <DetailFormInfo
-            ref={ref => {
-              this.modalForm = ref;
-            }}
-            formItems={detailFormItems}
-          />
-        </Modal>
       </PageHeaderLayout>
     );
   }

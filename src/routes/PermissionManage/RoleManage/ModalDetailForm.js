@@ -13,8 +13,6 @@ import {
   message
 } from "antd";
 
-import TreeSelectModal from "../../../components/MenuTreeSelectModal/Index";
-
 import { renderFormItem } from "../../../common/formItem";
 import styles from "./Index.less";
 
@@ -61,19 +59,7 @@ export default class DetailFormInfo extends PureComponent {
       modalVisible: false
     });
   };
-  modalOkHandle = () => {
-    const selectedNode = this.treeSelectModal.getSelectedKey();
-    if (selectedNode.length !== 0) {
-      const { key, title } = selectedNode[0];
-      this.props.form.setFieldsValue({
-        parentmenuid: key,
-        parentmenuname: title
-      });
-      this.hideModalVisibel();
-    } else {
-      message.error("必须选择一个父级菜单或目录!");
-    }
-  };
+
   renderMenuTree = () => {
     const InputType = getFieldDecorator("menuids", {
       initialValue: item.initialValue,

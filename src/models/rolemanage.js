@@ -29,36 +29,69 @@ export default {
             statusCode: code
           }
         });
+      } else {
+        showStautsMessageHandle("error");
       }
     },
     *update({ payload }, { call, put, select }) {
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: true
+        }
+      });
       const response = yield call(update, payload, "/sys/role/update");
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: false
+        }
+      });
       if (response) {
         const { code = 200, body, message = "" } = response;
         if (code === 200) {
           yield put({
+            type: "modalVisible",
+            payload: {
+              modalVisible: false
+            }
+          });
+          yield put({
             type: "save",
             payload: {
               data: body,
-              statusCode: code
-            }
-          });
-        } else {
-          yield put({
-            type: "changeCode",
-            payload: {
               statusCode: code
             }
           });
         }
         showStautsMessageHandle("rolemanage", "update", code);
+      } else {
+        showStautsMessageHandle("error");
       }
     },
     *add({ payload, callback }, { call, put }) {
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: true
+        }
+      });
       const response = yield call(create, payload, "/sys/role/save");
+      yield put({
+        type: "changgeConfirmLoading",
+        payload: {
+          confirmLoading: false
+        }
+      });
       if (response) {
         const { code = 200, body, message = "" } = response;
         if (code === 200) {
+          yield put({
+            type: "modalVisible",
+            payload: {
+              modalVisible: false
+            }
+          });
           yield put({
             type: "save",
             payload: {
@@ -66,15 +99,10 @@ export default {
               statusCode: code
             }
           });
-        } else {
-          yield put({
-            type: "changeCode",
-            payload: {
-              statusCode: code
-            }
-          });
         }
         showStautsMessageHandle("rolemanage", "add", code);
+      } else {
+        showStautsMessageHandle("error");
       }
     },
     *remove({ payload }, { call, put, select }) {
@@ -89,21 +117,22 @@ export default {
               statusCode: code
             }
           });
-        } else {
-          yield put({
-            type: "changeCode",
-            payload: {
-              statusCode: code
-            }
-          });
         }
         showStautsMessageHandle("rolemanage", "delete", code);
+      } else {
+        showStautsMessageHandle("error");
       }
     }
   },
 
   reducers: {
-    changeCode(state, { payload }) {
+    modalVisible(state, { payload }) {
+      return {
+        ...state,
+        ...payload
+      };
+    },
+    changgeConfirmLoading(state, { payload }) {
       return {
         ...state,
         ...payload

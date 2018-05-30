@@ -74,10 +74,10 @@ export default class Index extends PureComponent {
       currentItem: { menuids = "" }
     } = this.props;
     const parentdepartmentids = Array.isArray(menuids)
-      ? menuids.join(',').split(',')
+      ? menuids.join(",").split(",")
       : menuids.split(",");
     let len = menuStructure.length;
-    console.log('parentdepartmentids',parentdepartmentids);
+    console.log("parentdepartmentids", parentdepartmentids);
     return (
       <Card bordered={false} loading={len === 0 ? true : false}>
         {len > 0 ? (
@@ -85,7 +85,7 @@ export default class Index extends PureComponent {
             <Tree
               showLine
               checkable
-              // checkStrictly={true}
+              checkStrictly={true}
               onSelect={this.onSelect}
               defaultExpandedKeys={parentdepartmentids}
               defaultCheckedKeys={parentdepartmentids}

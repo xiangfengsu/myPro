@@ -31,7 +31,6 @@ export default class Index extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
       showModalType: "",
       formValues: {},
       currentItem: {},
@@ -63,18 +62,26 @@ export default class Index extends PureComponent {
   showModalVisibel = (type, record) => {
     const typeId = record.menutype;
     this.updateFormItems(typeId, type, record);
+    this.changeModalVisibel(true);
     this.setState({
       showModalType: type,
-      modalVisible: true,
       currentItem: record,
       treeNodeParentId: record.parentmenuid
     });
   };
   hideModalVisibel = () => {
+    this.changeModalVisibel(false);
     this.setState({
-      modalVisible: false,
       currentItem: {},
       detailFormItems: []
+    });
+  };
+  changeModalVisibel = flag => {
+    this.props.dispatch({
+      type: "menumanage/modalVisible",
+      payload: {
+        modalVisible: flag
+      }
     });
   };
   extraTableColumnRender = () => {
@@ -148,25 +155,15 @@ export default class Index extends PureComponent {
       const { showModalType } = this.state;
       const fields = formaterObjectValue(fieldsValue);
       if (showModalType === "create") {
-        this.props
-          .dispatch({
-            type: "menumanage/add",
-            payload: fields
-          })
-          .then(() => {
-            const { statusCode } = this.props.menumanage;
-            if (statusCode === 200) this.hideModalVisibel();
-          });
+        this.props.dispatch({
+          type: "menumanage/add",
+          payload: fields
+        });
       } else if (showModalType === "update") {
-        this.props
-          .dispatch({
-            type: "menumanage/update",
-            payload: fields
-          })
-          .then(() => {
-            const { statusCode } = this.props.menumanage;
-            if (statusCode === 200) this.hideModalVisibel();
-          });
+        this.props.dispatch({
+          type: "menumanage/update",
+          payload: fields
+        });
       }
     });
   };
@@ -178,7 +175,6 @@ export default class Index extends PureComponent {
   };
   render() {
     const {
-      modalVisible,
       detailFormItems,
       currentItem,
       showModalType,
@@ -189,6 +185,7 @@ export default class Index extends PureComponent {
       form: { getFieldDecorator },
       currentUser: { btnAuth = [] },
       loading,
+      menumanage: { modalVisible, confirmLoading },
       dictionary
     } = this.props;
     const treeNodes = dictionary.menuStructure;
@@ -214,6 +211,7 @@ export default class Index extends PureComponent {
           // width={modalWidth}
           destroyOnClose={true}
           visible={modalVisible}
+          confirmLoading={confirmLoading}
           onCancel={() => this.hideModalVisibel()}
           onOk={() => {
             this.modalOkHandle();

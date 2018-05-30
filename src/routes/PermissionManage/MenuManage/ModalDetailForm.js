@@ -15,8 +15,6 @@ import {
   Tooltip
 } from "antd";
 
-import TreeSelectModal from "../../../components/MenuTreeSelectModal/Index";
-
 import { renderFormItem } from "../../../common/formItem";
 import styles from "./Index.less";
 
@@ -163,15 +161,6 @@ export default class DetailFormInfo extends PureComponent {
         <Form>
           <Row gutter={24}>{this.renderFormItem()}</Row>
         </Form>
-        <Modal
-          destroyOnClose={true}
-          visible={modalVisible}
-          maskStyle={{ backgroundColor: "transparent" }}
-          onCancel={() => this.hideModalVisibel()}
-          onOk={() => {
-            this.modalOkHandle();
-          }}
-        />
       </Card>
     );
   }

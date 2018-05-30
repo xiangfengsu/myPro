@@ -67,28 +67,36 @@ export default class Index extends PureComponent {
     this.setState({ detailFormItems });
   };
   showModalVisibel = (type, record, isShowMenuTree = false) => {
-    logs("record", record);
+    // logs("record", record);
     if (!isShowMenuTree) {
       this.updateFormItems(type, record);
+      this.changeModalVisibel(true);
       this.setState({
         showModalType: type,
-        modalVisible: true,
         currentItem: record,
         isShowMenuTree
       });
     } else {
       this.queryStructorTreeHandle();
+      this.changeModalVisibel(true);
       this.setState({
-        modalVisible: true,
         currentItem: record,
         isShowMenuTree
       });
     }
   };
   hideModalVisibel = () => {
+    this.changeModalVisibel(false);
     this.setState({
-      modalVisible: false,
       currentItem: {}
+    });
+  };
+  changeModalVisibel = flag => {
+    this.props.dispatch({
+      type: "rolemanage/modalVisible",
+      payload: {
+        modalVisible: flag
+      }
     });
   };
   extraTableColumnRender = () => {
@@ -220,25 +228,15 @@ export default class Index extends PureComponent {
         const { showModalType } = this.state;
         const fields = formaterObjectValue(fieldsValue);
         if (showModalType === "create") {
-          this.props
-            .dispatch({
-              type: "rolemanage/add",
-              payload: this.queryParamsFormater(fields, 3)
-            })
-            .then(() => {
-              const { statusCode } = this.props.rolemanage;
-              if (statusCode === 200) this.hideModalVisibel();
-            });
+          this.props.dispatch({
+            type: "rolemanage/add",
+            payload: this.queryParamsFormater(fields, 3)
+          });
         } else if (showModalType === "update") {
-          this.props
-            .dispatch({
-              type: "rolemanage/update",
-              payload: this.queryParamsFormater(fields, 2)
-            })
-            .then(() => {
-              const { statusCode } = this.props.rolemanage;
-              if (statusCode === 200) this.hideModalVisibel();
-            });
+          this.props.dispatch({
+            type: "rolemanage/update",
+            payload: this.queryParamsFormater(fields, 2)
+          });
         }
       });
     } else {
@@ -294,15 +292,11 @@ export default class Index extends PureComponent {
     return params;
   };
   render() {
-    const {
-      modalVisible,
-      detailFormItems,
-      isShowMenuTree,
-      currentItem
-    } = this.state;
+    const { detailFormItems, isShowMenuTree, currentItem } = this.state;
     const {
       form: { getFieldDecorator },
       currentUser: { btnAuth = [] },
+      rolemanage: { modalVisible, confirmLoading },
       loading,
       dictionary
     } = this.props;
@@ -330,6 +324,7 @@ export default class Index extends PureComponent {
           // width={modalWidth}
           destroyOnClose={true}
           visible={modalVisible}
+          confirmLoading={confirmLoading}
           onCancel={() => this.hideModalVisibel()}
           onOk={() => {
             this.modalOkHandle();

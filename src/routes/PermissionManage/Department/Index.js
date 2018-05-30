@@ -38,7 +38,6 @@ const FormItem = Form.Item;
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    modalVisible: false,
     showModalType: "",
     formValues: {},
     currentItem: {},
@@ -64,20 +63,27 @@ export default class Index extends PureComponent {
 
   showModalVisibel = (type, record) => {
     this.updateFormItems(type, record);
+    this.changeModalVisibel(true);
     this.setState({
       showModalType: type,
-      modalVisible: true,
       currentItem: record
     });
   };
 
   hideModalVisibel = () => {
+    this.changeModalVisibel(false);
     this.setState({
-      modalVisible: false,
       currentItem: {}
     });
   };
-
+  changeModalVisibel = flag => {
+    this.props.dispatch({
+      type: "department/modalVisible",
+      payload: {
+        modalVisible: flag
+      }
+    });
+  };
   extraTableColumnRender = () => {
     const columns = [
       {
@@ -131,49 +137,33 @@ export default class Index extends PureComponent {
       const { showModalType } = this.state;
       const fields = formaterObjectValue(fieldsValue);
       if (showModalType === "create") {
-        this.props
-          .dispatch({
-            type: "department/add",
-            payload: fields
-          })
-          .then(() => {
-            const { statusCode } = this.props.department;
-            if (statusCode === 200) this.hideModalVisibel();
-          });
+        this.props.dispatch({
+          type: "department/add",
+          payload: fields
+        });
       } else if (showModalType === "update") {
         const { id } = this.state.currentItem;
-        this.props
-          .dispatch({
-            type: "department/update",
-            payload: { id, ...fields }
-          })
-          .then(() => {
-            const { statusCode } = this.props.department;
-
-            if (statusCode === 200) this.hideModalVisibel();
-          });
+        this.props.dispatch({
+          type: "department/update",
+          payload: { id, ...fields }
+        });
       }
     });
   };
 
   deleteTableRowHandle = id => {
-    this.props
-      .dispatch({
-        type: "department/remove",
-        payload: { id }
-      })
-      .then(() => {
-        const { statusCode } = this.props.department;
-        showStautsMessageHandle("department", "delete", statusCode);
-        if (statusCode === 200) this.hideModalVisibel();
-      });
+    this.props.dispatch({
+      type: "department/remove",
+      payload: { id }
+    });
   };
 
   render() {
-    const { modalVisible, detailFormItems } = this.state;
+    const { detailFormItems } = this.state;
     const {
       form: { getFieldDecorator },
       currentUser: { btnAuth = [] },
+      department: { modalVisible, confirmLoading },
       loading,
       dictionary
     } = this.props;
@@ -199,6 +189,7 @@ export default class Index extends PureComponent {
           // width={modalWidth}
           destroyOnClose={true}
           visible={modalVisible}
+          confirmLoading={confirmLoading}
           onCancel={() => this.hideModalVisibel()}
           onOk={() => {
             this.modalOkHandle();
