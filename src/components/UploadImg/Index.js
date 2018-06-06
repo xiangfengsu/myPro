@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Upload, Icon, Button, Modal, message } from "antd";
-import CustomCarouser from "../LightBox/Carouser";
+import React, { Component } from 'react';
+import { Upload, Icon, Button, Modal, message } from 'antd';
+import CustomCarouser from '../LightBox/Carouser';
 
 export default class UploadImg extends Component {
   constructor(props) {
@@ -10,13 +10,13 @@ export default class UploadImg extends Component {
       previewVisible: false,
       fileList: value.fileList || [],
       carouserImages: [],
-      carouserFirstIndex: 0
+      carouserFirstIndex: 0,
     };
     this.uploadTotalCounts = 0;
   }
 
   componentWillReceiveProps(nextProps) {
-    if ("value" in nextProps) {
+    if ('value' in nextProps) {
       const { value } = nextProps;
       if (value) {
         this.setState(value);
@@ -25,12 +25,12 @@ export default class UploadImg extends Component {
       }
     }
   }
-  onRemove = file => {
+  onRemove = (file) => {
     Modal.confirm({
-      title: "删除",
-      content: "确认要删除该文件吗？",
-      okText: "确认",
-      cancelText: "取消",
+      title: '删除',
+      content: '确认要删除该文件吗？',
+      okText: '确认',
+      cancelText: '取消',
       onOk: () => {
         this.setState(({ fileList }) => {
           const index = fileList.indexOf(file);
@@ -38,16 +38,16 @@ export default class UploadImg extends Component {
           newFileList.splice(index, 1);
           this.triggerChange({ fileList: newFileList });
           return {
-            fileList: newFileList
+            fileList: newFileList,
           };
         });
-        message.success("删除成功！");
-      }
+        message.success('删除成功！');
+      },
     });
 
     return false;
   };
-  triggerChange = changedValue => {
+  triggerChange = (changedValue) => {
     // logs('changedValue', changedValue);
     const { onChange } = this.props;
     if (onChange) {
@@ -88,20 +88,20 @@ export default class UploadImg extends Component {
     if (file.flag) return;
     const { listType } = this.props;
     const { status } = file;
-    if (status === "done") {
+    if (status === 'done') {
       message.success(`${file.name} 上传成功！.`);
-    } else if (status === "error") {
+    } else if (status === 'error') {
       message.error(`${file.name} 上传失败`);
     }
-    fileList = fileList.filter(f => {
+    fileList = fileList.filter((f) => {
       //eslint-disable-line
       if (f.status) {
-        return f.status !== "error";
+        return f.status !== 'error';
       }
       return true;
     });
-    if (listType === "text") {
-      fileList = fileList.map(file => {
+    if (listType === 'text') {
+      fileList = fileList.map((file) => {
         // eslint-disable-line
         if (file.response) {
           file.url = file.response.url; // eslint-disable-line
@@ -111,41 +111,41 @@ export default class UploadImg extends Component {
     }
 
     // logs(fileList);
-    if (!("value" in this.props)) {
+    if (!('value' in this.props)) {
       this.setState({ fileList });
     }
     this.triggerChange({ fileList });
   };
-  handlePreview = file => {
+  handlePreview = (file) => {
     // logs('currFile', file);
     if (!file.thumbUrl) return;
     if (!/^image\/(gif|png|jpe?g)$/.test(file.type)) {
-      message.error("该文件不是图片类型，无法预览");
+      message.error('该文件不是图片类型，无法预览');
       return;
     }
     const { fileList } = this.state;
     const carouserImages = fileList
-      .filter(file => {
+      .filter((file) => {
         // eslint-disable-line
         return (
-          file.status === "done" && /^image\/(gif|png|jpe?g)$/.test(file.type)
+          file.status === 'done' && /^image\/(gif|png|jpe?g)$/.test(file.type)
         );
       })
-      .map(file => {
+      .map((file) => {
         // eslint-disable-line
         return {
           src: file.url || file.thumbUrl,
-          uid: file.uid
+          uid: file.uid,
         };
       });
-    const carouserFirstIndex = carouserImages.findIndex(cfile => {
+    const carouserFirstIndex = carouserImages.findIndex((cfile) => {
       return cfile.uid === file.uid;
     });
     this.setState({
       // previewImage: file.url || file.thumbUrl,
       previewVisible: true,
       carouserImages,
-      carouserFirstIndex: carouserFirstIndex === -1 ? 0 : carouserFirstIndex
+      carouserFirstIndex: carouserFirstIndex === -1 ? 0 : carouserFirstIndex,
     });
   };
   handleCancel = () => this.setState({ previewVisible: false });
@@ -154,7 +154,7 @@ export default class UploadImg extends Component {
     const { listType } = this.props;
     let content = null;
     switch (listType) {
-      case "text":
+      case 'text':
         content = (
           <div>
             <Button>
@@ -163,16 +163,16 @@ export default class UploadImg extends Component {
           </div>
         );
         break;
-      case "picture-card":
+      case 'picture-card':
         content = (
           <div>
-            {" "}
+            {' '}
             <Icon type="plus" />
             <div className="ant-upload-text">上传</div>
           </div>
         );
         break;
-      case "picture":
+      case 'picture':
       default:
         content = (
           <div>
@@ -190,14 +190,14 @@ export default class UploadImg extends Component {
       previewVisible,
       fileList,
       carouserImages,
-      carouserFirstIndex
+      carouserFirstIndex,
     } = this.state;
     const {
       action,
       maxFileCounts,
       multiple,
       acceptType,
-      listType
+      listType,
     } = this.props;
     return (
       <div className="clearfix">
@@ -207,7 +207,7 @@ export default class UploadImg extends Component {
           multiple={multiple}
           listType={listType}
           fileList={fileList}
-          onPreview={listType === "text" ? null : this.handlePreview}
+          onPreview={listType === 'text' ? null : this.handlePreview}
           onChange={this.handleChange}
           beforeUpload={this.beforeUpload}
           onRemove={this.onRemove}

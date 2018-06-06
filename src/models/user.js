@@ -1,19 +1,19 @@
-import { query as queryUsers, queryCurrent } from "../services/user";
+import { query as queryUsers, queryCurrent } from '../services/user';
 
 export default {
-  namespace: "user",
+  namespace: 'user',
 
   state: {
     list: [],
-    currentUser: {}
+    currentUser: {},
   },
 
   effects: {
     *fetch(_, { call, put }) {
       const response = yield call(queryUsers);
       yield put({
-        type: "save",
-        payload: response
+        type: 'save',
+        payload: response,
       });
     },
     *fetchCurrent(_, { call, put }) {
@@ -21,18 +21,18 @@ export default {
       // logs('response111',response);
       const { body = {} } = response || {};
       yield put({
-        type: "saveCurrentUser",
-        payload: body
+        type: 'saveCurrentUser',
+        payload: body,
         // payload: response,
       });
-    }
+    },
   },
 
   reducers: {
     save(state, action) {
       return {
         ...state,
-        list: action.payload
+        list: action.payload,
       };
     },
     saveCurrentUser(state, action) {
@@ -42,8 +42,8 @@ export default {
         currentUser: {
           menuData: menu,
           btnAuth: btn,
-          ...user
-        }
+          ...user,
+        },
       };
     },
     changeNotifyCount(state, action) {
@@ -51,9 +51,9 @@ export default {
         ...state,
         currentUser: {
           ...state.currentUser,
-          notifyCount: action.payload
-        }
+          notifyCount: action.payload,
+        },
       };
-    }
-  }
+    },
+  },
 };

@@ -1,202 +1,202 @@
-import React from "react";
-import { Tag } from "antd";
+import React from 'react';
+import { Tag } from 'antd';
 
 export const PageConfig = {
-  name: "用户管理",
-  path: "usermanage",
+  name: '用户管理',
+  path: 'usermanage',
   tableColumns: [
     {
-      title: "ID",
-      dataIndex: "id"
+      title: 'ID',
+      dataIndex: 'id',
     },
     {
-      title: "昵称",
-      dataIndex: "nickname"
+      title: '昵称',
+      dataIndex: 'nickname',
     },
     {
-      title: "用户名",
-      dataIndex: "username"
+      title: '用户名',
+      dataIndex: 'username',
     },
     {
-      title: "角色",
-      dataIndex: "role",
+      title: '角色',
+      dataIndex: 'role',
       render: (text, record) => {
-        return record.sysRoleList.map(v => {
+        return record.sysRoleList.map((v) => {
           return (
             <Tag color="cyan" key={v.id}>
               {v.rolename}
             </Tag>
           );
         });
-      }
+      },
     },
     {
-      title: "所属部门",
-      dataIndex: "sysDept.name"
+      title: '所属部门',
+      dataIndex: 'sysDept.name',
     },
     {
-      title: "邮箱",
-      dataIndex: "email"
+      title: '邮箱',
+      dataIndex: 'email',
     },
     {
-      title: "手机号",
-      dataIndex: "mobile"
+      title: '手机号',
+      dataIndex: 'mobile',
     },
     {
-      title: "状态",
-      dataIndex: "status",
-      render: text => {
+      title: '状态',
+      dataIndex: 'status',
+      render: (text) => {
         if (text == 1) {
           // eslint-disable-line
           return <Tag color="#52c41a">通过</Tag>;
         } else {
           return <Tag color="#f5222d">拒绝</Tag>;
         }
-      }
+      },
     },
     {
-      title: "修改时间",
-      dataIndex: "updatetime"
-    }
+      title: '修改时间',
+      dataIndex: 'updatetime',
+    },
   ],
   searchForms: [
     {
-      formType: "input",
+      formType: 'input',
       disabled: false,
       isRequired: false,
-      key: "username",
-      label: "用户名"
+      key: 'username',
+      label: '用户名',
     },
     {
-      formType: "inputPhone",
+      formType: 'inputPhone',
       disabled: false,
       isRequired: false,
-      key: "mobile",
-      label: "手机号"
+      key: 'mobile',
+      label: '手机号',
     },
     {
-      formType: "select",
+      formType: 'select',
       disabled: false,
       isRequired: false,
-      key: "status",
-      label: "状态",
-      placeholder: "状态",
-      dataType: "static",
+      key: 'status',
+      label: '状态',
+      placeholder: '状态',
+      dataType: 'static',
       selectOptions: [
         {
           key: 1,
-          value: "通过"
+          value: '通过',
         },
         {
           key: 2,
-          value: "拒绝"
-        }
-      ]
-    }
+          value: '拒绝',
+        },
+      ],
+    },
   ],
   detailFormItems: [
     {
-      formType: "input",
+      formType: 'input',
       disabled: false,
       isRequired: false,
-      key: "id",
-      label: "id",
-      colSpan: 0
+      key: 'id',
+      label: 'id',
+      colSpan: 0,
     },
     {
-      formType: "input",
+      formType: 'input',
       disabled: false,
       isRequired: true,
-      key: "nickname",
-      label: "昵称",
-      colSpan: 24
+      key: 'nickname',
+      label: '昵称',
+      colSpan: 24,
     },
     {
-      formType: "input",
+      formType: 'input',
       disabled: false,
       isRequired: true,
-      key: "username",
-      label: "用户名",
-      colSpan: 24
+      key: 'username',
+      label: '用户名',
+      colSpan: 24,
     },
     {
-      formType: "selectDynamic",
+      formType: 'selectDynamic',
       disabled: false,
       isRequired: true,
       multiple: true,
-      key: "roleids",
-      label: "角色",
-      placeholder: "请选择角色",
-      dictionaryKey: "roleDictionary",
-      fetchUrl: "/sys/role/dic",
+      key: 'roleids',
+      label: '角色',
+      placeholder: '请选择角色',
+      dictionaryKey: 'roleDictionary',
+      fetchUrl: '/sys/role/dic',
       hasFeedback: true,
-      colSpan: 24
+      colSpan: 24,
     },
     {
-      formType: "selectDynamicTree",
+      formType: 'selectDynamicTree',
       disabled: false,
       isRequired: true,
-      key: "deptid", //  departmentid
-      label: "所属部门",
-      dictionaryKey: "departmentStructure",
-      fetchUrl: "/sys/dept/dic",
+      key: 'deptid', //  departmentid
+      label: '所属部门',
+      dictionaryKey: 'departmentStructure',
+      fetchUrl: '/sys/dept/dic',
       hasFeedback: true,
-      colSpan: 24
+      colSpan: 24,
     },
     {
-      formType: "inputPhone",
+      formType: 'inputPhone',
       disabled: false,
       isRequired: true,
-      key: "mobile",
-      label: "手机号",
-      colSpan: 24
+      key: 'mobile',
+      label: '手机号',
+      colSpan: 24,
     },
     {
-      formType: "inputMail",
+      formType: 'inputMail',
       isRequired: true,
-      key: "email",
-      label: "邮箱",
-      colSpan: 24
+      key: 'email',
+      label: '邮箱',
+      colSpan: 24,
     },
     {
-      formType: "select",
+      formType: 'select',
       disabled: false,
       isRequired: true,
       initialValue: 1,
-      key: "status",
-      label: "状态",
-      placeholder: "状态",
-      dataType: "static",
+      key: 'status',
+      label: '状态',
+      placeholder: '状态',
+      dataType: 'static',
       selectOptions: [
         {
           key: 1,
-          value: "通过"
+          value: '通过',
         },
         {
           key: 2,
-          value: "拒绝"
-        }
+          value: '拒绝',
+        },
       ],
-      colSpan: 24
+      colSpan: 24,
     },
     {
-      formType: "input",
+      formType: 'input',
       disabled: false,
       isRequired: false,
-      key: "password",
-      label: "密码",
-      initialValue: "123",
-      colSpan: 0
+      key: 'password',
+      label: '密码',
+      initialValue: '123',
+      colSpan: 0,
     },
     {
-      formType: "textArea",
+      formType: 'textArea',
       disabled: false,
       isRequired: false,
-      key: "remark",
-      label: "备注",
-      placeholder: "备注",
+      key: 'remark',
+      label: '备注',
+      placeholder: '备注',
       autosize: { minRows: 5, maxRows: 10 },
-      colSpan: 24
-    }
-  ]
+      colSpan: 24,
+    },
+  ],
 };

@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "dva";
-import { Alert } from "antd";
-import Login from "components/Login";
-import styles from "./Login.less";
+import React, { Component } from 'react';
+import { connect } from 'dva';
+import { Alert } from 'antd';
+import Login from 'components/Login';
+import styles from './Login.less';
 
 const { UserName, Password, ImgCaptcha, Submit } = Login;
 
 @connect(({ login, loading }) => ({
   login,
-  submitting: loading.effects["login/login"]
+  submitting: loading.effects['login/login'],
 }))
 export default class LoginPage extends Component {
   state = {
-    type: "account"
+    type: 'account',
   };
 
-  onTabChange = type => {
+  onTabChange = (type) => {
     this.setState({ type });
   };
 
@@ -23,16 +23,16 @@ export default class LoginPage extends Component {
     const { type } = this.state;
     if (!err) {
       this.props.dispatch({
-        type: "login/login",
+        type: 'login/login',
         payload: {
           ...values,
-          type
-        }
+          type,
+        },
       });
     }
   };
 
-  renderMessage = content => {
+  renderMessage = (content) => {
     return (
       <Alert
         style={{ marginBottom: 24 }}
@@ -53,8 +53,8 @@ export default class LoginPage extends Component {
           onTabChange={this.onTabChange}
           onSubmit={this.handleSubmit}
         >
-          {login.status === "error" &&
-            login.type === "account" &&
+          {login.status === 'error' &&
+            login.type === 'account' &&
             !login.submitting &&
             this.renderMessage(login.errorMessage)}
           <UserName name="username" placeholder="admin/user" />

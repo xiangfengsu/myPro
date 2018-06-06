@@ -1,218 +1,218 @@
 export const FormItems = [
   {
-    formType: "input",
+    formType: 'input',
     disabled: false,
     isRequired: false,
-    key: "channelname",
-    label: "input",
+    key: 'channelname',
+    label: 'input',
     colSpan: 8,
-    placeholder: "input",
-    hasFeedback: true
+    placeholder: 'input',
+    hasFeedback: true,
   },
   {
-    formType: "inputNumber",
+    formType: 'inputNumber',
     disabled: false,
     isRequired: false,
-    key: "inputNumber",
-    label: "inputNumber",
-    placeholder: "inputNumber",
+    key: 'inputNumber',
+    label: 'inputNumber',
+    placeholder: 'inputNumber',
     colSpan: 8,
-    hasFeedback: true
+    hasFeedback: true,
   },
   {
-    formType: "inputMoney",
+    formType: 'inputMoney',
     disabled: false,
     isRequired: false,
-    key: "inputMoney",
-    label: "inputMoney",
-    placeholder: "inputMoney",
+    key: 'inputMoney',
+    label: 'inputMoney',
+    placeholder: 'inputMoney',
     colSpan: 8,
-    hasFeedback: true
+    hasFeedback: true,
   },
   {
-    formType: "inputPhone",
+    formType: 'inputPhone',
     disabled: false,
     isRequired: false,
-    key: "inputPhone",
-    label: "inputPhone",
-    placeholder: "inputPhone",
+    key: 'inputPhone',
+    label: 'inputPhone',
+    placeholder: 'inputPhone',
     colSpan: 8,
-    hasFeedback: true
+    hasFeedback: true,
   },
   {
-    formType: "select",
+    formType: 'select',
     disabled: false,
     isRequired: false,
-    key: "select",
-    label: "select",
-    placeholder: "select",
+    key: 'select',
+    label: 'select',
+    placeholder: 'select',
     selectOptions: [
       {
-        key: "select1",
-        value: "select1"
+        key: 'select1',
+        value: 'select1',
       },
       {
-        key: "select2",
-        value: "select2"
-      }
+        key: 'select2',
+        value: 'select2',
+      },
     ],
-    popupContainer: "scorllArea",
-    hasFeedback: true
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
   },
   {
-    formType: "select",
+    formType: 'select',
     disabled: false,
     isRequired: false,
     multiple: true,
-    key: "selectMultiple",
-    label: "selectMultiple",
-    placeholder: "selectMultiple",
+    key: 'selectMultiple',
+    label: 'selectMultiple',
+    placeholder: 'selectMultiple',
     selectOptions: [
       {
-        key: "select1",
-        value: "select1"
+        key: 'select1',
+        value: 'select1',
       },
       {
-        key: "select2",
-        value: "select2"
-      }
+        key: 'select2',
+        value: 'select2',
+      },
     ],
-    popupContainer: "scorllArea",
-    hasFeedback: true
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
   },
   {
-    formType: "selectDynamic",
+    formType: 'selectDynamic',
     disabled: false,
     isRequired: false,
     multiple: true,
-    key: "selectMultipleDynamic",
-    label: "selectMultipleDynamic",
-    placeholder: "selectMultipleDynamic",
-    dictionaryKey: "selectMultipleDynamic",
-    fetchUrl: "/api/selectLists2",
+    key: 'selectMultipleDynamic',
+    label: 'selectMultipleDynamic',
+    placeholder: 'selectMultipleDynamic',
+    dictionaryKey: 'selectMultipleDynamic',
+    fetchUrl: '/api/selectLists2',
     // initialValue: '其他',
-    popupContainer: "scorllArea",
-    hasFeedback: true
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
   },
   {
-    formType: "selectDynamic",
+    formType: 'selectDynamic',
     disabled: false,
     isRequired: false,
-    key: "selectDynamic",
-    label: "selectDynamic",
-    placeholder: "selectDynamic",
-    dictionaryKey: "selectDynamic1",
-    fetchUrl: "/api/selectLists2",
+    key: 'selectDynamic',
+    label: 'selectDynamic',
+    placeholder: 'selectDynamic',
+    dictionaryKey: 'selectDynamic1',
+    fetchUrl: '/api/selectLists2',
     // initialValue: '其他',
-    popupContainer: "scorllArea",
-    hasFeedback: true
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
   },
   {
-    formType: "selectGroup",
-    key: "selectGroup",
+    formType: 'selectGroup',
+    key: 'selectGroup',
 
-    label: "selectGroup",
-    placeholder: "selectGroup",
+    label: 'selectGroup',
+    placeholder: 'selectGroup',
     selectOptions: [
       {
-        label: "selectGroup1",
-        key: "selectGroup1",
+        label: 'selectGroup1',
+        key: 'selectGroup1',
         childrenOptions: [
           {
-            key: "selectGroup1_1",
-            value: "selectGroup1_1"
+            key: 'selectGroup1_1',
+            value: 'selectGroup1_1',
           },
           {
-            key: "selectGroup1_2",
-            value: "selectGroup1_2"
-          }
-        ]
+            key: 'selectGroup1_2',
+            value: 'selectGroup1_2',
+          },
+        ],
       },
       {
-        label: "selectGroup2",
-        key: "selectGroup2",
+        label: 'selectGroup2',
+        key: 'selectGroup2',
         childrenOptions: [
           {
-            key: "selectGroup2_1",
-            value: "selectGroup2_1"
+            key: 'selectGroup2_1',
+            value: 'selectGroup2_1',
           },
           {
-            key: "selectGroup2_2 ",
-            value: "selectGroup2_2"
-          }
-        ]
-      }
+            key: 'selectGroup2_2 ',
+            value: 'selectGroup2_2',
+          },
+        ],
+      },
     ],
-    popupContainer: "scorllArea",
-    hasFeedback: true
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
   },
   {
-    formType: "selectDynamicGroup",
+    formType: 'selectDynamicGroup',
     multiple: true,
     disabled: false,
     isRequired: false,
-    key: "selectGroupDynamic",
-    label: "selectGroupDynamic",
-    placeholder: "selectDynamic",
-    dictionaryKey: "selectGroupDynamic",
-    fetchUrl: "/api/selectGroupLists",
+    key: 'selectGroupDynamic',
+    label: 'selectGroupDynamic',
+    placeholder: 'selectDynamic',
+    dictionaryKey: 'selectGroupDynamic',
+    fetchUrl: '/api/selectGroupLists',
     // initialValue: '其他',
-    popupContainer: "scorllArea",
-    hasFeedback: true
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
   },
   {
-    formType: "datePicker",
+    formType: 'datePicker',
     showTime: false,
 
     disabled: false,
     isRequired: false,
-    key: "datePicker",
-    label: "datePicker",
-    placeholder: "datePicker",
-    popupContainer: "scorllArea"
+    key: 'datePicker',
+    label: 'datePicker',
+    placeholder: 'datePicker',
+    popupContainer: 'scorllArea',
   },
   {
-    formType: "datePicker",
+    formType: 'datePicker',
     showTime: true,
     disabled: false,
     isRequired: false,
-    key: "datePickerShowTime",
-    label: "datePickerShowTime",
-    placeholder: "datePicker",
-    popupContainer: "scorllArea"
+    key: 'datePickerShowTime',
+    label: 'datePickerShowTime',
+    placeholder: 'datePicker',
+    popupContainer: 'scorllArea',
   },
   {
-    formType: "rangePicker",
+    formType: 'rangePicker',
     disabled: false,
     isRequired: false,
-    key: "rangePicker",
-    label: "rangePicker",
-    popupContainer: "scorllArea"
+    key: 'rangePicker',
+    label: 'rangePicker',
+    popupContainer: 'scorllArea',
   },
   {
-    formType: "rangePicker",
+    formType: 'rangePicker',
     showTime: true,
     disabled: false,
     isRequired: false,
-    key: "rangePickerShowTime",
-    label: "rangePickerShowTime",
-    popupContainer: "scorllArea"
+    key: 'rangePickerShowTime',
+    label: 'rangePickerShowTime',
+    popupContainer: 'scorllArea',
   },
   {
-    formType: "monthPicker",
+    formType: 'monthPicker',
     disabled: false,
     isRequired: false,
-    key: "monthPicker",
-    label: "monthPicker",
-    popupContainer: "scorllArea"
+    key: 'monthPicker',
+    label: 'monthPicker',
+    popupContainer: 'scorllArea',
   },
   {
-    formType: "timePicker",
+    formType: 'timePicker',
     disabled: false,
     isRequired: false,
-    key: "timePicker",
-    label: "timePicker",
-    popupContainer: "scorllArea"
+    key: 'timePicker',
+    label: 'timePicker',
+    popupContainer: 'scorllArea',
   },
   // {
   //   formType: 'checkboxGroup',
@@ -253,58 +253,58 @@ export const FormItems = [
   //   // popupContainer: 'scorllArea'
   // },
   {
-    formType: "upload",
+    formType: 'upload',
     disabled: false,
     isRequired: false,
-    key: "upload1",
-    label: "upload-listType-text",
-    placeholder: "upload1",
-    action: "http://127.0.0.1:7001/form",
+    key: 'upload1',
+    label: 'upload-listType-text',
+    placeholder: 'upload1',
+    action: 'http://127.0.0.1:7001/form',
     multiple: true,
-    acceptType: "*", // .jpg,.png,.pdf,.mp4,.gif,.word
-    listType: "text", // 1:text  2:picture 3:picture-card
+    acceptType: '*', // .jpg,.png,.pdf,.mp4,.gif,.word
+    listType: 'text', // 1:text  2:picture 3:picture-card
     maxFileSize: 10, // 单位是M
     maxFileCounts: 3,
-    colSpan: 24
+    colSpan: 24,
   },
   {
-    formType: "upload",
+    formType: 'upload',
     disabled: false,
     isRequired: false,
-    key: "upload3",
-    label: "upload-listType-picture",
-    placeholder: "upload-listType-picture",
-    action: "http://127.0.0.1:7001/form",
+    key: 'upload3',
+    label: 'upload-listType-picture',
+    placeholder: 'upload-listType-picture',
+    action: 'http://127.0.0.1:7001/form',
     multiple: true,
-    acceptType: "*", // .jpg,.png,.pdf,.mp4,.gif,.word
-    listType: "picture", // 1:text  2:picture 3:picture-card
+    acceptType: '*', // .jpg,.png,.pdf,.mp4,.gif,.word
+    listType: 'picture', // 1:text  2:picture 3:picture-card
     maxFileSize: 10, // 单位是M
     maxFileCounts: 3,
-    colSpan: 24
+    colSpan: 24,
   },
   {
-    formType: "upload",
+    formType: 'upload',
     disabled: false,
     isRequired: false,
-    key: "upload2",
-    label: "upload-listType-picture-card",
-    placeholder: "upload-listType-picture-card",
-    action: "http://127.0.0.1:7001/form",
+    key: 'upload2',
+    label: 'upload-listType-picture-card',
+    placeholder: 'upload-listType-picture-card',
+    action: 'http://127.0.0.1:7001/form',
     multiple: true,
-    acceptType: "*", // .jpg,.png,.pdf,.mp4,.gif,.word
-    listType: "picture-card", // 1:text  2:picture 3:picture-card
+    acceptType: '*', // .jpg,.png,.pdf,.mp4,.gif,.word
+    listType: 'picture-card', // 1:text  2:picture 3:picture-card
     maxFileSize: 10, // 单位是M
     maxFileCounts: 5,
-    colSpan: 24
+    colSpan: 24,
   },
   {
-    formType: "textArea",
+    formType: 'textArea',
     // disabled: false,
     // isRequired: false,
-    key: "textArea",
-    label: "textArea",
-    colSpan: 24
+    key: 'textArea',
+    label: 'textArea',
+    colSpan: 24,
     // autosize: { minRows: 3, maxRows: 7 }
     // placeholder: 'inputPhone'
-  }
+  },
 ];

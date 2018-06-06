@@ -1,38 +1,38 @@
-import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Form, Card, Modal, Button, Popconfirm } from "antd";
-import cloneDeep from "lodash/cloneDeep";
-import TableList from "components/GeneralTableList/Index";
-import SearchForms from "components/GeneralSearchForm/Index";
-import MenuTree from "components/TreeSelectModal/Index";
-import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
+import { Form, Card, Modal, Button, Popconfirm } from 'antd';
+import cloneDeep from 'lodash/cloneDeep';
+import TableList from 'components/GeneralTableList/Index';
+import SearchForms from 'components/GeneralSearchForm/Index';
+import MenuTree from 'components/TreeSelectModal/Index';
+import { formaterObjectValue, formItemAddInitValue } from 'utils/utils';
 
-import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
-import DetailFormInfo from "./ModalDetailForm";
-import { PageConfig } from "./pageConfig.js";
-import styles from "./Index.less";
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import DetailFormInfo from './ModalDetailForm';
+import { PageConfig } from './pageConfig.js';
+import styles from './Index.less';
 
 @connect(({ user, loading, usermanage, dictionary }) => ({
   currentUser: user.currentUser,
   loading: loading.models.usermanage,
   usermanage,
-  dictionary
+  dictionary,
 }))
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    showModalType: "",
+    showModalType: '',
     formValues: {},
     queryValues: {},
     currentItem: {},
     isShowMenuTree: false,
-    detailFormItems: PageConfig.detailFormItems
+    detailFormItems: PageConfig.detailFormItems,
   };
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: "usermanage/fetch",
-      payload: this.queryParamsFormater()
+      type: 'usermanage/fetch',
+      payload: this.queryParamsFormater(),
     });
   }
   updateFormItems = (record = {}) => {
@@ -40,12 +40,12 @@ export default class Index extends PureComponent {
     const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
     this.setState({ detailFormItems: newDetailFormItems });
   };
-  changeModalVisibel = flag => {
+  changeModalVisibel = (flag) => {
     this.props.dispatch({
-      type: "usermanage/modalVisible",
+      type: 'usermanage/modalVisible',
       payload: {
-        modalVisible: flag
-      }
+        modalVisible: flag,
+      },
     });
   };
   showModalVisibel = (type, record, isShowMenuTree = false) => {
@@ -55,44 +55,44 @@ export default class Index extends PureComponent {
       this.setState({
         showModalType: type,
         currentItem: record,
-        isShowMenuTree
+        isShowMenuTree,
       });
     } else {
       this.queryStructorTreeHandle();
       this.changeModalVisibel(true);
       this.setState({
         currentItem: record,
-        isShowMenuTree
+        isShowMenuTree,
       });
     }
   };
   hideModalVisibel = () => {
     this.changeModalVisibel(false);
     this.setState({
-      currentItem: {}
+      currentItem: {},
     });
   };
   extraTableColumnRender = () => {
     const columns = [
       {
-        title: "菜单权限",
+        title: '菜单权限',
         render: (text, record) => {
           return (
             <div>
-              <a onClick={() => this.showModalVisibel("create", record, true)}>
+              <a onClick={() => this.showModalVisibel('create', record, true)}>
                 查看
               </a>
             </div>
           );
-        }
+        },
       },
       {
-        title: "操作",
+        title: '操作',
         render: (text, record) => (
           <div>
             <a
               onClick={() => {
-                this.showModalVisibel("update", record);
+                this.showModalVisibel('update', record);
               }}
             >
               编辑
@@ -107,19 +107,19 @@ export default class Index extends PureComponent {
               <a>删除</a>
             </Popconfirm>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return columns;
   };
   queryStructorTreeHandle = () => {
     const { dispatch } = this.props;
     dispatch({
-      type: "dictionary/query",
+      type: 'dictionary/query',
       payload: {
-        fetchUrl: "/sys/menu/dic",
-        dictionaryKey: "menuStructure"
-      }
+        fetchUrl: '/sys/menu/dic',
+        dictionaryKey: 'menuStructure',
+      },
     });
   };
   modalOkHandle = () => {
@@ -129,15 +129,15 @@ export default class Index extends PureComponent {
         if (err) return;
         const { showModalType } = this.state;
         const fields = formaterObjectValue(fieldsValue);
-        if (showModalType === "create") {
+        if (showModalType === 'create') {
           this.props.dispatch({
-            type: "usermanage/add",
-            payload: this.queryParamsFormater(fields, 3)
+            type: 'usermanage/add',
+            payload: this.queryParamsFormater(fields, 3),
           });
-        } else if (showModalType === "update") {
+        } else if (showModalType === 'update') {
           this.props.dispatch({
-            type: "usermanage/update",
-            payload: this.queryParamsFormater(fields, 2)
+            type: 'usermanage/update',
+            payload: this.queryParamsFormater(fields, 2),
           });
         }
       });
@@ -145,10 +145,10 @@ export default class Index extends PureComponent {
       this.hideModalVisibel();
     }
   };
-  deleteTableRowHandle = id => {
+  deleteTableRowHandle = (id) => {
     this.props.dispatch({
-      type: "usermanage/remove",
-      payload: this.queryParamsFormater({ id }, 2)
+      type: 'usermanage/remove',
+      payload: this.queryParamsFormater({ id }, 2),
     });
   };
   queryParamsFormater = (fields, type) => {
@@ -160,31 +160,31 @@ export default class Index extends PureComponent {
       query: {},
       pagination: {
         current: 1,
-        pageSize: 10
-      }
+        pageSize: 10,
+      },
     };
     switch (type) {
       case 1:
         Object.assign(params, {
-          query: { ...fields }
+          query: { ...fields },
         });
         break;
       case 2:
         Object.assign(params, {
           query: { ...this.state.queryValues },
           form: { ...fields },
-          pagination
+          pagination,
         });
         break;
       case 3:
         Object.assign(params, {
-          form: { ...fields }
+          form: { ...fields },
         });
         break;
       case 4:
         Object.assign(params, {
           query: { ...this.state.queryValues },
-          pagination: { current: fields.page, pageSize: fields.pageSize }
+          pagination: { current: fields.page, pageSize: fields.pageSize },
         });
         break;
       default:
@@ -198,29 +198,29 @@ export default class Index extends PureComponent {
     const props = {
       form,
       formInfo: {
-        layout: "inline",
-        formItems: searchForms
+        layout: 'inline',
+        formItems: searchForms,
       },
-      handleSearchSubmit: formValues => {
+      handleSearchSubmit: (formValues) => {
         const params = Object.assign({}, formValues, {});
         const payload = formaterObjectValue(params);
         this.setState({
-          queryValues: payload
+          queryValues: payload,
         });
         dispatch({
-          type: "usermanage/fetch",
-          payload: this.queryParamsFormater(payload, 1)
+          type: 'usermanage/fetch',
+          payload: this.queryParamsFormater(payload, 1),
         });
       },
       handleFormReset: () => {
         this.setState({
-          queryValues: {}
+          queryValues: {},
         });
         dispatch({
-          type: "usermanage/fetch",
-          payload: this.queryParamsFormater()
+          type: 'usermanage/fetch',
+          payload: this.queryParamsFormater(),
         });
-      }
+      },
     };
     return <SearchForms {...props} />;
   };
@@ -241,13 +241,13 @@ export default class Index extends PureComponent {
         const payload = {
           page: current,
           pageSize: 10,
-          ...formValues
+          ...formValues,
         };
         dispatch({
-          type: "usermanage/fetch",
-          payload: this.queryParamsFormater(payload, 4)
+          type: 'usermanage/fetch',
+          payload: this.queryParamsFormater(payload, 4),
         });
-      }
+      },
     };
     return <TableList {...tableProps} />;
   };
@@ -255,7 +255,7 @@ export default class Index extends PureComponent {
     const { detailFormItems, isShowMenuTree, currentItem } = this.state;
     const {
       usermanage: { modalVisible, confirmLoading },
-      dictionary
+      dictionary,
     } = this.props;
     return (
       <PageHeaderLayout>
@@ -267,7 +267,7 @@ export default class Index extends PureComponent {
                 <Button
                   icon="plus"
                   type="primary"
-                  onClick={() => this.showModalVisibel("create", {})}
+                  onClick={() => this.showModalVisibel('create', {})}
                 >
                   新建
                 </Button>
@@ -287,7 +287,7 @@ export default class Index extends PureComponent {
         >
           {!isShowMenuTree ? (
             <DetailFormInfo
-              ref={ref => {
+              ref={(ref) => {
                 this.modalForm = ref;
               }}
               formItems={detailFormItems}

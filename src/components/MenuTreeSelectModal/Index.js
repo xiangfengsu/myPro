@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
-import { Tree, Card, Tag } from "antd";
+import React, { PureComponent } from 'react';
+import { Tree, Card, Tag } from 'antd';
 
 const { TreeNode } = Tree;
 
 export default class Index extends PureComponent {
   state = {
-    selectedNode: []
+    selectedNode: [],
   };
   componentDidMount() {
     const { parentId, parentName } = this.props;
@@ -13,12 +13,12 @@ export default class Index extends PureComponent {
     if (parentId !== undefined && parentName !== undefined) {
       selectedNode.push({
         key: `${parentId}`,
-        title: parentName
+        title: parentName,
       });
     }
     /* eslint-disable-next-line */
     this.setState({
-      selectedNode
+      selectedNode,
     });
   }
   onSelect = (selectedKeys, info) => {
@@ -29,11 +29,11 @@ export default class Index extends PureComponent {
       // logs(typeof selectedNodes[0].props.dataRef.value);
       selectedNode.push({
         key: selectedKeys[0],
-        title: selectedNodes[0].props.dataRef.value
+        title: selectedNodes[0].props.dataRef.value,
       });
     }
     this.setState({
-      selectedNode
+      selectedNode,
     });
   };
 
@@ -44,7 +44,7 @@ export default class Index extends PureComponent {
     const { selectedNode } = this.state;
     return selectedNode;
   };
-  renderNodeDisabledSelectable = menuType => {
+  renderNodeDisabledSelectable = (menuType) => {
     const { selectMenuTypeValue, currentItem } = this.props;
     const selectType = currentItem.menutype
       ? currentItem.menutype
@@ -57,12 +57,12 @@ export default class Index extends PureComponent {
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,
-            selectable: true
+            selectable: true,
           });
         } else {
           Object.assign(obj, {
             disabled: true,
-            selectable: false
+            selectable: false,
           });
         }
         break;
@@ -71,27 +71,27 @@ export default class Index extends PureComponent {
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,
-            selectable: false
+            selectable: false,
           });
         }
         if (menuType === 2) {
           Object.assign(obj, {
             disabled: false,
-            selectable: true
+            selectable: true,
           });
         }
         if (menuType === 3) {
           Object.assign(obj, {
             disabled: true,
-            selectable: false
+            selectable: false,
           });
         }
         break;
     }
     return obj;
   };
-  renderTreeNodes = data => {
-    return data.map(item => {
+  renderTreeNodes = (data) => {
+    return data.map((item) => {
       const { disabled, selectable } = this.renderNodeDisabledSelectable(
         item.menuType
       );
@@ -162,7 +162,7 @@ export default class Index extends PureComponent {
             {this.renderTreeNodes(treeNodes)}
           </Tree>
         ) : (
-          " "
+          ' '
         )}
       </Card>
     );

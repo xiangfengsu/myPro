@@ -1,42 +1,42 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Modal, Carousel, Icon } from "antd";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Modal, Carousel, Icon } from 'antd';
 
-const SamplePrevArrow = props => {
+const SamplePrevArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
       style={{
         ...style,
-        display: "block",
+        display: 'block',
         fontSize: 50,
         width: 50,
         height: 50,
-        left: -50
+        left: -50,
       }}
       onClick={onClick}
     >
-      <Icon type="left" style={{ color: "rgba(0, 0, 0, 0.45)" }} />
+      <Icon type="left" style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
     </div>
   );
 };
-const SampleNextArrow = props => {
+const SampleNextArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
       style={{
         ...style,
-        display: "block",
+        display: 'block',
         fontSize: 50,
         width: 50,
         height: 50,
-        right: -50
+        right: -50,
       }}
       onClick={onClick}
     >
-      <Icon type="right" style={{ color: "rgba(0, 0, 0, 0.45)" }} />
+      <Icon type="right" style={{ color: 'rgba(0, 0, 0, 0.45)' }} />
     </div>
   );
 };
@@ -46,55 +46,55 @@ export default class CustomCarouser extends PureComponent {
   static propTypes = {
     images: PropTypes.arrayOf(
       PropTypes.shape({
-        src: PropTypes.string.isRequired
+        src: PropTypes.string.isRequired,
       })
     ).isRequired,
     visible: PropTypes.bool,
     currentIndex: PropTypes.number,
-    hideCarouser: PropTypes.func
+    hideCarouser: PropTypes.func,
   };
   static defaultProps = {
     images: [
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1453550486481-aa4175b013ea?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1453550486481-aa4175b013ea?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
         src:
-          "https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159"
-      }
+          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
+      },
     ],
     visible: false,
     currentIndex: 0,
-    hideCarouser: () => {}
+    hideCarouser: () => {},
   };
 
   render() {
@@ -106,7 +106,7 @@ export default class CustomCarouser extends PureComponent {
       initialSlide: currentIndex,
       nextArrow: <SampleNextArrow />,
       prevArrow: <SamplePrevArrow />,
-      infinite: false
+      infinite: false,
     };
     return (
       <Modal
@@ -117,13 +117,13 @@ export default class CustomCarouser extends PureComponent {
         destroyOnClose
         onCancel={() => hideCarouser()}
       >
-        <div style={{ padding: "16px 24px 16px" }}>
+        <div style={{ padding: '16px 24px 16px' }}>
           <Carousel {...carouselProps}>
             {images.map((img, i) => (
               /* eslint-disable-next-line */
               <div key={i}>
                 <div className="image-modal-container">
-                  <img src={img.src} style={{ width: "100%" }} alt="" />
+                  <img src={img.src} style={{ width: '100%' }} alt="" />
                 </div>
               </div>
             ))}

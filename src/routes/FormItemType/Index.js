@@ -1,13 +1,13 @@
-import React, { PureComponent } from "react";
-import { Form, Row, Col, Card, Button, Popover, Modal, message } from "antd";
-import SyntaxHighlighter from "react-syntax-highlighter/prism";
-import PageHeaderLayout from "src/layouts/PageHeaderLayout";
-import { atomDark } from "react-syntax-highlighter/styles/prism";
-import { CopyToClipboard } from "react-copy-to-clipboard";
+import React, { PureComponent } from 'react';
+import { Form, Row, Col, Card, Button, Popover, Modal, message } from 'antd';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism';
+import PageHeaderLayout from 'src/layouts/PageHeaderLayout';
+import { atomDark } from 'react-syntax-highlighter/styles/prism';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { renderFormItem } from "../../common/formItem";
+import { renderFormItem } from '../../common/formItem';
 
-import { FormItems } from "./pageConfig";
+import { FormItems } from './pageConfig';
 
 const FormItem = Form.Item;
 
@@ -15,20 +15,20 @@ const FormItem = Form.Item;
 export default class Index extends PureComponent {
   state = {
     modalVisible: false,
-    currentItem: {}
+    currentItem: {},
   };
-  showModalVisibel = item => {
+  showModalVisibel = (item) => {
     this.setState({
       modalVisible: true,
-      currentItem: item
+      currentItem: item,
     });
   };
   hideModalVisibel = () => {
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   };
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -36,24 +36,24 @@ export default class Index extends PureComponent {
       }
     });
   };
-  handleReset = e => {
+  handleReset = (e) => {
     e.preventDefault();
     this.props.form.resetFields();
   };
-  renderCopy = item => {
-    const code = JSON.stringify(item, null, "\t");
+  renderCopy = (item) => {
+    const code = JSON.stringify(item, null, '\t');
     return (
       <CopyToClipboard
         text={code}
-        onCopy={() => message.success("复制成功", 2)}
+        onCopy={() => message.success('复制成功', 2)}
       >
-        <div style={{ cursor: "pointer" }}>复制代码</div>
+        <div style={{ cursor: 'pointer' }}>复制代码</div>
       </CopyToClipboard>
     );
   };
   renderFormItem = () => {
     const { form } = this.props;
-    return FormItems.map(item => {
+    return FormItems.map((item) => {
       const InputType = renderFormItem(item, form);
       return (
         <Col
@@ -74,7 +74,7 @@ export default class Index extends PureComponent {
                 title={this.renderCopy(item)}
               >
                 查看属性
-              </Popover>
+              </Popover>,
             ]}
             title={item.label}
           >
@@ -85,8 +85,8 @@ export default class Index extends PureComponent {
     });
   };
 
-  renderCode1 = item => {
-    const code = JSON.stringify(item, null, "\t");
+  renderCode1 = (item) => {
+    const code = JSON.stringify(item, null, '\t');
     return (
       <div>
         <SyntaxHighlighter language="json" style={atomDark}>
@@ -97,7 +97,7 @@ export default class Index extends PureComponent {
   };
   renderCode = () => {
     const { currentItem } = this.state;
-    const code = JSON.stringify(currentItem, null, "\t");
+    const code = JSON.stringify(currentItem, null, '\t');
     return (
       <SyntaxHighlighter language="json" style={atomDark}>
         {code}

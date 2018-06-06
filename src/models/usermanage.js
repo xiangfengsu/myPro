@@ -1,104 +1,104 @@
-import { create, update, remove, queryPost } from "../services/generalApi";
-import { showStautsMessageHandle } from "../utils/statusCode";
+import { create, update, remove, queryPost } from '../services/generalApi';
+import { showStautsMessageHandle } from '../utils/statusCode';
 
 export default {
-  namespace: "usermanage",
+  namespace: 'usermanage',
   state: {
     data: {
       list: [],
-      pagination: {}
+      pagination: {},
     },
     modalVisible: false,
-    confirmLoading: false
+    confirmLoading: false,
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryPost, payload, "/sys/user/list");
+      const response = yield call(queryPost, payload, '/sys/user/list');
       if (response) {
         const { body } = response;
         yield put({
-          type: "save",
+          type: 'save',
           payload: {
-            data: body
-          }
+            data: body,
+          },
         });
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
     },
     *update({ payload }, { call, put, select }) {
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: true
-        }
+          confirmLoading: true,
+        },
       });
       const page = yield select(
         state => state.usermanage.data.pagination.current
       );
       Object.assign(payload, { page });
-      const response = yield call(update, payload, "/sys/user/update");
+      const response = yield call(update, payload, '/sys/user/update');
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: false
-        }
+          confirmLoading: false,
+        },
       });
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "modalVisible",
+            type: 'modalVisible',
             payload: {
-              modalVisible: false
-            }
+              modalVisible: false,
+            },
           });
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
-              data: body
-            }
+              data: body,
+            },
           });
         }
-        showStautsMessageHandle("usermanage", "update", code);
+        showStautsMessageHandle('usermanage', 'update', code);
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
     },
     *add({ payload }, { call, put }) {
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: true
-        }
+          confirmLoading: true,
+        },
       });
-      const response = yield call(create, payload, "/sys/user/save");
+      const response = yield call(create, payload, '/sys/user/save');
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: false
-        }
+          confirmLoading: false,
+        },
       });
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "modalVisible",
+            type: 'modalVisible',
             payload: {
-              modalVisible: false
-            }
+              modalVisible: false,
+            },
           });
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
-              data: body
-            }
+              data: body,
+            },
           });
         }
-        showStautsMessageHandle("usermanage", "add", code);
+        showStautsMessageHandle('usermanage', 'add', code);
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
     },
     *remove({ payload }, { call, put, select }) {
@@ -106,35 +106,35 @@ export default {
         state => state.usermanage.data.pagination.current
       );
       Object.assign(payload, { page });
-      const response = yield call(remove, payload, "/sys/user/del");
+      const response = yield call(remove, payload, '/sys/user/del');
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
-              data: body
-            }
+              data: body,
+            },
           });
         }
-        showStautsMessageHandle("usermanage", "delete", code);
+        showStautsMessageHandle('usermanage', 'delete', code);
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
-    }
+    },
   },
 
   reducers: {
     modalVisible(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     changgeConfirmLoading(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     save(state, action) {
@@ -144,14 +144,14 @@ export default {
         data: Object.assign(dataObj, {
           list:
             dataObj.list &&
-            dataObj.list.map(item => {
+            dataObj.list.map((item) => {
               return {
                 ...item,
-                roleids: item.sysRoleList && item.sysRoleList.map(rl => rl.id)
+                roleids: item.sysRoleList && item.sysRoleList.map(rl => rl.id),
               };
-            })
-        })
+            }),
+        }),
       };
-    }
-  }
+    },
+  },
 };

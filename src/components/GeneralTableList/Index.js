@@ -1,23 +1,23 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Table } from "antd";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Table } from 'antd';
 
-import styles from "./Index.less";
+import styles from './Index.less';
 
 export default class TableList extends PureComponent {
   static propTypes = {
     dataSource: PropTypes.array,
     columns: PropTypes.array,
     bordered: PropTypes.bool,
-    size: PropTypes.oneOf(["default", "small"]),
-    handleTableChange: PropTypes.func
+    size: PropTypes.oneOf(['default', 'small']),
+    handleTableChange: PropTypes.func,
   };
   static defaultProps = {
     dataSource: [],
     columns: [],
     bordered: true,
-    size: "default",
-    handleTableChange: () => {}
+    size: 'default',
+    handleTableChange: () => {},
   };
   render() {
     const {
@@ -27,7 +27,7 @@ export default class TableList extends PureComponent {
       bordered,
       pagination,
       loading,
-      handleTableChange
+      handleTableChange,
     } = this.props;
     return (
       <div className={styles.tableListWrap}>

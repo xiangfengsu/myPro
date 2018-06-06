@@ -1,14 +1,14 @@
 export const PageConfig = {
-  name: "个人中心",
-  path: "account/settings",
+  name: '个人中心',
+  path: 'account/settings',
   detailFormItems: [
     {
-      formType: "input",
+      formType: 'input',
       disabled: false,
       isRequired: true,
-      key: "nickname",
-      label: "昵称",
-      colSpan: 24
-    }
-  ]
+      key: 'nickname',
+      label: '昵称',
+      colSpan: 24,
+    },
+  ],
 };

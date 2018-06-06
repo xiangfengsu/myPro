@@ -1,37 +1,37 @@
-import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Link } from "dva/router";
-import { Form, Card, Modal, Button, Popconfirm } from "antd";
-import cloneDeep from "lodash/cloneDeep";
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
+import { Link } from 'dva/router';
+import { Form, Card, Modal, Button, Popconfirm } from 'antd';
+import cloneDeep from 'lodash/cloneDeep';
 
-import PageHeaderLayout from "../../layouts/PageHeaderLayout";
-import SearchForms from "../../components/GeneralSearchForm/Index";
-import TableList from "../../components/GeneralTableList/Index";
-import DetailFormInfo from "./ModalDetailForm";
-import { PageConfig } from "./pageConfig.js";
+import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import SearchForms from '../../components/GeneralSearchForm/Index';
+import TableList from '../../components/GeneralTableList/Index';
+import DetailFormInfo from './ModalDetailForm';
+import { PageConfig } from './pageConfig.js';
 
-import { formaterObjectValue, formItemAddInitValue } from "../../utils/utils";
+import { formaterObjectValue, formItemAddInitValue } from '../../utils/utils';
 
-import styles from "./Index.less";
+import styles from './Index.less';
 
 @connect(({ user, tablelist, loading }) => ({
   currentUser: user.currentUser,
   tablelist,
-  loading: loading.models.tablelist
+  loading: loading.models.tablelist,
 }))
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    showModalType: "",
+    showModalType: '',
     formValues: {},
     queryValues: {},
-    detailFormItems: PageConfig.detailFormItems
+    detailFormItems: PageConfig.detailFormItems,
   };
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: "tablelist/fetch",
-      payload: this.queryParamsFormater()
+      type: 'tablelist/fetch',
+      payload: this.queryParamsFormater(),
     });
   }
   queryParamsFormater = (fields, type) => {
@@ -43,31 +43,31 @@ export default class Index extends PureComponent {
       query: {},
       pagination: {
         current: 1,
-        pageSize: 10
-      }
+        pageSize: 10,
+      },
     };
     switch (type) {
       case 1:
         Object.assign(params, {
-          query: { ...fields }
+          query: { ...fields },
         });
         break;
       case 2:
         Object.assign(params, {
           query: { ...this.state.queryValues },
           form: { ...fields },
-          pagination
+          pagination,
         });
         break;
       case 3:
         Object.assign(params, {
-          form: { ...fields }
+          form: { ...fields },
         });
         break;
       case 4:
         Object.assign(params, {
           query: { ...this.state.queryValues },
-          pagination: { current: fields.page, pageSize: fields.pageSize }
+          pagination: { current: fields.page, pageSize: fields.pageSize },
         });
         break;
       default:
@@ -80,41 +80,41 @@ export default class Index extends PureComponent {
     const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
     this.setState({ detailFormItems: newDetailFormItems });
   };
-  changeModalVisibel = flag => {
+  changeModalVisibel = (flag) => {
     this.props.dispatch({
-      type: "tablelist/modalVisible",
+      type: 'tablelist/modalVisible',
       payload: {
-        modalVisible: flag
-      }
+        modalVisible: flag,
+      },
     });
   };
   showModalVisibel = (type, record) => {
     this.updateFormItems(record);
     this.changeModalVisibel(true);
     this.setState({
-      showModalType: type
+      showModalType: type,
     });
   };
   hideModalVisibel = () => {
     this.changeModalVisibel(false);
   };
-  deleteTableRowHandle = id => {
+  deleteTableRowHandle = (id) => {
     this.props.dispatch({
-      type: "tablelist/remove",
-      payload: this.queryParamsFormater({ id }, 2)
+      type: 'tablelist/remove',
+      payload: this.queryParamsFormater({ id }, 2),
     });
   };
   extraTableColumnRender = () => {
     const columns = [
       {
-        title: "操作",
+        title: '操作',
         render: (text, record) => (
           <div>
             <Link to="/generaltable/channelDetail/123">详情</Link>
             &nbsp;
             <a
               onClick={() => {
-                this.showModalVisibel("update", record);
+                this.showModalVisibel('update', record);
               }}
             >
               编辑
@@ -129,8 +129,8 @@ export default class Index extends PureComponent {
               <a>删除</a>
             </Popconfirm>
           </div>
-        )
-      }
+        ),
+      },
     ];
     return columns;
   };
@@ -139,15 +139,15 @@ export default class Index extends PureComponent {
       if (err) return;
       const { showModalType } = this.state;
       const fields = formaterObjectValue(fieldsValue);
-      if (showModalType === "create") {
+      if (showModalType === 'create') {
         this.props.dispatch({
-          type: "tablelist/add",
-          payload: this.queryParamsFormater(fields, 3)
+          type: 'tablelist/add',
+          payload: this.queryParamsFormater(fields, 3),
         });
-      } else if (showModalType === "update") {
+      } else if (showModalType === 'update') {
         this.props.dispatch({
-          type: "tablelist/update",
-          payload: this.queryParamsFormater(fields, 2)
+          type: 'tablelist/update',
+          payload: this.queryParamsFormater(fields, 2),
         });
       }
     });
@@ -158,36 +158,36 @@ export default class Index extends PureComponent {
     const props = {
       form,
       formInfo: {
-        layout: "inline",
-        formItems: searchForms
+        layout: 'inline',
+        formItems: searchForms,
       },
-      handleSearchSubmit: formValues => {
+      handleSearchSubmit: (formValues) => {
         const { createtime, channeltype } = formValues;
         const params = Object.assign(formValues, {
-          createtime: createtime ? createtime.format("YYYY-MM-DD") : "",
+          createtime: createtime ? createtime.format('YYYY-MM-DD') : '',
           channeltype:
-            channeltype && channeltype.constructor.name === "Object"
+            channeltype && channeltype.constructor.name === 'Object'
               ? channeltype.selectValue
-              : ""
+              : '',
         });
         const payload = formaterObjectValue(params);
         this.setState({
-          queryValues: payload
+          queryValues: payload,
         });
         dispatch({
-          type: "tablelist/fetch",
-          payload: this.queryParamsFormater(payload, 1)
+          type: 'tablelist/fetch',
+          payload: this.queryParamsFormater(payload, 1),
         });
       },
       handleFormReset: () => {
         this.setState({
-          queryValues: {}
+          queryValues: {},
         });
         dispatch({
-          type: "tablelist/fetch",
-          payload: this.queryParamsFormater()
+          type: 'tablelist/fetch',
+          payload: this.queryParamsFormater(),
         });
-      }
+      },
     };
     return <SearchForms {...props} />;
   };
@@ -207,14 +207,14 @@ export default class Index extends PureComponent {
         const payload = {
           page: current,
           pageSize: 10,
-          ...formValues
+          ...formValues,
         };
         dispatch({
-          type: "tablelist/fetch",
-          payload: this.queryParamsFormater(payload, 4)
+          type: 'tablelist/fetch',
+          payload: this.queryParamsFormater(payload, 4),
         });
       },
-      bordered: false
+      bordered: false,
     };
     return <TableList {...tableProps} />;
   };
@@ -232,7 +232,7 @@ export default class Index extends PureComponent {
                 <Button
                   icon="plus"
                   type="primary"
-                  onClick={() => this.showModalVisibel("create", {})}
+                  onClick={() => this.showModalVisibel('create', {})}
                 >
                   新建
                 </Button>
@@ -251,7 +251,7 @@ export default class Index extends PureComponent {
           }}
         >
           <DetailFormInfo
-            ref={ref => {
+            ref={(ref) => {
               this.modalForm = ref;
             }}
             formItems={detailFormItems}

@@ -1,45 +1,45 @@
-import React, { Component } from "react";
-import { connect } from "dva";
+import React, { Component } from 'react';
+import { connect } from 'dva';
 
-import { Tree, Tag } from "antd";
+import { Tree, Tag } from 'antd';
 
 const { TreeNode } = Tree;
 @connect(state => ({
-  dictionary: state.dictionary
+  dictionary: state.dictionary,
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
     const { value } = this.props;
     this.state = {
-      selectValue: value === undefined ? undefined : `${value}`.split(",")
+      selectValue: value === undefined ? undefined : `${value}`.split(','),
     };
   }
   componentDidMount() {
     const { dispatch, dictionaryKey, fetchUrl } = this.props;
     dispatch({
-      type: "dictionary/query",
+      type: 'dictionary/query',
       payload: {
         fetchUrl,
-        dictionaryKey
-      }
+        dictionaryKey,
+      },
     });
   }
   componentWillReceiveProps(nextProps) {
-    if ("value" in nextProps) {
+    if ('value' in nextProps) {
       const { value } = nextProps;
       this.setState({
-        selectValue: value === undefined ? undefined : `${value}`.split(",")
+        selectValue: value === undefined ? undefined : `${value}`.split(','),
       });
     }
   }
-  handleChange = selectValue => {
-    if (!("value" in this.props)) {
+  handleChange = (selectValue) => {
+    if (!('value' in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
   };
-  triggerChange = changedValue => {
+  triggerChange = (changedValue) => {
     const { onChange } = this.props;
     // logs('changedValue', changedValue);
     if (onChange) {
@@ -55,12 +55,12 @@ export default class DynamicSelect extends Component {
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,
-            selectable: true
+            selectable: true,
           });
         } else {
           Object.assign(obj, {
             disabled: true,
-            selectable: false
+            selectable: false,
           });
         }
         break;
@@ -68,33 +68,33 @@ export default class DynamicSelect extends Component {
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,
-            selectable: false
+            selectable: false,
           });
         }
         if (menuType === 2) {
           Object.assign(obj, {
             disabled: false,
-            selectable: true
+            selectable: true,
           });
         }
         if (menuType === 3) {
           Object.assign(obj, {
             disabled: true,
-            selectable: false
+            selectable: false,
           });
         }
         break;
       default:
         Object.assign(obj, {
           disabled: false,
-          selectable: true
+          selectable: true,
         });
         break;
     }
     return obj;
   };
-  renderTreeNodes = data => {
-    return data.map(item => {
+  renderTreeNodes = (data) => {
+    return data.map((item) => {
       let iconType = null;
       const { disabled, selectable } = this.renderNodeDisabledSelectable(
         item.menuType
@@ -156,7 +156,7 @@ export default class DynamicSelect extends Component {
       dictionaryKey,
       placeholder,
       disabled,
-      multiple
+      multiple,
     } = this.props;
     const len = dictionary[dictionaryKey] && dictionary[dictionaryKey].length;
     // logs('this.props', this.props);
@@ -168,7 +168,7 @@ export default class DynamicSelect extends Component {
         defaultSelectedKeys={state.selectValue}
         defaultExpandedKeys={state.selectValue}
         placeholder={placeholder}
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         onCheck={this.handleChange}
       >
         {len > 0 && this.renderTreeNodes(dictionary[dictionaryKey])}

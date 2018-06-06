@@ -1,81 +1,81 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Layout, Icon, message, Spin } from "antd";
-import DocumentTitle from "react-document-title";
-import { connect } from "dva";
-import { Route, Redirect, Switch, routerRedux } from "dva/router";
-import { ContainerQuery } from "react-container-query";
-import classNames from "classnames";
-import { enquireScreen } from "enquire-js";
-import TagsPageOpend from "components/TagsPageOpend";
-import GlobalHeader from "components/GlobalHeader";
-import GlobalFooter from "components/GlobalFooter";
-import SiderMenu from "components/SiderMenu";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Layout, Icon, message, Spin } from 'antd';
+import DocumentTitle from 'react-document-title';
+import { connect } from 'dva';
+import { Route, Redirect, Switch, routerRedux } from 'dva/router';
+import { ContainerQuery } from 'react-container-query';
+import classNames from 'classnames';
+import { enquireScreen } from 'enquire-js';
+import TagsPageOpend from 'components/TagsPageOpend';
+import GlobalHeader from 'components/GlobalHeader';
+import GlobalFooter from 'components/GlobalFooter';
+import SiderMenu from 'components/SiderMenu';
 
 import {
   getRoutes,
   formatter,
   menuDataPathFormater,
   menuDataPathToArray,
-  menuAuthority
-} from "utils/utils";
-import Authorized from "utils/Authorized";
-import NotFound from "../routes/Exception/404";
-import logo from "../assets/logo.svg";
-import avatar from "../assets/avatar.png";
-import config from "../config";
+  menuAuthority,
+} from 'utils/utils';
+import Authorized from 'utils/Authorized';
+import NotFound from '../routes/Exception/404';
+import logo from '../assets/logo.svg';
+import avatar from '../assets/avatar.png';
+import config from '../config';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute } = Authorized;
 const query = {
-  "screen-xs": {
-    maxWidth: 575
+  'screen-xs': {
+    maxWidth: 575,
   },
-  "screen-sm": {
+  'screen-sm': {
     minWidth: 576,
-    maxWidth: 767
+    maxWidth: 767,
   },
-  "screen-md": {
+  'screen-md': {
     minWidth: 768,
-    maxWidth: 991
+    maxWidth: 991,
   },
-  "screen-lg": {
+  'screen-lg': {
     minWidth: 992,
-    maxWidth: 1199
+    maxWidth: 1199,
   },
-  "screen-xl": {
-    minWidth: 1200
-  }
+  'screen-xl': {
+    minWidth: 1200,
+  },
 };
 
 let isMobile;
-enquireScreen(b => {
+enquireScreen((b) => {
   isMobile = b;
 });
 
 class BasicLayout extends React.PureComponent {
   static childContextTypes = {
     location: PropTypes.object,
-    breadcrumbNameMap: PropTypes.object
+    breadcrumbNameMap: PropTypes.object,
   };
   state = {
-    isMobile
+    isMobile,
   };
   getChildContext() {
     const { location, routerData } = this.props;
     return {
       location,
-      breadcrumbNameMap: routerData
+      breadcrumbNameMap: routerData,
     };
   }
   componentDidMount() {
-    enquireScreen(mobile => {
+    enquireScreen((mobile) => {
       this.setState({
-        isMobile: mobile
+        isMobile: mobile,
       });
     });
     this.props.dispatch({
-      type: "user/fetchCurrent"
+      type: 'user/fetchCurrent',
     });
   }
   getPageTitle() {
@@ -92,18 +92,18 @@ class BasicLayout extends React.PureComponent {
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href);
 
-    const redirect = urlParams.searchParams.get("redirect");
+    const redirect = urlParams.searchParams.get('redirect');
     // Remove the parameters in the url
     if (redirect) {
-      urlParams.searchParams.delete("redirect");
-      window.history.replaceState(null, "redirect", urlParams.href);
+      urlParams.searchParams.delete('redirect');
+      window.history.replaceState(null, 'redirect', urlParams.href);
       return redirect;
     } else {
       const { currentUser } = this.props;
       const menuDatas = config.isLocalMenus
         ? config.localMenus
         : currentUser.menuData;
-      let redirectPath = "";
+      let redirectPath = '';
       if (menuDatas && menuDatas.length > 0) {
         const formaterMenuDatas = menuDataPathToArray(menuDatas);
         for (let i = 0; i < formaterMenuDatas.length; i++) {
@@ -124,14 +124,14 @@ class BasicLayout extends React.PureComponent {
      */
     const { currentUser } = this.props;
     const redirectData = [];
-    const getRedirect = item => {
+    const getRedirect = (item) => {
       if (item && item.children) {
         if (item.children[0] && item.children[0].path) {
           redirectData.push({
             from: `/${item.path}`,
-            to: `/${item.children[0].path}`
+            to: `/${item.children[0].path}`,
           });
-          item.children.forEach(children => {
+          item.children.forEach((children) => {
             getRedirect(children);
           });
         }
@@ -142,37 +142,37 @@ class BasicLayout extends React.PureComponent {
     ).forEach(getRedirect);
     return redirectData;
   };
-  handleMenuCollapse = collapsed => {
+  handleMenuCollapse = (collapsed) => {
     this.props.dispatch({
-      type: "global/changeLayoutCollapsed",
-      payload: collapsed
+      type: 'global/changeLayoutCollapsed',
+      payload: collapsed,
     });
   };
-  handleNoticeClear = type => {
+  handleNoticeClear = (type) => {
     message.success(`清空了${type}`);
     this.props.dispatch({
-      type: "global/clearNotices",
-      payload: type
+      type: 'global/clearNotices',
+      payload: type,
     });
   };
   handleMenuClick = ({ key }) => {
-    if (key === "triggerError") {
-      this.props.dispatch(routerRedux.push("/exception/trigger"));
+    if (key === 'triggerError') {
+      this.props.dispatch(routerRedux.push('/exception/trigger'));
       return;
     }
-    if (key === "logout") {
+    if (key === 'logout') {
       this.props.dispatch({
-        type: "login/logout"
+        type: 'login/logout',
       });
     }
-    if (key === "setting") {
-      this.props.dispatch(routerRedux.push("/account/settings"));
+    if (key === 'setting') {
+      this.props.dispatch(routerRedux.push('/account/settings'));
     }
   };
-  handleNoticeVisibleChange = visible => {
+  handleNoticeVisibleChange = (visible) => {
     if (visible) {
       this.props.dispatch({
-        type: "global/fetchNotices"
+        type: 'global/fetchNotices',
       });
     }
   };
@@ -185,17 +185,17 @@ class BasicLayout extends React.PureComponent {
       routerData,
       match,
       location,
-      isFetched
+      isFetched,
     } = this.props;
     if (!isFetched) {
       return (
         <div
           style={{
-            width: "100%",
-            height: "100%",
-            margin: "auto",
+            width: '100%',
+            height: '100%',
+            margin: 'auto',
             paddingTop: 100,
-            textAlign: "center"
+            textAlign: 'center',
           }}
         >
           <Spin size="large" />
@@ -224,8 +224,8 @@ class BasicLayout extends React.PureComponent {
           <Header
             style={{
               padding: 0,
-              height: config.hasTagsPage ? "108px" : "64px",
-              lineHeight: "normal"
+              height: config.hasTagsPage ? '108px' : '64px',
+              lineHeight: 'normal',
             }}
           >
             <GlobalHeader
@@ -251,8 +251,8 @@ class BasicLayout extends React.PureComponent {
               />
             ) : null}
           </Header>
-          <Content style={{ margin: "24px 24px 0", height: "100%" }}>
-            <div style={{ minHeight: "calc(100vh - 260px)" }}>
+          <Content style={{ margin: '24px 24px 0', height: '100%' }}>
+            <div style={{ minHeight: 'calc(100vh - 260px)' }}>
               <Switch>
                 {this.getRedirectData().map(item => (
                   <Redirect
@@ -305,10 +305,10 @@ class BasicLayout extends React.PureComponent {
 export default connect(({ user, global, loading }) => ({
   currentUser: user.currentUser,
   collapsed: global.collapsed,
-  fetchingNotices: loading.effects["global/fetchNotices"],
+  fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
   currentPagePath: global.currentPagePath,
   pageOpenedList: global.pageOpenedList,
   isWheel: global.isWheel,
-  isFetched: user.currentUser.menuData
+  isFetched: user.currentUser.menuData,
 }))(BasicLayout);

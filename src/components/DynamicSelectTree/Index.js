@@ -1,49 +1,49 @@
-import React, { Component } from "react";
-import { connect } from "dva";
+import React, { Component } from 'react';
+import { connect } from 'dva';
 
-import { TreeSelect, Tag } from "antd";
+import { TreeSelect, Tag } from 'antd';
 
 const { TreeNode } = TreeSelect;
 const { SHOW_PARENT, SHOW_CHILD } = TreeSelect;
 @connect(state => ({
-  dictionary: state.dictionary
+  dictionary: state.dictionary,
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
     const { value } = this.props;
     this.state = {
-      selectValue: value === undefined ? undefined : `${value}`.split(",")
+      selectValue: value === undefined ? undefined : `${value}`.split(','),
     };
   }
   componentDidMount() {
     const { dispatch, dictionaryKey, fetchUrl } = this.props;
     dispatch({
-      type: "dictionary/query",
+      type: 'dictionary/query',
       payload: {
         fetchUrl,
-        dictionaryKey
-      }
+        dictionaryKey,
+      },
     });
   }
   componentWillReceiveProps(nextProps) {
-    if ("value" in nextProps) {
-      if ("value" in nextProps) {
+    if ('value' in nextProps) {
+      if ('value' in nextProps) {
         const { value } = nextProps;
         this.setState({
-          selectValue: value === undefined ? undefined : `${value}`.split(",")
+          selectValue: value === undefined ? undefined : `${value}`.split(','),
         });
       }
     }
   }
-  handleChange = selectValue => {
+  handleChange = (selectValue) => {
     // console.log('label',label);
-    if (!("value" in this.props)) {
+    if (!('value' in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
   };
-  triggerChange = changedValue => {
+  triggerChange = (changedValue) => {
     const { onChange } = this.props;
     // logs('changedValue', changedValue);
     if (onChange) {
@@ -59,12 +59,12 @@ export default class DynamicSelect extends Component {
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,
-            selectable: true
+            selectable: true,
           });
         } else {
           Object.assign(obj, {
             disabled: true,
-            selectable: false
+            selectable: false,
           });
         }
         break;
@@ -72,33 +72,33 @@ export default class DynamicSelect extends Component {
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,
-            selectable: false
+            selectable: false,
           });
         }
         if (menuType === 2) {
           Object.assign(obj, {
             disabled: false,
-            selectable: true
+            selectable: true,
           });
         }
         if (menuType === 4) {
           Object.assign(obj, {
             disabled: true,
-            selectable: false
+            selectable: false,
           });
         }
         break;
       default:
         Object.assign(obj, {
           disabled: false,
-          selectable: true
+          selectable: true,
         });
         break;
     }
     return obj;
   };
-  renderTreeNodes = data => {
-    return data.map(item => {
+  renderTreeNodes = (data) => {
+    return data.map((item) => {
       let iconType = null;
       const { menutype } = item;
       const { disabled, selectable } = this.renderNodeDisabledSelectable(
@@ -169,7 +169,7 @@ export default class DynamicSelect extends Component {
       placeholder,
       disabled,
       multiple,
-      showCheckedStrategy
+      showCheckedStrategy,
     } = this.props;
     const len = dictionary[dictionaryKey] && dictionary[dictionaryKey].length;
     return (
@@ -178,8 +178,8 @@ export default class DynamicSelect extends Component {
         // treeCheckStrictly={true}
         treeCheckable={multiple}
         placeholder={placeholder}
-        style={{ width: "100%" }}
-        dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
+        style={{ width: '100%' }}
+        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         onChange={this.handleChange}
         disabled={disabled}
         showCheckedStrategy={showCheckedStrategy ? SHOW_PARENT : SHOW_CHILD}

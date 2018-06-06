@@ -1,11 +1,11 @@
-import React from "react";
-import { routerRedux, Route, Switch } from "dva/router";
-import { LocaleProvider, Spin } from "antd";
-import zhCN from "antd/lib/locale-provider/zh_CN";
-import dynamic from "dva/dynamic";
-import { getRouterData } from "./common/router";
-import Authorized from "./utils/Authorized";
-import styles from "./index.less";
+import React from 'react';
+import { routerRedux, Route, Switch } from 'dva/router';
+import { LocaleProvider, Spin } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+import dynamic from 'dva/dynamic';
+import { getRouterData } from './common/router';
+import Authorized from './utils/Authorized';
+import styles from './index.less';
 
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
@@ -23,8 +23,8 @@ const checkAuthority = () => {
 };
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
-  const UserLayout = routerData["/user"].component;
-  const BasicLayout = routerData["/"].component;
+  const UserLayout = routerData['/user'].component;
+  const BasicLayout = routerData['/'].component;
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>

@@ -1,39 +1,39 @@
-import { queryPost } from "../services/generalApi";
-import { showStautsMessageHandle } from "../utils/statusCode";
+import { queryPost } from '../services/generalApi';
+import { showStautsMessageHandle } from '../utils/statusCode';
 
 export default {
-  namespace: "systemlog",
+  namespace: 'systemlog',
   state: {
     data: {
       list: [],
-      pagination: {}
-    }
+      pagination: {},
+    },
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryPost, payload, "/sys/log/list");
+      const response = yield call(queryPost, payload, '/sys/log/list');
       if (response) {
         const { code = 200, body } = response;
         yield put({
-          type: "save",
+          type: 'save',
           payload: {
             data: body,
-            statusCode: code
-          }
+            statusCode: code,
+          },
         });
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
-    }
+    },
   },
 
   reducers: {
     save(state, action) {
       return {
         ...state,
-        data: action.payload.data
+        data: action.payload.data,
       };
-    }
-  }
+    },
+  },
 };

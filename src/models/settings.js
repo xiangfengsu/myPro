@@ -1,57 +1,57 @@
-import { update } from "../services/generalApi";
-import { showStautsMessageHandle } from "../utils/statusCode";
+import { update } from '../services/generalApi';
+import { showStautsMessageHandle } from '../utils/statusCode';
 
 export default {
-  namespace: "settings",
+  namespace: 'settings',
   state: {
     data: {
       list: [],
-      pagination: {}
+      pagination: {},
     },
-    statusCode: 200
+    statusCode: 200,
   },
 
   effects: {
     *update({ payload }, { call, put }) {
       const formValue = Object.assign({}, payload);
       delete formValue.cb;
-      const response = yield call(update, formValue, "/sys/modify/password");
+      const response = yield call(update, formValue, '/sys/modify/password');
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
               data: body,
-              statusCode: code
-            }
+              statusCode: code,
+            },
           });
         } else {
           yield put({
-            type: "changeCode",
+            type: 'changeCode',
             payload: {
-              statusCode: code
-            }
+              statusCode: code,
+            },
           });
         }
-        showStautsMessageHandle("settings", "update", code);
+        showStautsMessageHandle('settings', 'update', code);
         payload.cb && payload.cb(code); // eslint-disable-line
       }
-    }
+    },
   },
 
   reducers: {
     changeCode(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     save(state, action) {
       return {
         ...state,
-        data: action.payload.data
+        data: action.payload.data,
       };
-    }
-  }
+    },
+  },
 };

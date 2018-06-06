@@ -1,58 +1,58 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Form, Row, Button, Col, Icon, Tooltip } from "antd";
-import { renderFormItem } from "../../common/formItem";
+import { Form, Row, Button, Col, Icon, Tooltip } from 'antd';
+import { renderFormItem } from '../../common/formItem';
 
-import styles from "./Index.less";
+import styles from './Index.less';
 
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
-    span: 6
+    span: 6,
   },
   wrapperCol: {
-    span: 18
-  }
+    span: 18,
+  },
 };
 export default class SearchForms extends React.PureComponent {
   static propTypes = {
     formInfo: PropTypes.shape({
-      layout: PropTypes.oneOf(["horizontal", "vertical", "inline"]),
-      formItems: PropTypes.array
+      layout: PropTypes.oneOf(['horizontal', 'vertical', 'inline']),
+      formItems: PropTypes.array,
     }),
     form: PropTypes.object,
     dispatch: PropTypes.func,
     handleSearchSubmit: PropTypes.func,
-    handleFormReset: PropTypes.func
+    handleFormReset: PropTypes.func,
   };
   static defaultProps = {
     formInfo: {
-      layout: "inline",
-      formItems: []
+      layout: 'inline',
+      formItems: [],
     },
     form: {},
     dispatch: () => {},
     handleSearchSubmit: () => {},
-    handleFormReset: () => {}
+    handleFormReset: () => {},
   };
   state = {
-    expandForm: false
+    expandForm: false,
   };
   getFields = () => {
     const { expandForm } = this.state;
     const { formInfo: { formItems } } = this.props;
     const count = expandForm ? formItems.length : 2;
     const children = this.renderFormItem(formItems, count);
-    const buttonText = expandForm ? "收起" : "展开";
+    const buttonText = expandForm ? '收起' : '展开';
     if (!this.state.expandForm) {
       children.push(
         <Col md={8} sm={24} key={children.length}>
           <div
             style={{
-              whiteSpace: "nowrap",
+              whiteSpace: 'nowrap',
               marginBottom: 24,
-              paddingTop: "3px"
+              paddingTop: '3px',
             }}
           >
             <Button type="primary" htmlType="submit">
@@ -63,7 +63,7 @@ export default class SearchForms extends React.PureComponent {
             </Button>
             {formItems.length > 2 ? (
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                {buttonText} <Icon type={expandForm ? "up" : "down"} />
+                {buttonText} <Icon type={expandForm ? 'up' : 'down'} />
               </a>
             ) : null}
           </div>
@@ -77,7 +77,7 @@ export default class SearchForms extends React.PureComponent {
     form.resetFields();
     handleFormReset();
   };
-  handleSearch = e => {
+  handleSearch = (e) => {
     e.preventDefault();
     const { form, handleSearchSubmit } = this.props;
     form.validateFields((err, fieldsValue) => {
@@ -88,7 +88,7 @@ export default class SearchForms extends React.PureComponent {
   };
   toggleForm = () => {
     this.setState({
-      expandForm: !this.state.expandForm
+      expandForm: !this.state.expandForm,
     });
   };
   renderFormItem = (formItems, count) => {
@@ -100,16 +100,16 @@ export default class SearchForms extends React.PureComponent {
           md={8}
           sm={24}
           key={`${item.key}`}
-          style={{ display: i < count ? "block" : "none" }}
+          style={{ display: i < count ? 'block' : 'none' }}
         >
           <FormItem
             {...formItemLayout}
             label={
               item.tooltip
                 ? `${item.label}&nbsp;${(
-                    <Tooltip title={item.tooltip}>
-                      <Icon type="question-circle-o" />
-                    </Tooltip>
+                  <Tooltip title={item.tooltip}>
+                    <Icon type="question-circle-o" />
+                  </Tooltip>
                   )}`
                 : item.label
             }
@@ -124,7 +124,7 @@ export default class SearchForms extends React.PureComponent {
   render() {
     const { formInfo: { layout, formItems } } = this.props;
     const { expandForm } = this.state;
-    const buttonText = expandForm ? "收起" : "展开";
+    const buttonText = expandForm ? '收起' : '展开';
     return (
       <div className={styles.searchForms}>
         <Form
@@ -134,8 +134,8 @@ export default class SearchForms extends React.PureComponent {
         >
           <Row gutter={{ md: 8, lg: 24, xl: 24 }}>{this.getFields()}</Row>
           {expandForm ? (
-            <div style={{ overflow: "hidden" }}>
-              <span style={{ float: "right", marginBottom: 24 }}>
+            <div style={{ overflow: 'hidden' }}>
+              <span style={{ float: 'right', marginBottom: 24 }}>
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>

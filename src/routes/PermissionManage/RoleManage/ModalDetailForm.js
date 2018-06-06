@@ -1,22 +1,22 @@
-import React, { PureComponent } from "react";
-import { Form, Row, Col, Card } from "antd";
+import React, { PureComponent } from 'react';
+import { Form, Row, Col, Card } from 'antd';
 
-import { renderFormItem } from "../../../common/formItem";
+import { renderFormItem } from '../../../common/formItem';
 
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
-    span: 6
+    span: 6,
   },
   wrapperCol: {
-    span: 18
-  }
+    span: 18,
+  },
 };
 @Form.create()
 export default class DetailFormInfo extends PureComponent {
   renderFormItem = () => {
     const { formItems, form } = this.props;
-    const formItemList = formItems.map(item => {
+    const formItemList = formItems.map((item) => {
       const InputType = renderFormItem(item, form);
       return (
         <Col

@@ -1,5 +1,5 @@
-import React, { PureComponent } from "react";
-import { Table } from "antd";
+import React, { PureComponent } from 'react';
+import { Table } from 'antd';
 
 export default class Index extends PureComponent {
   render() {

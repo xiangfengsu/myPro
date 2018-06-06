@@ -1,7 +1,7 @@
-import { query } from "../services/dictionary";
+import { query } from '../services/dictionary';
 
 export default {
-  namespace: "dictionary",
+  namespace: 'dictionary',
   state: {},
   effects: {
     *query({ payload }, { call, put }) {
@@ -10,20 +10,20 @@ export default {
       const response = yield call(query, payload);
       const { body = [] } = response;
       yield put({
-        type: "querySuccess",
+        type: 'querySuccess',
         payload: {
-          [dictionaryKey]: body
-        }
+          [dictionaryKey]: body,
+        },
       });
-    }
+    },
   },
 
   reducers: {
     querySuccess(state, action) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
-    }
-  }
+    },
+  },
 };

@@ -1,32 +1,32 @@
-import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Form, Card } from "antd";
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
+import { Form, Card } from 'antd';
 
-import { formaterObjectValue } from "utils/utils";
-import SearchForms from "components/GeneralSearchForm/Index";
-import TableList from "components/GeneralTableList/Index";
-import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
+import { formaterObjectValue } from 'utils/utils';
+import SearchForms from 'components/GeneralSearchForm/Index';
+import TableList from 'components/GeneralTableList/Index';
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 
-import { PageConfig } from "./pageConfig.js";
+import { PageConfig } from './pageConfig.js';
 
-import styles from "./Index.less";
+import styles from './Index.less';
 
 @connect(({ user, systemlog, loading }) => ({
   currentUser: user.currentUser,
   systemlog,
-  loading: loading.models.systemlog
+  loading: loading.models.systemlog,
 }))
 @Form.create()
 export default class Index extends PureComponent {
   state = {
     formValues: {},
-    queryValues: {}
+    queryValues: {},
   };
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: "systemlog/fetch",
-      payload: this.queryParamsFormater()
+      type: 'systemlog/fetch',
+      payload: this.queryParamsFormater(),
     });
   }
 
@@ -39,31 +39,31 @@ export default class Index extends PureComponent {
       query: {},
       pagination: {
         current: 1,
-        pageSize: 10
-      }
+        pageSize: 10,
+      },
     };
     switch (type) {
       case 1:
         Object.assign(params, {
-          query: { ...fields }
+          query: { ...fields },
         });
         break;
       case 2:
         Object.assign(params, {
           query: { ...this.state.queryValues },
           form: { ...fields },
-          pagination
+          pagination,
         });
         break;
       case 3:
         Object.assign(params, {
-          form: { ...fields }
+          form: { ...fields },
         });
         break;
       case 4:
         Object.assign(params, {
           query: { ...this.state.queryValues },
-          pagination: { current: fields.page, pageSize: fields.pageSize }
+          pagination: { current: fields.page, pageSize: fields.pageSize },
         });
         break;
       default:
@@ -77,30 +77,30 @@ export default class Index extends PureComponent {
     const props = {
       form,
       formInfo: {
-        layout: "inline",
-        formItems: searchForms
+        layout: 'inline',
+        formItems: searchForms,
       },
-      handleSearchSubmit: queryValues => {
+      handleSearchSubmit: (queryValues) => {
         const params = Object.assign({}, queryValues, {});
         const payload = formaterObjectValue(params);
 
         this.setState({
-          queryValues: payload
+          queryValues: payload,
         });
         dispatch({
-          type: "systemlog/fetch",
-          payload: this.queryParamsFormater(payload, 1)
+          type: 'systemlog/fetch',
+          payload: this.queryParamsFormater(payload, 1),
         });
       },
       handleFormReset: () => {
         this.setState({
-          queryValues: {}
+          queryValues: {},
         });
         dispatch({
-          type: "systemlog/fetch",
-          payload: this.queryParamsFormater()
+          type: 'systemlog/fetch',
+          payload: this.queryParamsFormater(),
         });
-      }
+      },
     };
     return <SearchForms {...props} />;
   };
@@ -120,14 +120,14 @@ export default class Index extends PureComponent {
         const payload = {
           page: current,
           pageSize: 10,
-          ...formValues
+          ...formValues,
         };
         dispatch({
-          type: "systemlog/fetch",
-          payload: this.queryParamsFormater(payload, 4)
+          type: 'systemlog/fetch',
+          payload: this.queryParamsFormater(payload, 4),
         });
       },
-      bordered: false
+      bordered: false,
     };
     return <TableList {...tableProps} />;
   };

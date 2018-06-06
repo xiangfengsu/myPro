@@ -1,11 +1,11 @@
-import React, { PureComponent } from "react";
-import { Tree, Card, Tag } from "antd";
+import React, { PureComponent } from 'react';
+import { Tree, Card, Tag } from 'antd';
 
 const { TreeNode } = Tree;
 
 export default class Index extends PureComponent {
-  renderTreeNodes = data => {
-    return data.map(item => {
+  renderTreeNodes = (data) => {
+    return data.map((item) => {
       let iconType = null;
       if (item.menuType === 1) {
         iconType = (
@@ -68,11 +68,11 @@ export default class Index extends PureComponent {
   render() {
     const {
       dictionary: { menuStructure = [] },
-      currentItem: { menuids = "" }
+      currentItem: { menuids = '' },
     } = this.props;
     const parentdepartmentids = Array.isArray(menuids)
-      ? menuids.join(",").split(",")
-      : menuids.split(",");
+      ? menuids.join(',').split(',')
+      : menuids.split(',');
     const len = menuStructure.length;
     // console.log('parentdepartmentids', parentdepartmentids);
     return (
@@ -91,7 +91,7 @@ export default class Index extends PureComponent {
             </Tree>
           </div>
         ) : (
-          " "
+          ' '
         )}
       </Card>
     );

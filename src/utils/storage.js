@@ -1,21 +1,21 @@
-import { encodeHandle } from "./base64.js";
+import { encodeHandle } from './base64.js';
 
 const storage = {
-  save({ type = "localStorage", key, data, value }) {
+  save({ type = 'localStorage', key, data, value }) {
     try {
       // data 以小时为单位 默认 24h
       const keys = encodeHandle(key);
       const obj = {
         value,
         time: new Date().getTime(),
-        cacheTime: data || 24
+        cacheTime: data || 24,
       };
       window[type].setItem(keys, JSON.stringify(obj));
     } catch (e) {
       console.error("storageSaveError", e); // eslint-disable-line
     }
   },
-  load({ type = "localStorage", key, resolve, reject }) {
+  load({ type = 'localStorage', key, resolve, reject }) {
     const self = this;
     try {
       const keys = encodeHandle(key);
@@ -23,7 +23,7 @@ const storage = {
 
       if (obj) {
         const { value, time, cacheTime } = obj;
-        if (type === "localStorage") {
+        if (type === 'localStorage') {
           const currTime = (
             (new Date().getTime() - time) /
             1000 /
@@ -41,7 +41,7 @@ const storage = {
       console.error("storageLoadError", e); // eslint-disable-line
     }
   },
-  remove(type = "localStorage", key) {
+  remove(type = 'localStorage', key) {
     try {
       const keys = encodeHandle(key);
       window[type].removeItem(keys);
@@ -49,12 +49,12 @@ const storage = {
       console.error("storageRemoveError", e); // eslint-disable-line
     }
   },
-  clear(type = "localStorage") {
+  clear(type = 'localStorage') {
     try {
       window[type].clear();
     } catch (e) {
       console.error("storageClearError", e); // eslint-disable-line
     }
-  }
+  },
 };
 export default storage;

@@ -1,9 +1,9 @@
-import React from "react";
-import { Redirect, Switch, Route } from "dva/router";
-import DocumentTitle from "react-document-title";
-import styles from "./UserLayout.less";
-import { getRoutes } from "../utils/utils";
-import config from "../config";
+import React from 'react';
+import { Redirect, Switch, Route } from 'dva/router';
+import DocumentTitle from 'react-document-title';
+import styles from './UserLayout.less';
+import { getRoutes } from '../utils/utils';
+import config from '../config';
 
 class UserLayout extends React.PureComponent {
   getPageTitle() {

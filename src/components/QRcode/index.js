@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class QRcode extends Component {
   static propTypes = {
-    captcha: PropTypes.string
+    captcha: PropTypes.string,
   };
   static defaultProps = {
-    captcha: ""
+    captcha: '',
   };
   constructor(props) {
     super(props);
     this.state = {
-      codeUrl: props.captcha
+      codeUrl: props.captcha,
     };
     this.refreshCode = this.refreshCode.bind(this);
   }
   refreshCode() {
     const { codeUrl } = this.state;
     this.setState({
-      codeUrl: `${codeUrl}?num=${new Date().getTime()}`
+      codeUrl: `${codeUrl}?num=${new Date().getTime()}`,
     });
   }
   render() {
@@ -28,10 +28,10 @@ class QRcode extends Component {
         onClick={this.refreshCode}
         src={codeUrl}
         style={{
-          width: "100px",
-          height: "40px",
-          cursor: "pointer",
-          border: "1px solid #d9d9d9"
+          width: '100px',
+          height: '40px',
+          cursor: 'pointer',
+          border: '1px solid #d9d9d9',
         }}
         alt=""
       />

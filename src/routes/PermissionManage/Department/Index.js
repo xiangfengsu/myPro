@@ -1,38 +1,38 @@
-import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Form, Card, Modal, Button } from "antd";
-import cloneDeep from "lodash/cloneDeep";
-import TreeTable from "components/TreeTable/Index";
-import styles from "./Index.less";
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
+import { Form, Card, Modal, Button } from 'antd';
+import cloneDeep from 'lodash/cloneDeep';
+import TreeTable from 'components/TreeTable/Index';
+import styles from './Index.less';
 
-import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 
-import { PageConfig } from "./pageConfig.js";
+import { PageConfig } from './pageConfig.js';
 
-import DetailFormInfo from "./ModalDetailForm";
+import DetailFormInfo from './ModalDetailForm';
 // import Authorized from '../../../utils/Authorized';
 import {
   formaterObjectValue,
-  formItemAddInitValue
-} from "../../../utils/utils";
+  formItemAddInitValue,
+} from '../../../utils/utils';
 
 @connect(({ user, loading, department, dictionary }) => ({
   currentUser: user.currentUser,
   loading: loading.models.department,
   department,
-  dictionary
+  dictionary,
 }))
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    showModalType: "",
+    showModalType: '',
     currentItem: {},
-    detailFormItems: PageConfig.detailFormItems
+    detailFormItems: PageConfig.detailFormItems,
   };
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: "department/fetch"
+      type: 'department/fetch',
     });
   }
   updateFormItems = (record = {}) => {
@@ -46,35 +46,35 @@ export default class Index extends PureComponent {
     this.changeModalVisibel(true);
     this.setState({
       showModalType: type,
-      currentItem: record
+      currentItem: record,
     });
   };
 
   hideModalVisibel = () => {
     this.changeModalVisibel(false);
     this.setState({
-      currentItem: {}
+      currentItem: {},
     });
   };
-  changeModalVisibel = flag => {
+  changeModalVisibel = (flag) => {
     this.props.dispatch({
-      type: "department/modalVisible",
+      type: 'department/modalVisible',
       payload: {
-        modalVisible: flag
-      }
+        modalVisible: flag,
+      },
     });
   };
   extraTableColumnRender = () => {
     const columns = [
       {
-        title: "操作",
+        title: '操作',
         render: (text, record) => {
           if (record.parentid !== 0) {
             return (
               <div>
                 <a
                   onClick={() => {
-                    this.showModalVisibel("update", record);
+                    this.showModalVisibel('update', record);
                   }}
                 >
                   编辑
@@ -91,8 +91,8 @@ export default class Index extends PureComponent {
               </div>
             );
           }
-        }
-      }
+        },
+      },
     ];
     return columns;
   };
@@ -103,25 +103,25 @@ export default class Index extends PureComponent {
       // logs('fieldsValue', fieldsValue);
       const { showModalType } = this.state;
       const fields = formaterObjectValue(fieldsValue);
-      if (showModalType === "create") {
+      if (showModalType === 'create') {
         this.props.dispatch({
-          type: "department/add",
-          payload: fields
+          type: 'department/add',
+          payload: fields,
         });
-      } else if (showModalType === "update") {
+      } else if (showModalType === 'update') {
         const { id } = this.state.currentItem;
         this.props.dispatch({
-          type: "department/update",
-          payload: { id, ...fields }
+          type: 'department/update',
+          payload: { id, ...fields },
         });
       }
     });
   };
 
-  deleteTableRowHandle = id => {
+  deleteTableRowHandle = (id) => {
     this.props.dispatch({
-      type: "department/remove",
-      payload: { id }
+      type: 'department/remove',
+      payload: { id },
     });
   };
   renderTable = () => {
@@ -132,7 +132,7 @@ export default class Index extends PureComponent {
     const tableProps = {
       loading,
       dataSource: list,
-      columns: newTableColumns
+      columns: newTableColumns,
     };
     return <TreeTable {...tableProps} />;
   };
@@ -140,7 +140,7 @@ export default class Index extends PureComponent {
     const { detailFormItems } = this.state;
     const {
       department: { modalVisible, confirmLoading },
-      dictionary
+      dictionary,
     } = this.props;
     return (
       <PageHeaderLayout>
@@ -151,7 +151,7 @@ export default class Index extends PureComponent {
                 <Button
                   icon="plus"
                   type="primary"
-                  onClick={() => this.showModalVisibel("create", {})}
+                  onClick={() => this.showModalVisibel('create', {})}
                 >
                   新建
                 </Button>
@@ -171,7 +171,7 @@ export default class Index extends PureComponent {
           }}
         >
           <DetailFormInfo
-            ref={ref => {
+            ref={(ref) => {
               this.modalForm = ref;
             }}
             formItems={detailFormItems}

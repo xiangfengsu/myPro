@@ -1,39 +1,39 @@
-import React, { PureComponent } from "react";
-import ReactDOM from "react-dom";
-import { routerRedux } from "dva/router";
-import { Tag, Menu, Dropdown, Icon, Button } from "antd";
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import { routerRedux } from 'dva/router';
+import { Tag, Menu, Dropdown, Icon, Button } from 'antd';
 
-import styles from "./index.less";
+import styles from './index.less';
 
 const tagStyle = {
-  height: "32px",
-  lineHeight: "30px",
-  padding: "0 12px",
-  background: "#fff"
+  height: '32px',
+  lineHeight: '30px',
+  padding: '0 12px',
+  background: '#fff',
 };
 
 export default class TagsPageOpend extends PureComponent {
   state = {
-    tagBodyLeft: 0
+    tagBodyLeft: 0,
   };
   componentDidMount() {
     const { location: { pathname }, menuData } = this.props;
     this.props.dispatch({
-      type: "global/changePageOpenedListGeneral",
+      type: 'global/changePageOpenedListGeneral',
       payload: {
         pathname,
-        menuData
-      }
+        menuData,
+      },
     });
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.props.dispatch({
-        type: "global/changePageOpenedListGeneral",
+        type: 'global/changePageOpenedListGeneral',
         payload: {
           pathname: nextProps.location.pathname,
-          menuData: nextProps.menuData
-        }
+          menuData: nextProps.menuData,
+        },
       });
     }
   }
@@ -45,7 +45,7 @@ export default class TagsPageOpend extends PureComponent {
       domNode && this.moveToView(domNode); // eslint-disable-line
     }
   }
-  linkTo = item => {
+  linkTo = (item) => {
     const { currentPagePath } = this.props;
     if (currentPagePath === item.path) {
       this.props.dispatch(routerRedux.replace(item.path));
@@ -73,40 +73,40 @@ export default class TagsPageOpend extends PureComponent {
       const tagWidth = e.target.parentNode.offsetWidth;
       // console.log('tagWidth',tagWidth);
       this.setState({
-        tagBodyLeft: Math.min(this.state.tagBodyLeft + tagWidth, 0)
+        tagBodyLeft: Math.min(this.state.tagBodyLeft + tagWidth, 0),
       });
     }
     dispatch({
-      type: "global/removePageOpenedTag",
-      payload: item.path
+      type: 'global/removePageOpenedTag',
+      payload: item.path,
     });
     if (currentPagePath === item.path) {
       this.linkTo(lastPageObj);
     }
   };
   tagOptionsHandle = ({ key }) => {
-    if (key === "clearAllTags") {
+    if (key === 'clearAllTags') {
       this.props.dispatch({
-        type: "global/removeAllPageOpendTags"
+        type: 'global/removeAllPageOpendTags',
       });
       this.linkTo({
-        path: "/"
+        path: '/',
       });
     } else {
       this.props.dispatch({
-        type: "global/removeOtherPageOpendTags"
+        type: 'global/removeOtherPageOpendTags',
       });
     }
   };
-  handlescroll = event => {
+  handlescroll = (event) => {
     event.stopPropagation();
     this.props.dispatch({
-      type: "global/changeMouseWheelStatus"
+      type: 'global/changeMouseWheelStatus',
     });
     const e = event.nativeEvent;
     const { type } = e;
     let delta = 0;
-    if (type === "DOMMouseScroll" || type === "wheel") {
+    if (type === 'DOMMouseScroll' || type === 'wheel') {
       delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40;
     }
     let left = 0;
@@ -134,11 +134,11 @@ export default class TagsPageOpend extends PureComponent {
     this.setState({ tagBodyLeft: left });
   };
 
-  moveToView = tag => {
+  moveToView = (tag) => {
     if (tag.offsetLeft < -this.state.tagBodyLeft) {
       // 标签在可视区域左侧
       this.setState({
-        tagBodyLeft: -tag.offsetLeft + 10
+        tagBodyLeft: -tag.offsetLeft + 10,
       });
     } else if (
       tag.offsetLeft + 10 > -this.state.tagBodyLeft &&
@@ -154,7 +154,7 @@ export default class TagsPageOpend extends PureComponent {
             tag.offsetWidth -
             tag.offsetLeft -
             20
-        )
+        ),
       });
     } else {
       // 标签在可视区域右侧
@@ -164,12 +164,12 @@ export default class TagsPageOpend extends PureComponent {
           tag.offsetLeft - //eslint-disable-line
           (this.scrollCon.offsetWidth - 100 - tag.offsetWidth) + //eslint-disable-line
           20
-        )
+        ),
       });
     }
   };
   renderTagsList = () => {
-    const { currentPagePath = "", pageOpenedList = [] } = this.props;
+    const { currentPagePath = '', pageOpenedList = [] } = this.props;
     return pageOpenedList.map((item, i) => {
       return (
         <Tag
@@ -181,7 +181,7 @@ export default class TagsPageOpend extends PureComponent {
           onClose={e => this.tagOnClose(e, item)}
         >
           <div
-            style={{ display: "inline-block" }}
+            style={{ display: 'inline-block' }}
             onClick={() => {
               this.linkTo(item);
             }}
@@ -190,7 +190,7 @@ export default class TagsPageOpend extends PureComponent {
               className={styles.dot}
               style={{
                 backgroundColor:
-                  item.path === currentPagePath ? "#1890ff" : "#f0f2f5"
+                  item.path === currentPagePath ? '#1890ff' : '#f0f2f5',
               }}
             />
             <span className={styles.tagsText}>{item.name}</span>
@@ -211,14 +211,14 @@ export default class TagsPageOpend extends PureComponent {
       <div className={styles.tags_con}>
         <div
           className={styles.tags_outer_scroll_con}
-          ref={el => {
+          ref={(el) => {
             this.scrollCon = el;
           }}
         >
           <div
             className={styles.tags_inner_scroll_body}
             onWheel={this.handlescroll}
-            ref={el => {
+            ref={(el) => {
               this.scrollBody = el;
             }}
             style={{ transform: `translateX(${tagBodyLeft}px)` }}
@@ -231,7 +231,7 @@ export default class TagsPageOpend extends PureComponent {
                 type="primary"
                 size="small"
                 style={{
-                  fontSize: 12
+                  fontSize: 12,
                 }}
               >
                 标签选项

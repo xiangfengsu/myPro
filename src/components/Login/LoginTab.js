@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Tabs } from "antd";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
 const generateId = (() => {
   let i = 0;
-  return (prefix = "") => {
+  return (prefix = '') => {
     i += 1;
     return `${prefix}${i}`;
   };
@@ -15,11 +15,11 @@ const generateId = (() => {
 export default class LoginTab extends Component {
   static __ANT_PRO_LOGIN_TAB = true;
   static contextTypes = {
-    tabUtil: PropTypes.object
+    tabUtil: PropTypes.object,
   };
   constructor(props) {
     super(props);
-    this.uniqueId = generateId("login-tab-");
+    this.uniqueId = generateId('login-tab-');
   }
   componentWillMount() {
     if (this.context.tabUtil) {

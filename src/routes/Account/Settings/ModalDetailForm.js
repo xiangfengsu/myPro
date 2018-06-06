@@ -1,24 +1,24 @@
-import React, { PureComponent } from "react";
-import { Form, Row, Col, Card, Input } from "antd";
+import React, { PureComponent } from 'react';
+import { Form, Row, Col, Card, Input } from 'antd';
 
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
-    span: 6
+    span: 6,
   },
   wrapperCol: {
-    span: 18
-  }
+    span: 18,
+  },
 };
 @Form.create()
 export default class DetailFormInfo extends PureComponent {
   state = {
-    confirmDirty: false
+    confirmDirty: false,
   };
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue("newpassword")) {
-      callback("两次输入密码不一致");
+    if (value && value !== form.getFieldValue('newpassword')) {
+      callback('两次输入密码不一致');
     } else {
       callback();
     }
@@ -26,11 +26,11 @@ export default class DetailFormInfo extends PureComponent {
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && this.state.confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
+      form.validateFields(['confirm'], { force: true });
     }
     callback();
   };
-  handleConfirmBlur = e => {
+  handleConfirmBlur = (e) => {
     const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
@@ -42,43 +42,43 @@ export default class DetailFormInfo extends PureComponent {
           <Row gutter={24}>
             <Col lg={24} md={12} sm={24}>
               <FormItem label="原密码" {...formItemLayout} hasFeedback>
-                {getFieldDecorator("password", {
+                {getFieldDecorator('password', {
                   rules: [
                     {
                       required: true,
-                      message: "请输入原密码"
-                    }
-                  ]
+                      message: '请输入原密码',
+                    },
+                  ],
                 })(<Input type="password" />)}
               </FormItem>
             </Col>
             <Col lg={24} md={12} sm={24}>
               <FormItem label="新密码" {...formItemLayout} hasFeedback>
-                {getFieldDecorator("newpassword", {
+                {getFieldDecorator('newpassword', {
                   rules: [
                     {
                       required: true,
-                      message: "请输入新密码"
+                      message: '请输入新密码',
                     },
                     {
-                      validator: this.validateToNextPassword
-                    }
-                  ]
+                      validator: this.validateToNextPassword,
+                    },
+                  ],
                 })(<Input type="password" />)}
               </FormItem>
             </Col>
             <Col lg={24} md={12} sm={24}>
               <FormItem label="确认密码" {...formItemLayout} hasFeedback>
-                {getFieldDecorator("confirm", {
+                {getFieldDecorator('confirm', {
                   rules: [
                     {
                       required: true,
-                      message: "请输入确认密码"
+                      message: '请输入确认密码',
                     },
                     {
-                      validator: this.compareToFirstPassword
-                    }
-                  ]
+                      validator: this.compareToFirstPassword,
+                    },
+                  ],
                 })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
               </FormItem>
             </Col>

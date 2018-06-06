@@ -1,30 +1,30 @@
-import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Card, Tag, Modal } from "antd";
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
+import { Card, Tag, Modal } from 'antd';
 
-import PageHeaderLayout from "layouts/PageHeaderLayout";
-import DescriptionList from "components/DescriptionList";
+import PageHeaderLayout from 'layouts/PageHeaderLayout';
+import DescriptionList from 'components/DescriptionList';
 
-import DetailFormInfo from "./ModalDetailForm";
+import DetailFormInfo from './ModalDetailForm';
 
 const { Description } = DescriptionList;
 @connect(({ user, loading, settings }) => ({
   currentUser: user.currentUser,
   loading: loading.models.user,
-  settings
+  settings,
 }))
 export default class BaseSetting extends PureComponent {
   state = {
-    modalVisible: false
+    modalVisible: false,
   };
   showModalVisibel = () => {
     this.setState({
-      modalVisible: true
+      modalVisible: true,
     });
   };
   hideModalVisibel = () => {
     this.setState({
-      modalVisible: false
+      modalVisible: false,
     });
   };
   modalOkHandle = () => {
@@ -33,13 +33,13 @@ export default class BaseSetting extends PureComponent {
       // logs('fieldsValue', fieldsValue);
       delete fieldsValue.confirm; // eslint-disable-line
       this.props.dispatch({
-        type: "settings/update",
+        type: 'settings/update',
         payload: {
           ...fieldsValue,
-          cb: statusCode => {
+          cb: (statusCode) => {
             if (statusCode === 200) this.hideModalVisibel();
-          }
-        }
+          },
+        },
       });
     });
   };
@@ -56,7 +56,7 @@ export default class BaseSetting extends PureComponent {
             <Description term="邮箱">{currentUser.email}</Description>
             <Description term="部门">{currentUser.sysDept.name}</Description>
             <Description term="角色">
-              {currentUser.sysRoleList.map(item => {
+              {currentUser.sysRoleList.map((item) => {
                 return (
                   <Tag color="cyan" key={item.id}>
                     {item.rolename}
@@ -79,7 +79,7 @@ export default class BaseSetting extends PureComponent {
           }}
         >
           <DetailFormInfo
-            ref={ref => {
+            ref={(ref) => {
               this.modalForm = ref;
             }}
           />

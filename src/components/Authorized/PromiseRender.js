@@ -1,9 +1,9 @@
-import React from "react";
-import { Spin } from "antd";
+import React from 'react';
+import { Spin } from 'antd';
 
 export default class PromiseRender extends React.PureComponent {
   state = {
-    component: null
+    component: null,
   };
   componentDidMount() {
     this.setRenderComponent(this.props);
@@ -19,12 +19,12 @@ export default class PromiseRender extends React.PureComponent {
     props.promise
       .then(() => {
         this.setState({
-          component: ok
+          component: ok,
         });
       })
       .catch(() => {
         this.setState({
-          component: error
+          component: error,
         });
       });
   }
@@ -32,7 +32,7 @@ export default class PromiseRender extends React.PureComponent {
   // AuthorizedRoute is already instantiated
   // Authorized  render is already instantiated, children is no instantiated
   // Secured is not instantiated
-  checkIsInstantiation = target => {
+  checkIsInstantiation = (target) => {
     if (!React.isValidElement(target)) {
       return target;
     }
@@ -45,11 +45,11 @@ export default class PromiseRender extends React.PureComponent {
     ) : (
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          margin: "auto",
+          width: '100%',
+          height: '100%',
+          margin: 'auto',
           paddingTop: 50,
-          textAlign: "center"
+          textAlign: 'center',
         }}
       >
         <Spin size="large" />

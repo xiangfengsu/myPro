@@ -1,11 +1,11 @@
 export default {
-  namespace: "register",
+  namespace: 'register',
 
   state: {
-    status: undefined
+    status: undefined,
   },
 
   effects: {},
 
-  reducers: {}
+  reducers: {},
 };

@@ -1,142 +1,142 @@
-import { create, update, remove, queryPost } from "../services/generalApi";
-import { showStautsMessageHandle } from "../utils/statusCode";
+import { create, update, remove, queryPost } from '../services/generalApi';
+import { showStautsMessageHandle } from '../utils/statusCode';
 
 export default {
-  namespace: "rolemanage",
+  namespace: 'rolemanage',
   state: {
     data: {
       list: [],
-      pagination: {}
+      pagination: {},
     },
-    statusCode: 200
+    statusCode: 200,
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryPost, payload, "/sys/role/list");
+      const response = yield call(queryPost, payload, '/sys/role/list');
       if (response) {
         const { code = 200, body } = response;
         yield put({
-          type: "save",
+          type: 'save',
           payload: {
             data: body,
-            statusCode: code
-          }
+            statusCode: code,
+          },
         });
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
     },
     *update({ payload }, { call, put }) {
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: true
-        }
+          confirmLoading: true,
+        },
       });
-      const response = yield call(update, payload, "/sys/role/update");
+      const response = yield call(update, payload, '/sys/role/update');
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: false
-        }
+          confirmLoading: false,
+        },
       });
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "modalVisible",
+            type: 'modalVisible',
             payload: {
-              modalVisible: false
-            }
+              modalVisible: false,
+            },
           });
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
               data: body,
-              statusCode: code
-            }
+              statusCode: code,
+            },
           });
         }
-        showStautsMessageHandle("rolemanage", "update", code);
+        showStautsMessageHandle('rolemanage', 'update', code);
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
     },
     *add({ payload }, { call, put }) {
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: true
-        }
+          confirmLoading: true,
+        },
       });
-      const response = yield call(create, payload, "/sys/role/save");
+      const response = yield call(create, payload, '/sys/role/save');
       yield put({
-        type: "changgeConfirmLoading",
+        type: 'changgeConfirmLoading',
         payload: {
-          confirmLoading: false
-        }
+          confirmLoading: false,
+        },
       });
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "modalVisible",
+            type: 'modalVisible',
             payload: {
-              modalVisible: false
-            }
+              modalVisible: false,
+            },
           });
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
               data: body,
-              statusCode: code
-            }
+              statusCode: code,
+            },
           });
         }
-        showStautsMessageHandle("rolemanage", "add", code);
+        showStautsMessageHandle('rolemanage', 'add', code);
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
     },
     *remove({ payload }, { call, put }) {
-      const response = yield call(remove, payload, "/sys/role/del");
+      const response = yield call(remove, payload, '/sys/role/del');
       if (response) {
         const { code = 200, body } = response;
         if (code === 200) {
           yield put({
-            type: "save",
+            type: 'save',
             payload: {
               data: body,
-              statusCode: code
-            }
+              statusCode: code,
+            },
           });
         }
-        showStautsMessageHandle("rolemanage", "delete", code);
+        showStautsMessageHandle('rolemanage', 'delete', code);
       } else {
-        showStautsMessageHandle("error");
+        showStautsMessageHandle('error');
       }
-    }
+    },
   },
 
   reducers: {
     modalVisible(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     changgeConfirmLoading(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
     },
     save(state, action) {
       return {
         ...state,
-        data: action.payload.data
+        data: action.payload.data,
       };
-    }
-  }
+    },
+  },
 };

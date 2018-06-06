@@ -1,9 +1,9 @@
-import request from "../utils/request";
+import request from '../utils/request';
 
 export async function accountLogin(params, url) {
   return request(url, {
-    method: "POST",
-    body: params
+    method: 'POST',
+    body: params,
   });
 }
 

@@ -1,67 +1,67 @@
-import { routerRedux } from "dva/router";
-import { accountLogin, accountLoginOut } from "../services/api";
+import { routerRedux } from 'dva/router';
+import { accountLogin, accountLoginOut } from '../services/api';
 
 export default {
-  namespace: "login",
+  namespace: 'login',
 
   state: {
-    type: "account",
+    type: 'account',
     status: undefined,
-    errorMessage: ""
+    errorMessage: '',
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(accountLogin, payload, "/sys/doLogin");
+      const response = yield call(accountLogin, payload, '/sys/doLogin');
       if (response) {
         const { code } = response;
         const errorMessage = {
-          200: "登录成功",
-          100: "验证码错误",
-          101: "用户名或密码错误"
+          200: '登录成功',
+          100: '验证码错误',
+          101: '用户名或密码错误',
         };
         yield put({
-          type: "changeLoginStatus",
+          type: 'changeLoginStatus',
           payload: {
             type: payload.type,
-            status: code !== 200 ? "error" : "ok",
-            errorMessage: errorMessage[code]
-          }
+            status: code !== 200 ? 'error' : 'ok',
+            errorMessage: errorMessage[code],
+          },
         });
         if (code === 200) {
-          yield put(routerRedux.push("/"));
+          yield put(routerRedux.push('/'));
         }
       }
     },
     *logout(_, { call, put, select }) {
-      yield call(accountLoginOut, "/sys/logout");
+      yield call(accountLoginOut, '/sys/logout');
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);
         const pathname = yield select(state => state.routing.location.pathname);
         // add the parameters in the url
-        urlParams.searchParams.set("redirect", pathname);
-        window.history.replaceState(null, "login", urlParams.href);
+        urlParams.searchParams.set('redirect', pathname);
+        window.history.replaceState(null, 'login', urlParams.href);
       } finally {
         yield put({
-          type: "changeLoginStatus",
+          type: 'changeLoginStatus',
           payload: {
             status: false,
-            currentAuthority: "guest"
-          }
+            currentAuthority: 'guest',
+          },
         });
-        yield put(routerRedux.push("/user/login"));
+        yield put(routerRedux.push('/user/login'));
       }
-    }
+    },
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       };
-    }
+    },
     // changeLoginStatus(state, { payload }) {
     //   setAuthority(payload.currentAuthority);
     //   return {
@@ -70,5 +70,5 @@ export default {
     //     type: payload.type,
     //   };
     // },
-  }
+  },
 };
