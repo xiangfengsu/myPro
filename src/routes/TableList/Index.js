@@ -1,107 +1,108 @@
 import React, { PureComponent } from "react";
 import { connect } from "dva";
-import { Link, routerRedux } from "dva/router";
-import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from "antd";
+import { Link } from "dva/router";
+import { Form, Card, Modal, Button, Popconfirm } from "antd";
+import cloneDeep from "lodash/cloneDeep";
+
+import PageHeaderLayout from "../../layouts/PageHeaderLayout";
+import SearchForms from "../../components/GeneralSearchForm/Index";
+import TableList from "../../components/GeneralTableList/Index";
+import DetailFormInfo from "./ModalDetailForm";
+import { PageConfig } from "./pageConfig.js";
+
+import { formaterObjectValue, formItemAddInitValue } from "../../utils/utils";
+
 import styles from "./Index.less";
 
-import PageHeaderLayout from "src/layouts/PageHeaderLayout";
-import SearchForms from "components/GeneralSearchForm/Index";
-import TableList from "components/GeneralTableList/Index";
-import DetailFormInfo from "./ModalDetailForm";
-
-import Authorized from "utils/Authorized";
-import { PageConfig } from "./pageConfig.js";
-import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
-
-const FormItem = Form.Item;
-
-@connect(({ user, channel, loading }) => ({
+@connect(({ user, tablelist, loading }) => ({
   currentUser: user.currentUser,
-  channel,
-  loading: loading.models.channel
+  tablelist,
+  loading: loading.models.tablelist
 }))
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    modalVisible: false,
     showModalType: "",
     formValues: {},
-    currentItem: {},
+    queryValues: {},
     detailFormItems: PageConfig.detailFormItems
   };
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: "channel/fetch"
+      type: "tablelist/fetch",
+      payload: this.queryParamsFormater()
     });
   }
-  renderSearchForm = () => {
-    const { form, dispatch } = this.props;
-    const { searchForms } = PageConfig;
-    const props = {
-      form,
-      formInfo: {
-        layout: "inline",
-        formItems: searchForms
-      },
-      handleSearchSubmit: formValues => {
-        const { createtime, channeltype } = formValues;
-        const params = Object.assign(formValues, {
-          createtime: createtime ? createtime.format("YYYY-MM-DD") : "",
-          channeltype:
-            channeltype && channeltype.constructor.name === "Object"
-              ? channeltype.selectValue
-              : ""
-        });
-        const payload = formaterObjectValue(params);
-        this.setState({
-          formValues: payload
-        });
-        dispatch({
-          type: "channel/fetch",
-          payload
-        });
-      },
-      handleFormReset: () => {
-        this.setState({
-          formValues: {}
-        });
-        dispatch({
-          type: "channel/fetch",
-          payload: {}
-        });
+  queryParamsFormater = (fields, type) => {
+    // type 1:查询  2:update|delete  3:save  4:分页
+    const { data: { pagination } } = this.props.tablelist;
+    delete pagination.total;
+    const params = {
+      form: {},
+      query: {},
+      pagination: {
+        current: 1,
+        pageSize: 10
       }
     };
-    return <SearchForms {...props} />;
+    switch (type) {
+      case 1:
+        Object.assign(params, {
+          query: { ...fields }
+        });
+        break;
+      case 2:
+        Object.assign(params, {
+          query: { ...this.state.queryValues },
+          form: { ...fields },
+          pagination
+        });
+        break;
+      case 3:
+        Object.assign(params, {
+          form: { ...fields }
+        });
+        break;
+      case 4:
+        Object.assign(params, {
+          query: { ...this.state.queryValues },
+          pagination: { current: fields.page, pageSize: fields.pageSize }
+        });
+        break;
+      default:
+        Object.assign(params, {});
+    }
+    return params;
+  };
+  updateFormItems = (record = {}) => {
+    const detailFormItems = cloneDeep(PageConfig.detailFormItems);
+    const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
+    this.setState({ detailFormItems: newDetailFormItems });
+  };
+  changeModalVisibel = flag => {
+    this.props.dispatch({
+      type: "tablelist/modalVisible",
+      payload: {
+        modalVisible: flag
+      }
+    });
   };
   showModalVisibel = (type, record) => {
-    const { detailFormItems } = this.state;
-    const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
-    console.log(newDetailFormItems);
+    this.updateFormItems(record);
+    this.changeModalVisibel(true);
     this.setState({
-      showModalType: type,
-      modalVisible: true,
-      currentItem: record,
-      detailFormItems: newDetailFormItems
+      showModalType: type
     });
   };
   hideModalVisibel = () => {
-    this.setState({
-      modalVisible: false,
-      currentItem: {}
-    });
+    this.changeModalVisibel(false);
   };
   deleteTableRowHandle = id => {
     this.props.dispatch({
-      type: "channel/remove",
-      payload: { id }
+      type: "tablelist/remove",
+      payload: this.queryParamsFormater({ id }, 2)
     });
-  };
-  gotoDetail = () => {
-    this.props.dispatch(routerRedux.push("/generaltable/channelDetail/123"));
   };
   extraTableColumnRender = () => {
     const columns = [
@@ -109,7 +110,6 @@ export default class Index extends PureComponent {
         title: "操作",
         render: (text, record) => (
           <div>
-            {/* <a onClick={this.gotoDetail}>详情</a> */}
             <Link to="/generaltable/channelDetail/123">详情</Link>
             &nbsp;
             <a
@@ -134,17 +134,74 @@ export default class Index extends PureComponent {
     ];
     return columns;
   };
+  modalOkHandle = () => {
+    this.modalForm.validateFields((err, fieldsValue) => {
+      if (err) return;
+      const { showModalType } = this.state;
+      const fields = formaterObjectValue(fieldsValue);
+      if (showModalType === "create") {
+        this.props.dispatch({
+          type: "tablelist/add",
+          payload: this.queryParamsFormater(fields, 3)
+        });
+      } else if (showModalType === "update") {
+        this.props.dispatch({
+          type: "tablelist/update",
+          payload: this.queryParamsFormater(fields, 2)
+        });
+      }
+    });
+  };
+  renderSearchForm = () => {
+    const { form, dispatch } = this.props;
+    const { searchForms } = PageConfig;
+    const props = {
+      form,
+      formInfo: {
+        layout: "inline",
+        formItems: searchForms
+      },
+      handleSearchSubmit: formValues => {
+        const { createtime, channeltype } = formValues;
+        const params = Object.assign(formValues, {
+          createtime: createtime ? createtime.format("YYYY-MM-DD") : "",
+          channeltype:
+            channeltype && channeltype.constructor.name === "Object"
+              ? channeltype.selectValue
+              : ""
+        });
+        const payload = formaterObjectValue(params);
+        this.setState({
+          queryValues: payload
+        });
+        dispatch({
+          type: "tablelist/fetch",
+          payload: this.queryParamsFormater(payload, 1)
+        });
+      },
+      handleFormReset: () => {
+        this.setState({
+          queryValues: {}
+        });
+        dispatch({
+          type: "tablelist/fetch",
+          payload: this.queryParamsFormater()
+        });
+      }
+    };
+    return <SearchForms {...props} />;
+  };
   renderTable = () => {
-    const { channel, loading } = this.props;
+    const { tablelist, loading } = this.props;
     const { tableColumns } = PageConfig;
-    const { data: { list, pagination } } = channel;
+    const { data: { list, pagination } } = tablelist;
     const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
     const tableProps = {
       loading,
       dataSource: list,
       columns: newTableColumns,
       pagination: Object.assign(pagination, { pageSize: 10 }),
-      handleTableChange: current => {
+      handleTableChange: ({ current }) => {
         const { dispatch } = this.props;
         const { formValues } = this.state;
         const payload = {
@@ -153,41 +210,17 @@ export default class Index extends PureComponent {
           ...formValues
         };
         dispatch({
-          type: "channel/fetch",
-          payload
+          type: "tablelist/fetch",
+          payload: this.queryParamsFormater(payload, 4)
         });
       },
       bordered: false
     };
     return <TableList {...tableProps} />;
   };
-  modalOkHandle = () => {
-    this.modalForm.validateFields((err, fieldsValue) => {
-      if (err) return;
-      logs("fieldsValue", fieldsValue);
-      const { showModalType, currentItem } = this.state;
-      if (showModalType === "create") {
-        this.props.dispatch({
-          type: "channel/add",
-          payload: fieldsValue
-        });
-      } else if (showModalType === "update") {
-        this.props.dispatch({
-          type: "channel/update",
-          payload: Object.assign(currentItem, fieldsValue)
-        });
-      }
-
-      this.hideModalVisibel();
-    });
-  };
   render() {
-    const { modalVisible, detailFormItems } = this.state;
-    const modalWidth = document.documentElement.clientWidth - 300;
-    const {
-      form: { getFieldDecorator },
-      currentUser: { btnAuth = [] }
-    } = this.props;
+    const { detailFormItems } = this.state;
+    const { tablelist: { modalVisible, confirmLoading } } = this.props;
 
     return (
       <PageHeaderLayout>
@@ -196,24 +229,22 @@ export default class Index extends PureComponent {
             <div className={styles.tableListForm}>
               {this.renderSearchForm()}
               <div className={styles.tableListOperator}>
-                <Authorized authority={() => ~btnAuth.indexOf("新建渠道")}>
-                  <Button
-                    icon="plus"
-                    type="primary"
-                    onClick={() => this.showModalVisibel("create", {})}
-                  >
-                    新建
-                  </Button>
-                </Authorized>
+                <Button
+                  icon="plus"
+                  type="primary"
+                  onClick={() => this.showModalVisibel("create", {})}
+                >
+                  新建
+                </Button>
               </div>
               {this.renderTable()}
             </div>
           </div>
         </Card>
         <Modal
-          // width={modalWidth}
           destroyOnClose
           visible={modalVisible}
+          confirmLoading={confirmLoading}
           onCancel={() => this.hideModalVisibel()}
           onOk={() => {
             this.modalOkHandle();

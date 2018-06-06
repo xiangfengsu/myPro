@@ -1,20 +1,16 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
 import { connect } from "dva";
 
-import { TreeSelect, Tree, Tag, Card } from "antd";
+import { Tree, Tag } from "antd";
 
-const TreeNode = Tree.TreeNode;
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
-const SHOW_CHILD = TreeSelect.SHOW_CHILD;
+const { TreeNode } = Tree;
 @connect(state => ({
   dictionary: state.dictionary
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
-    const value = this.props.value;
+    const { value } = this.props;
     this.state = {
       selectValue: value === undefined ? undefined : `${value}`.split(",")
     };
@@ -31,7 +27,7 @@ export default class DynamicSelect extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if ("value" in nextProps) {
-      const value = nextProps.value;
+      const { value } = nextProps;
       this.setState({
         selectValue: value === undefined ? undefined : `${value}`.split(",")
       });
@@ -44,8 +40,8 @@ export default class DynamicSelect extends Component {
     this.triggerChange(selectValue);
   };
   triggerChange = changedValue => {
-    const onChange = this.props.onChange;
-    logs("changedValue", changedValue);
+    const { onChange } = this.props;
+    // logs('changedValue', changedValue);
     if (onChange) {
       onChange(changedValue);
     }
@@ -154,21 +150,21 @@ export default class DynamicSelect extends Component {
     });
   };
   render() {
-    const state = this.state;
+    const { state } = this;
     const {
       dictionary = {},
       dictionaryKey,
       placeholder,
-      popupContainer,
       disabled,
-      multiple,
-      showCheckedStrategy
+      multiple
     } = this.props;
     const len = dictionary[dictionaryKey] && dictionary[dictionaryKey].length;
-    logs("this.props", this.props);
+    // logs('this.props', this.props);
     return (
       <Tree
         checkable
+        disabled={disabled}
+        multiple={multiple}
         defaultSelectedKeys={state.selectValue}
         defaultExpandedKeys={state.selectValue}
         placeholder={placeholder}

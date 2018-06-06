@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 class QRcode extends Component {
   static propTypes = {
-    captcha: PropTypes.string.isRequired
+    captcha: PropTypes.string
   };
   static defaultProps = {
     captcha: ""
@@ -33,6 +33,7 @@ class QRcode extends Component {
           cursor: "pointer",
           border: "1px solid #d9d9d9"
         }}
+        alt=""
       />
     );
   }

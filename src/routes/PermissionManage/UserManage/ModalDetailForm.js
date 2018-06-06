@@ -1,14 +1,9 @@
 import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Form, Row, Col, Card, Button, Input, Tabs } from "antd";
+import { Form, Row, Col, Card } from "antd";
 
 import { renderFormItem } from "../../../common/formItem";
-import styles from "./Index.less";
-
-import { FormItems } from "./pageConfig";
 
 const FormItem = Form.Item;
-const TabPane = Tabs.TabPane;
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -19,19 +14,16 @@ const formItemLayout = {
 };
 @Form.create()
 export default class DetailFormInfo extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
   renderFormItem = () => {
-    const { formItems, dispatch, form } = this.props;
-    return formItems.map((item, i) => {
+    const { formItems, form } = this.props;
+    return formItems.map(item => {
       const InputType = renderFormItem(item, form);
       return (
         <Col
           lg={item.colSpan === 0 ? 0 : item.colSpan || 8}
           md={12}
           sm={24}
-          key={`${item.key}_${i}`}
+          key={item.key}
         >
           <FormItem label={`${item.label}`} {...formItemLayout} hasFeedback>
             {InputType}

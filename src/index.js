@@ -6,16 +6,16 @@ import createHistory from "history/createHashHistory";
 // import createHistory from 'history/createBrowserHistory';
 import createLoading from "dva-loading";
 import "moment/locale/zh-cn";
-import FastClick from "fastclick";
 import "./rollbar";
 
 import "./index.less";
 
 const flag = true;
 if (window.console) {
+  // eslint-disable-next-line
   window.logs = function(...props) {
     if (flag) {
-      return console.log(...props);
+      return console.log(...props); // eslint-disable-line
     }
   };
 }

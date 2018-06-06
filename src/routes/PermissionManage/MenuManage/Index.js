@@ -1,44 +1,27 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import { connect } from "dva";
-import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from "antd";
-import styles from "./Index.less";
+import { Card, Modal, Button, Popconfirm } from "antd";
+
 import cloneDeep from "lodash/cloneDeep";
 import TreeTable from "components/TreeTable/Index";
+import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
 import { PageConfig } from "./pageConfig.js";
-
 import DetailFormInfo from "./ModalDetailForm";
-// import Authorized from '../../../utils/Authorized';
-import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
+import styles from "./Index.less";
 
-const FormItem = Form.Item;
-
-const formItemObject = PageConfig.detailFormItems;
 @connect(({ user, loading, menumanage, dictionary }) => ({
   currentUser: user.currentUser,
   loading: loading.models.menumanage,
   menumanage,
   dictionary
 }))
-@Form.create()
 export default class Index extends PureComponent {
-  static childContextTypes = {
-    updateFormItems: PropTypes.func,
-    setTreeNodeParentId: PropTypes.func
+  state = {
+    showModalType: "",
+    detailFormItems: []
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModalType: "",
-      formValues: {},
-      currentItem: {},
-      selectedNode: [],
-      detailFormItems: [],
-      treeNodeParentId: undefined
-    };
-  }
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -57,22 +40,19 @@ export default class Index extends PureComponent {
     if (type === "update") {
       newDetailFormItems[0].colSpan = 0;
     }
-    this.setState({ detailFormItems });
+    this.setState({ detailFormItems: newDetailFormItems });
   };
   showModalVisibel = (type, record) => {
     const typeId = record.menutype;
     this.updateFormItems(typeId, type, record);
     this.changeModalVisibel(true);
     this.setState({
-      showModalType: type,
-      currentItem: record,
-      treeNodeParentId: record.parentmenuid
+      showModalType: type
     });
   };
   hideModalVisibel = () => {
     this.changeModalVisibel(false);
     this.setState({
-      currentItem: {},
       detailFormItems: []
     });
   };
@@ -88,7 +68,7 @@ export default class Index extends PureComponent {
     const columns = [
       {
         title: "操作",
-        render: (text, record, index) => {
+        render: (text, record) => {
           if (record.parentid !== 0) {
             if (record.menutype !== 3) {
               return (
@@ -118,40 +98,10 @@ export default class Index extends PureComponent {
     ];
     return columns;
   };
-  queryStructorTreeHandle = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: "dictionary/query",
-      payload: {
-        fetchUrl: "/api/queryMenuStructure",
-        dictionaryKey: "menuStructure"
-      }
-    });
-  };
-  renderTable = () => {
-    const { menumanage, loading } = this.props;
-    const { tableColumns } = PageConfig;
-    const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
-    const { data: { list, pagination } } = menumanage;
-    const tableProps = {
-      loading,
-      dataSource: list,
-      columns: newTableColumns
-    };
-    return <TreeTable {...tableProps} />;
-  };
-  getChildContext() {
-    return {
-      updateFormItems: this.updateFormItems,
-      setTreeNodeParentId: treeNodeParentId => {
-        this.setState({ treeNodeParentId });
-      }
-    };
-  }
   modalOkHandle = () => {
     this.modalForm.validateFields((err, fieldsValue) => {
       if (err) return;
-      logs("fieldsValue", fieldsValue);
+      // logs('fieldsValue', fieldsValue);
       const { showModalType } = this.state;
       const fields = formaterObjectValue(fieldsValue);
       if (showModalType === "create") {
@@ -173,22 +123,21 @@ export default class Index extends PureComponent {
       payload: { id }
     });
   };
-  render() {
-    const {
-      detailFormItems,
-      currentItem,
-      showModalType,
-      treeNodeParentId,
-      currentItem: { parentmenuid, parentmenuname }
-    } = this.state;
-    const {
-      form: { getFieldDecorator },
-      currentUser: { btnAuth = [] },
+  renderTable = () => {
+    const { menumanage, loading } = this.props;
+    const { tableColumns } = PageConfig;
+    const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
+    const { data: { list = [] } } = menumanage;
+    const tableProps = {
       loading,
-      menumanage: { modalVisible, confirmLoading },
-      dictionary
-    } = this.props;
-    const treeNodes = dictionary.menuStructure;
+      dataSource: list,
+      columns: newTableColumns
+    };
+    return <TreeTable {...tableProps} />;
+  };
+  render() {
+    const { detailFormItems } = this.state;
+    const { menumanage: { modalVisible, confirmLoading } } = this.props;
     return (
       <PageHeaderLayout>
         <Card bordered={false}>
@@ -208,7 +157,6 @@ export default class Index extends PureComponent {
           </div>
         </Card>
         <Modal
-          // width={modalWidth}
           destroyOnClose
           visible={modalVisible}
           confirmLoading={confirmLoading}
@@ -222,13 +170,6 @@ export default class Index extends PureComponent {
               this.modalForm = ref;
             }}
             formItems={detailFormItems}
-            showModalType={showModalType}
-            dictionary={dictionary}
-            treeNodes={treeNodes}
-            parentId={treeNodeParentId}
-            parentName={parentmenuname}
-            currentItem={currentItem}
-            queryStructorTreeHandle={this.queryStructorTreeHandle}
           />
         </Modal>
       </PageHeaderLayout>

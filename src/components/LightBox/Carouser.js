@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Modal, Carousel, Icon } from "antd";
-
-import styles from "./Index.less";
+import { Modal, Carousel, Icon } from "antd";
 
 const SamplePrevArrow = props => {
   const { className, style, onClick } = props;
@@ -99,17 +97,6 @@ export default class CustomCarouser extends PureComponent {
     hideCarouser: () => {}
   };
 
-  showModal = index => {
-    this.setState({
-      modalVisible: true,
-      currentIndex: index
-    });
-  };
-  hideModal = currentIndex => {
-    this.setState({
-      modalVisible: false
-    });
-  };
   render() {
     const { images, visible, currentIndex, hideCarouser } = this.props;
     // logs('images', images);
@@ -133,9 +120,10 @@ export default class CustomCarouser extends PureComponent {
         <div style={{ padding: "16px 24px 16px" }}>
           <Carousel {...carouselProps}>
             {images.map((img, i) => (
+              /* eslint-disable-next-line */
               <div key={i}>
                 <div className="image-modal-container">
-                  <img src={img.src} style={{ width: "100%" }} />
+                  <img src={img.src} style={{ width: "100%" }} alt="" />
                 </div>
               </div>
             ))}

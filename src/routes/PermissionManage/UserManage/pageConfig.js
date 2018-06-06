@@ -1,4 +1,5 @@
-import { Icon, Tag } from "antd";
+import React from "react";
+import { Tag } from "antd";
 
 export const PageConfig = {
   name: "用户管理",
@@ -19,8 +20,8 @@ export const PageConfig = {
     {
       title: "角色",
       dataIndex: "role",
-      render: (text, record, index) => {
-        return record.sysRoleList.map((v, i) => {
+      render: (text, record) => {
+        return record.sysRoleList.map(v => {
           return (
             <Tag color="cyan" key={v.id}>
               {v.rolename}
@@ -44,8 +45,9 @@ export const PageConfig = {
     {
       title: "状态",
       dataIndex: "status",
-      render: (text, record, index) => {
+      render: text => {
         if (text == 1) {
+          // eslint-disable-line
           return <Tag color="#52c41a">通过</Tag>;
         } else {
           return <Tag color="#f5222d">拒绝</Tag>;

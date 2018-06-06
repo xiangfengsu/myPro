@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
 import { connect } from "dva";
 
-import { Select, Input } from "antd";
+import { Select } from "antd";
 
-const Option = Select.Option;
+const { Option } = Select;
 const cleanArray = arr => {
   if (!(arr instanceof Array)) {
-    arr = [];
+    arr = []; /* eslint-disable-line */
   }
   return arr.filter(e => {
     return e !== undefined && e !== null && e !== "";
@@ -68,13 +66,13 @@ export default class DynamicSelect extends Component {
     this.triggerChange(selectValue);
   };
   triggerChange = changedValue => {
-    const onChange = this.props.onChange;
+    const { onChange } = this.props;
     if (onChange) {
       onChange(changedValue);
     }
   };
   render() {
-    const state = this.state;
+    const { state } = this;
     const {
       dictionary = {},
       dictionaryKey,
@@ -92,12 +90,12 @@ export default class DynamicSelect extends Component {
         getPopupContainer={() => popupContainer}
       >
         {dictionary[dictionaryKey] &&
-          dictionary[dictionaryKey].map((option, i) => {
+          dictionary[dictionaryKey].map(option => {
             return (
-              <Select.OptGroup label={option.label} key={`${i}_t`}>
-                {option.childrenOptions.map((v, j) => {
+              <Select.OptGroup label={option.label} key={option.key}>
+                {option.childrenOptions.map(v => {
                   return (
-                    <Option value={v.key} key={`${v.key}_${i}_${j}`}>
+                    <Option value={v.key} key={v.key}>
                       {v.value}
                     </Option>
                   );

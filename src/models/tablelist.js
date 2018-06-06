@@ -2,7 +2,7 @@ import { create, update, remove, queryPost } from "../services/generalApi";
 import { showStautsMessageHandle } from "../utils/statusCode";
 
 export default {
-  namespace: "usermanage",
+  namespace: "tablelist",
   state: {
     data: {
       list: [],
@@ -14,15 +14,17 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryPost, payload, "/sys/user/list");
+      const response = yield call(queryPost, payload, "/sys/tablelist/list");
       if (response) {
-        const { body } = response;
-        yield put({
-          type: "save",
-          payload: {
-            data: body
-          }
-        });
+        const { code, body } = response;
+        if (code === 200) {
+          yield put({
+            type: "save",
+            payload: {
+              data: body
+            }
+          });
+        }
       } else {
         showStautsMessageHandle("error");
       }
@@ -35,10 +37,10 @@ export default {
         }
       });
       const page = yield select(
-        state => state.usermanage.data.pagination.current
+        state => state.tablelist.data.pagination.current
       );
       Object.assign(payload, { page });
-      const response = yield call(update, payload, "/sys/user/update");
+      const response = yield call(update, payload, "/sys/tablelist/update");
       yield put({
         type: "changgeConfirmLoading",
         payload: {
@@ -46,7 +48,7 @@ export default {
         }
       });
       if (response) {
-        const { code = 200, body } = response;
+        const { code, body } = response;
         if (code === 200) {
           yield put({
             type: "modalVisible",
@@ -61,7 +63,7 @@ export default {
             }
           });
         }
-        showStautsMessageHandle("usermanage", "update", code);
+        showStautsMessageHandle("general", "update", code);
       } else {
         showStautsMessageHandle("error");
       }
@@ -73,7 +75,7 @@ export default {
           confirmLoading: true
         }
       });
-      const response = yield call(create, payload, "/sys/user/save");
+      const response = yield call(create, payload, "/sys/tablelist/save");
       yield put({
         type: "changgeConfirmLoading",
         payload: {
@@ -81,7 +83,7 @@ export default {
         }
       });
       if (response) {
-        const { code = 200, body } = response;
+        const { code, body } = response;
         if (code === 200) {
           yield put({
             type: "modalVisible",
@@ -96,19 +98,19 @@ export default {
             }
           });
         }
-        showStautsMessageHandle("usermanage", "add", code);
+        showStautsMessageHandle("general", "add", code);
       } else {
         showStautsMessageHandle("error");
       }
     },
     *remove({ payload }, { call, put, select }) {
       const page = yield select(
-        state => state.usermanage.data.pagination.current
+        state => state.tablelist.data.pagination.current
       );
       Object.assign(payload, { page });
-      const response = yield call(remove, payload, "/sys/user/del");
+      const response = yield call(remove, payload, "/sys/tablelist/del");
       if (response) {
-        const { code = 200, body } = response;
+        const { code, body } = response;
         if (code === 200) {
           yield put({
             type: "save",
@@ -117,7 +119,7 @@ export default {
             }
           });
         }
-        showStautsMessageHandle("usermanage", "delete", code);
+        showStautsMessageHandle("general", "delete", code);
       } else {
         showStautsMessageHandle("error");
       }
@@ -138,19 +140,9 @@ export default {
       };
     },
     save(state, action) {
-      const dataObj = action.payload.data;
       return {
         ...state,
-        data: Object.assign(dataObj, {
-          list:
-            dataObj.list &&
-            dataObj.list.map(item => {
-              return {
-                ...item,
-                roleids: item.sysRoleList && item.sysRoleList.map(rl => rl.id)
-              };
-            })
-        })
+        ...action.payload
       };
     }
   }

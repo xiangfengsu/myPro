@@ -1,5 +1,3 @@
-import { Icon } from "antd";
-
 export const FormItems = [
   {
     formType: "input",
@@ -118,6 +116,7 @@ export const FormItems = [
     selectOptions: [
       {
         label: "selectGroup1",
+        key: "selectGroup1",
         childrenOptions: [
           {
             key: "selectGroup1_1",
@@ -131,6 +130,7 @@ export const FormItems = [
       },
       {
         label: "selectGroup2",
+        key: "selectGroup2",
         childrenOptions: [
           {
             key: "selectGroup2_1",
@@ -214,44 +214,44 @@ export const FormItems = [
     label: "timePicker",
     popupContainer: "scorllArea"
   },
-  {
-    formType: "checkboxGroup",
-    disabled: false,
-    isRequired: false,
-    itemColSpan: 4,
-    options: [
-      { label: "Apple", value: "Apple" },
-      { label: "Pear", value: "Pear" },
-      { label: "Orange", value: "Orange" },
-      { label: "Apple1", value: "Apple1" },
-      { label: "Pear1", value: "Pear1" },
-      { label: "Orange1", value: "Orange1" },
-      { label: "Orange2", value: "Orange3" }
-    ],
-    key: "checkbox",
-    label: "checkbox",
-    colSpan: 24
-    // popupContainer: 'scorllArea'
-  },
-  {
-    formType: "radioGroup",
-    disabled: false,
-    isRequired: false,
-    itemColSpan: 4,
-    options: [
-      { label: "Apple", value: "Apple" },
-      { label: "Pear", value: "Pear" },
-      { label: "Orange", value: "Orange" },
-      { label: "Apple1", value: "Apple1" },
-      { label: "Pear1", value: "Pear1" },
-      { label: "Orange1", value: "Orange1" },
-      { label: "Orange2", value: "Orange3" }
-    ],
-    key: "radioGroup",
-    label: "radioGroup",
-    colSpan: 24
-    // popupContainer: 'scorllArea'
-  },
+  // {
+  //   formType: 'checkboxGroup',
+  //   disabled: false,
+  //   isRequired: false,
+  //   itemColSpan: 4,
+  //   options: [
+  //     { label: 'Apple', value: 'Apple' },
+  //     { label: 'Pear', value: 'Pear' },
+  //     { label: 'Orange', value: 'Orange' },
+  //     { label: 'Apple1', value: 'Apple1' },
+  //     { label: 'Pear1', value: 'Pear1' },
+  //     { label: 'Orange1', value: 'Orange1' },
+  //     { label: 'Orange2', value: 'Orange3' },
+  //   ],
+  //   key: 'checkbox',
+  //   label: 'checkbox',
+  //   colSpan: 24,
+  //   // popupContainer: 'scorllArea'
+  // },
+  // {
+  //   formType: 'radioGroup',
+  //   disabled: false,
+  //   isRequired: false,
+  //   itemColSpan: 4,
+  //   options: [
+  //     { label: 'Apple', value: 'Apple' },
+  //     { label: 'Pear', value: 'Pear' },
+  //     { label: 'Orange', value: 'Orange' },
+  //     { label: 'Apple1', value: 'Apple1' },
+  //     { label: 'Pear1', value: 'Pear1' },
+  //     { label: 'Orange1', value: 'Orange1' },
+  //     { label: 'Orange2', value: 'Orange3' },
+  //   ],
+  //   key: 'radioGroup',
+  //   label: 'radioGroup',
+  //   colSpan: 24,
+  //   // popupContainer: 'scorllArea'
+  // },
   {
     formType: "upload",
     disabled: false,

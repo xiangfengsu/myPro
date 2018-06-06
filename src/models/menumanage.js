@@ -3,7 +3,7 @@ import { showStautsMessageHandle } from "../utils/statusCode";
 
 function formatter(data = []) {
   return data.map(item => {
-    const { id, name, parentid, updatetime, deptorder } = item;
+    const { id } = item;
     const result = {
       ...item,
       key: id
@@ -31,7 +31,7 @@ export default {
     *fetch({ payload }, { call, put }) {
       const response = yield call(query, payload, "/sys/menu/tree");
       if (response) {
-        const { code = 200, body, message = "" } = response;
+        const { code = 200, body } = response;
         yield put({
           type: "save",
           payload: {
@@ -43,7 +43,7 @@ export default {
         showStautsMessageHandle("error");
       }
     },
-    *update({ payload }, { call, put, select }) {
+    *update({ payload }, { call, put }) {
       yield put({
         type: "changgeConfirmLoading",
         payload: {
@@ -58,7 +58,7 @@ export default {
         }
       });
       if (response) {
-        const { code = 200, body, message = "" } = response;
+        const { code = 200, body } = response;
         if (code === 200) {
           yield put({
             type: "modalVisible",
@@ -79,7 +79,7 @@ export default {
         showStautsMessageHandle("error");
       }
     },
-    *add({ payload, callback }, { call, put }) {
+    *add({ payload }, { call, put }) {
       yield put({
         type: "changgeConfirmLoading",
         payload: {
@@ -94,7 +94,7 @@ export default {
         }
       });
       if (response) {
-        const { code = 200, body, message = "" } = response;
+        const { code = 200, body } = response;
         if (code === 200) {
           yield put({
             type: "modalVisible",
@@ -115,10 +115,10 @@ export default {
         showStautsMessageHandle("error");
       }
     },
-    *remove({ payload }, { call, put, select }) {
+    *remove({ payload }, { call, put }) {
       const response = yield call(remove, payload, "/sys/menu/del");
       if (response) {
-        const { code = 200, body, message = "" } = response;
+        const { code = 200, body } = response;
         if (code === 200) {
           yield put({
             type: "save",

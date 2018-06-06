@@ -1,70 +1,21 @@
 import React, { PureComponent } from "react";
-import { connect } from "dva";
-import {
-  Form,
-  Row,
-  Col,
-  Card,
-  Button,
-  Input,
-  Tabs,
-  Popover,
-  Modal,
-  message
-} from "antd";
-import PageHeaderLayout from "src/layouts/PageHeaderLayout";
-import { renderFormItem } from "../../common/formItem";
-
+import { Form, Row, Col, Card, Button, Popover, Modal, message } from "antd";
 import SyntaxHighlighter from "react-syntax-highlighter/prism";
-import {
-  atomDark,
-  coy,
-  duotoneDark
-} from "react-syntax-highlighter/styles/prism";
-
+import PageHeaderLayout from "src/layouts/PageHeaderLayout";
+import { atomDark } from "react-syntax-highlighter/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-import styles from "./Index.less";
+import { renderFormItem } from "../../common/formItem";
 
 import { FormItems } from "./pageConfig";
 
 const FormItem = Form.Item;
-const TabPane = Tabs.TabPane;
-const formItemLayout = {
-  labelCol: {
-    span: 6
-  },
-  wrapperCol: {
-    span: 18
-  }
-};
+
 @Form.create()
 export default class Index extends PureComponent {
   state = {
     modalVisible: false,
     currentItem: {}
-  };
-  constructor(props) {
-    super(props);
-  }
-  renderCode = () => {
-    const { currentItem } = this.state;
-    const code = JSON.stringify(currentItem, null, "\t");
-    return (
-      <SyntaxHighlighter language="json" style={atomDark}>
-        {code}
-      </SyntaxHighlighter>
-    );
-  };
-  renderCode1 = item => {
-    const code = JSON.stringify(item, null, "\t");
-    return (
-      <div>
-        <SyntaxHighlighter language="json" style={atomDark}>
-          {code}
-        </SyntaxHighlighter>
-      </div>
-    );
   };
   showModalVisibel = item => {
     this.setState({
@@ -76,6 +27,18 @@ export default class Index extends PureComponent {
     this.setState({
       modalVisible: false
     });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log("values ", values); // eslint-disable-line
+      }
+    });
+  };
+  handleReset = e => {
+    e.preventDefault();
+    this.props.form.resetFields();
   };
   renderCopy = item => {
     const code = JSON.stringify(item, null, "\t");
@@ -89,15 +52,15 @@ export default class Index extends PureComponent {
     );
   };
   renderFormItem = () => {
-    const { dispatch, form } = this.props;
-    return FormItems.map((item, i) => {
+    const { form } = this.props;
+    return FormItems.map(item => {
       const InputType = renderFormItem(item, form);
       return (
         <Col
           lg={item.colSpan || 8}
           md={12}
           sm={24}
-          key={`${item.key}_${i}`}
+          key={item.key}
           style={{ marginBottom: 24 }}
         >
           {/* <Popover>
@@ -115,31 +78,32 @@ export default class Index extends PureComponent {
             ]}
             title={item.label}
           >
-            {/* <Card hoverable actions={[<a href="javascript:void(0)" onClick={() => { this.showModalVisibel(item) }}>查看属性</a>]} title={item.label}> */}
-            <FormItem
-              // label={`${item.label}`}
-              hasFeedback={item.hasFeedback}
-            >
-              {InputType}
-            </FormItem>
+            <FormItem hasFeedback={item.hasFeedback}>{InputType}</FormItem>
           </Card>
         </Col>
       );
     });
   };
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log("values ", values);
-      }
-    });
-  };
-  handleReset = e => {
-    e.preventDefault();
-    this.props.form.resetFields();
-  };
 
+  renderCode1 = item => {
+    const code = JSON.stringify(item, null, "\t");
+    return (
+      <div>
+        <SyntaxHighlighter language="json" style={atomDark}>
+          {code}
+        </SyntaxHighlighter>
+      </div>
+    );
+  };
+  renderCode = () => {
+    const { currentItem } = this.state;
+    const code = JSON.stringify(currentItem, null, "\t");
+    return (
+      <SyntaxHighlighter language="json" style={atomDark}>
+        {code}
+      </SyntaxHighlighter>
+    );
+  };
   render() {
     const { modalVisible } = this.state;
     return (

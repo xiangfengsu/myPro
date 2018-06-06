@@ -1,20 +1,14 @@
-import {
-  Form,
-  Input,
-  InputNumber,
-  Switch,
-  Select,
-  TreeSelect,
-  TimePicker,
-  Upload,
-  DatePicker
-} from "antd";
+import React from "react";
+import { Input, InputNumber, Select, TimePicker, DatePicker } from "antd";
+// import CheckboxGroup from '../components/CheckBox/Index';
+import UploadImg from "../components/UploadImg/Index";
+import DynamicSelect from "../components/DynamicSelect/Index";
+import DynamicSelectTree from "../components/DynamicSelectTree/Index";
+import DynamicSelectGroup from "../components/DynamicSelectGroup/Index";
+import DynamicSelectMenuTree from "../components/MenuDynamicTree/Index";
 
-const FormItem = Form.Item;
-const MonthPicker = DatePicker.MonthPicker;
-const RangePicker = DatePicker.RangePicker;
-
-const validateNumber = (value, prevValue, allValues) => {
+const { MonthPicker, RangePicker } = DatePicker;
+const validateNumber = (value, prevValue) => {
   if (!value) {
     return value;
   }
@@ -25,7 +19,7 @@ const validateNumber = (value, prevValue, allValues) => {
     return prevValue;
   }
 };
-const validatePlusNumber = (value, prevValue, allValues) => {
+const validatePlusNumber = (value, prevValue) => {
   if (!value) {
     return value;
   }
@@ -36,21 +30,9 @@ const validatePlusNumber = (value, prevValue, allValues) => {
     return prevValue;
   }
 };
-const validateMoney = (value, prevValue, allValues) => {
-  if (!value) {
-    return value;
-  }
-  const reg = /^\d+(\.\d{1,4})?$/;
-  logs("value", reg.test(value));
-  if (reg.test(value)) {
-    return value;
-  } else {
-    return prevValue;
-  }
-};
 
 export const renderFormItem = (item, form, dispatch) => {
-  const { getFieldDecorator, setFieldsValue } = form;
+  const { getFieldDecorator } = form;
   let InputType = null;
   switch (item.formType) {
     case "input":
@@ -99,8 +81,8 @@ export const renderFormItem = (item, form, dispatch) => {
     case "inputNumber":
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
-        normalize: (value, prevValue, allValues) => {
-          return validateNumber(value, prevValue, allValues);
+        normalize: (value, prevValue) => {
+          return validateNumber(value, prevValue);
         },
         rules: [
           {
@@ -121,8 +103,8 @@ export const renderFormItem = (item, form, dispatch) => {
     case "inputMoney":
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
-        normalize: (value, prevValue, allValues) => {
-          return validateNumber(value, prevValue, allValues);
+        normalize: (value, prevValue) => {
+          return validateNumber(value, prevValue);
         },
         rules: [
           {
@@ -146,8 +128,8 @@ export const renderFormItem = (item, form, dispatch) => {
     case "inputPhone":
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
-        normalize: (value, prevValue, allValues) => {
-          return validatePlusNumber(value, prevValue, allValues);
+        normalize: (value, prevValue) => {
+          return validatePlusNumber(value, prevValue);
         },
         rules: [
           {
@@ -208,9 +190,9 @@ export const renderFormItem = (item, form, dispatch) => {
             document.body
           }
         >
-          {item.selectOptions.map((option, i) => {
+          {item.selectOptions.map(option => {
             return (
-              <Select.Option key={`${option.key}_i`} value={option.key}>
+              <Select.Option key={`${option.key}`} value={option.key}>
                 {option.value}
               </Select.Option>
             );
@@ -219,8 +201,6 @@ export const renderFormItem = (item, form, dispatch) => {
       );
       break;
     case "selectDynamic":
-      const DynamicSelect = require("../components/DynamicSelect/Index")
-        .default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [
@@ -266,12 +246,12 @@ export const renderFormItem = (item, form, dispatch) => {
             document.body
           }
         >
-          {item.selectOptions.map((option, i) => {
+          {item.selectOptions.map(option => {
             return (
-              <Select.OptGroup label={option.label} key={`${i}_t`}>
-                {option.childrenOptions.map((v, j) => {
+              <Select.OptGroup label={option.label} key={option.key}>
+                {option.childrenOptions.map(v => {
                   return (
-                    <Select.Option value={v.key} key={`${i}_${j}`}>
+                    <Select.Option value={v.key} key={v.key}>
                       {v.value}
                     </Select.Option>
                   );
@@ -283,8 +263,6 @@ export const renderFormItem = (item, form, dispatch) => {
       );
       break;
     case "selectDynamicGroup":
-      const DynamicSelectGroup = require("../components/DynamicSelectGroup/Index")
-        .default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [
@@ -310,8 +288,6 @@ export const renderFormItem = (item, form, dispatch) => {
       );
       break;
     case "selectDynamicTree":
-      const DynamicSelectTree = require("../components/DynamicSelectTree/Index")
-        .default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [
@@ -341,13 +317,10 @@ export const renderFormItem = (item, form, dispatch) => {
           multiple={item.multiple}
           showCheckedStrategy={item.showCheckedStrategy}
           extraProp={item.extraProp || {}}
-          // popupContainer={item.popupContainer && document.getElementById(item.popupContainer) || document.body}
         />
       );
       break;
     case "selectDynamicMenuTree":
-      const DynamicSelectMenuTree = require("../components/MenuDynamicTree/Index")
-        .default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [
@@ -355,7 +328,6 @@ export const renderFormItem = (item, form, dispatch) => {
             required: item.isRequired,
             message: `${item.label}不能为空`,
             validator: (rule, value, callback) => {
-              logs("value", value);
               if (item.isRequired && value === undefined) {
                 callback("");
               }
@@ -468,7 +440,6 @@ export const renderFormItem = (item, form, dispatch) => {
       );
       break;
     case "upload":
-      const UploadImg = require("../components/UploadImg/Index").default;
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [
@@ -502,6 +473,26 @@ export const renderFormItem = (item, form, dispatch) => {
         />
       );
       break;
+    default:
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [
+          {
+            required: item.isRequired,
+            message: item.errorText || `${item.label}不能为空`
+          }
+        ]
+      })(
+        <Input
+          type="text"
+          disabled={item.disabled}
+          placeholder={
+            item.placeholder ? item.placeholder : `请输入${item.label}`
+          }
+          readOnly={item.isReadOnly}
+          onClick={item.onClick ? item.onClick : () => {}}
+        />
+      );
   }
   return InputType;
 };

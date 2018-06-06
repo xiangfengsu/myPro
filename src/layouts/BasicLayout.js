@@ -11,7 +11,7 @@ import TagsPageOpend from "components/TagsPageOpend";
 import GlobalHeader from "components/GlobalHeader";
 import GlobalFooter from "components/GlobalFooter";
 import SiderMenu from "components/SiderMenu";
-import NotFound from "../routes/Exception/404";
+
 import {
   getRoutes,
   formatter,
@@ -20,12 +20,13 @@ import {
   menuAuthority
 } from "utils/utils";
 import Authorized from "utils/Authorized";
+import NotFound from "../routes/Exception/404";
 import logo from "../assets/logo.svg";
 import avatar from "../assets/avatar.png";
 import config from "../config";
 
 const { Content, Header, Footer } = Layout;
-const { AuthorizedRoute, check } = Authorized;
+const { AuthorizedRoute } = Authorized;
 const query = {
   "screen-xs": {
     maxWidth: 575
@@ -80,7 +81,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = config.title;
+    let { title } = config;
     if (routerData[pathname] && routerData[pathname].name) {
       title = `${routerData[pathname].name} - ${config.title}`;
     }
@@ -106,6 +107,7 @@ class BasicLayout extends React.PureComponent {
       if (menuDatas && menuDatas.length > 0) {
         const formaterMenuDatas = menuDataPathToArray(menuDatas);
         for (let i = 0; i < formaterMenuDatas.length; i++) {
+          // eslint-disable-line
           if (formaterMenuDatas[i].menutype === 2) {
             redirectPath = formaterMenuDatas[i].path;
             break;

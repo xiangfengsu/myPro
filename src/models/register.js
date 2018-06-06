@@ -1,5 +1,3 @@
-// import { fakeRegister } from '../services/api';
-
 export default {
   namespace: "register",
 
@@ -7,22 +5,7 @@ export default {
     status: undefined
   },
 
-  effects: {
-    *submit(_, { call, put }) {
-      // const response = yield call(fakeRegister);
-      yield put({
-        type: "registerHandle",
-        payload: response
-      });
-    }
-  },
+  effects: {},
 
-  reducers: {
-    registerHandle(state, { payload }) {
-      return {
-        ...state,
-        status: payload.status
-      };
-    }
-  }
+  reducers: {}
 };

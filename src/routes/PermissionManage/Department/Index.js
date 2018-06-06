@@ -1,21 +1,10 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import { connect } from "dva";
-import {
-  Form,
-  Row,
-  Col,
-  Card,
-  Modal,
-  Button,
-  Input,
-  Popconfirm,
-  message
-} from "antd";
+import { Form, Card, Modal, Button } from "antd";
 import cloneDeep from "lodash/cloneDeep";
+import TreeTable from "components/TreeTable/Index";
 import styles from "./Index.less";
 
-import TreeTable from "components/TreeTable/Index";
 import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
 import { PageConfig } from "./pageConfig.js";
@@ -27,8 +16,6 @@ import {
   formItemAddInitValue
 } from "../../../utils/utils";
 
-const FormItem = Form.Item;
-
 @connect(({ user, loading, department, dictionary }) => ({
   currentUser: user.currentUser,
   loading: loading.models.department,
@@ -39,30 +26,23 @@ const FormItem = Form.Item;
 export default class Index extends PureComponent {
   state = {
     showModalType: "",
-    formValues: {},
     currentItem: {},
-    selectedNode: [],
     detailFormItems: PageConfig.detailFormItems
   };
-
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: "department/fetch"
     });
   }
-  updateFormItems = (type = "create", record = {}) => {
+  updateFormItems = (record = {}) => {
     const detailFormItems = cloneDeep(PageConfig.detailFormItems);
     const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
-    this.setState({ detailFormItems });
+    this.setState({ detailFormItems: newDetailFormItems });
   };
 
   showModalVisibel = (type, record) => {
-    this.updateFormItems(type, record);
+    this.updateFormItems(record);
     this.changeModalVisibel(true);
     this.setState({
       showModalType: type,
@@ -117,23 +97,10 @@ export default class Index extends PureComponent {
     return columns;
   };
 
-  renderTable = () => {
-    const { department, loading } = this.props;
-    const { tableColumns } = PageConfig;
-    const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
-    const { data: { list } } = department;
-    const tableProps = {
-      loading,
-      dataSource: list,
-      columns: newTableColumns
-    };
-    return <TreeTable {...tableProps} />;
-  };
-
   modalOkHandle = () => {
     this.modalForm.validateFields((err, fieldsValue) => {
       if (err) return;
-      logs("fieldsValue", fieldsValue);
+      // logs('fieldsValue', fieldsValue);
       const { showModalType } = this.state;
       const fields = formaterObjectValue(fieldsValue);
       if (showModalType === "create") {
@@ -157,14 +124,22 @@ export default class Index extends PureComponent {
       payload: { id }
     });
   };
-
+  renderTable = () => {
+    const { department, loading } = this.props;
+    const { tableColumns } = PageConfig;
+    const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
+    const { data: { list } } = department;
+    const tableProps = {
+      loading,
+      dataSource: list,
+      columns: newTableColumns
+    };
+    return <TreeTable {...tableProps} />;
+  };
   render() {
     const { detailFormItems } = this.state;
     const {
-      form: { getFieldDecorator },
-      currentUser: { btnAuth = [] },
       department: { modalVisible, confirmLoading },
-      loading,
       dictionary
     } = this.props;
     return (

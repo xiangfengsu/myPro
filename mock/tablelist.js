@@ -1,7 +1,7 @@
 const qs = require("qs");
 const mockjs = require("mockjs");
 
-const createData = function(status = 200, pageNum = 1, pageSize = 10) {
+const createData = (code = 200, pageNum = 1, pageSize = 10) => {
   const mockData = {};
   const dataList = mockjs.mock({
     [`data|${pageSize}`]: [
@@ -26,8 +26,10 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   });
   const { data, pagination } = dataList;
   Object.assign(mockData, {
-    code: status,
+    code,
     body: {
+      dictionary: {},
+      extra: {},
       list: data,
       pagination
     },
@@ -36,32 +38,24 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   return mockData;
 };
 module.exports = {
-  "GET /api/sys_channel": function(req, res) {
-    const params = qs.parse(req.query);
-    const pageSize = params.pageSize - 0 || 10;
-    const page = params.page - 0 || 1;
-    const status = 200;
-    const mockData = createData(status, page, pageSize);
+  "POST /sys/tablelist/list": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   },
-  "POST /api/sys_channel": function(req, res) {
-    const params = qs.parse(req.body);
-    const status = 201;
-    const mockData = createData(status);
+  "POST /sys/tablelist/save": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   },
-  "PUT /api/sys_channel": function(req, res) {
-    const params = qs.parse(req.body);
-    const { id, page = 1 } = params;
-    const status = 201;
-    const mockData = createData(status, page);
+  "POST /sys/tablelist/update": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   },
-  "DELETE /api/sys_channel": function(req, res) {
-    const params = qs.parse(req.body);
-    const { id, page = 1 } = params;
-    const status = 204;
-    const mockData = createData(status, page);
+  "POST /sys/tablelist/del": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   }
 };

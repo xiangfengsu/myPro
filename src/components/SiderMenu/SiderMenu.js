@@ -36,8 +36,7 @@ export default class SiderMenu extends PureComponent {
     }
   }
   getDefaultCollapsedSubMenus(props) {
-    const { location: { pathname }, defaultCollapsedSubMenu } =
-      props || this.props;
+    const { location: { pathname } } = props || this.props;
     const snippets = pathname.split("/").slice(1, -1);
     const currentPathSnippets = snippets.map((item, index) => {
       const arr = snippets.filter((_, i) => i <= index);

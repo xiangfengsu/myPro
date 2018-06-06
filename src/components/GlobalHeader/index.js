@@ -4,7 +4,6 @@ import moment from "moment";
 import groupBy from "lodash/groupBy";
 import Debounce from "lodash-decorators/debounce";
 import { Link } from "dva/router";
-import NoticeIcon from "../NoticeIcon";
 import styles from "./index.less";
 import avatar from "../../assets/avatar.png";
 
@@ -51,23 +50,15 @@ export default class GlobalHeader extends PureComponent {
     this.triggerResizeEvent();
   };
   @Debounce(600)
+  // eslint-disable-next-line
   triggerResizeEvent() {
-    // eslint-disable-line
+    // eslint-disable-next-line
     const event = document.createEvent("HTMLEvents");
     event.initEvent("resize", true, false);
     window.dispatchEvent(event);
   }
   render() {
-    const {
-      currentUser,
-      collapsed,
-      fetchingNotices,
-      isMobile,
-      logo,
-      onNoticeVisibleChange,
-      onMenuClick,
-      onNoticeClear
-    } = this.props;
+    const { currentUser, collapsed, isMobile, logo, onMenuClick } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="setting">
@@ -81,7 +72,6 @@ export default class GlobalHeader extends PureComponent {
         </Menu.Item>
       </Menu>
     );
-    const noticeData = this.getNoticeData();
     return (
       <Header className={styles.header}>
         {isMobile && [

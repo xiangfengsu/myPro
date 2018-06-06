@@ -12,8 +12,10 @@ const { AuthorizedRoute } = Authorized;
 dynamic.setDefaultLoadingComponent(() => {
   return <Spin size="large" className={styles.globalSpin} />;
 });
+// eslint-disable-next-line
 const checkAuthority = () => {
   return new Promise((resolve, reject) => {
+    // eslint-disable-line
     setTimeout(() => {
       resolve();
     }, 1000);

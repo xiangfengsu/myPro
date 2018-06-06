@@ -1,19 +1,15 @@
 import React, { PureComponent } from "react";
 import { connect } from "dva";
-import { Link } from "dva/router";
-import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from "antd";
-import styles from "./Index.less";
+import { Form, Card } from "antd";
 
-import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
+import { formaterObjectValue } from "utils/utils";
 import SearchForms from "components/GeneralSearchForm/Index";
 import TableList from "components/GeneralTableList/Index";
-import DetailFormInfo from "./ModalDetailForm";
+import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
 
-import Authorized from "utils/Authorized";
 import { PageConfig } from "./pageConfig.js";
-import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 
-const FormItem = Form.Item;
+import styles from "./Index.less";
 
 @connect(({ user, systemlog, loading }) => ({
   currentUser: user.currentUser,
@@ -23,15 +19,9 @@ const FormItem = Form.Item;
 @Form.create()
 export default class Index extends PureComponent {
   state = {
-    showModalType: "",
     formValues: {},
-    queryValues: {},
-    currentItem: {},
-    detailFormItems: PageConfig.detailFormItems
+    queryValues: {}
   };
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -39,6 +29,48 @@ export default class Index extends PureComponent {
       payload: this.queryParamsFormater()
     });
   }
+
+  queryParamsFormater = (fields, type) => {
+    // type 1:查询  2:update|delete  3:save  4:分页
+    const { data: { pagination } } = this.props.systemlog;
+    delete pagination.total;
+    const params = {
+      form: {},
+      query: {},
+      pagination: {
+        current: 1,
+        pageSize: 10
+      }
+    };
+    switch (type) {
+      case 1:
+        Object.assign(params, {
+          query: { ...fields }
+        });
+        break;
+      case 2:
+        Object.assign(params, {
+          query: { ...this.state.queryValues },
+          form: { ...fields },
+          pagination
+        });
+        break;
+      case 3:
+        Object.assign(params, {
+          form: { ...fields }
+        });
+        break;
+      case 4:
+        Object.assign(params, {
+          query: { ...this.state.queryValues },
+          pagination: { current: fields.page, pageSize: fields.pageSize }
+        });
+        break;
+      default:
+        Object.assign(params, {});
+    }
+    return params;
+  };
   renderSearchForm = () => {
     const { form, dispatch } = this.props;
     const { searchForms } = PageConfig;
@@ -48,12 +80,10 @@ export default class Index extends PureComponent {
         layout: "inline",
         formItems: searchForms
       },
-      handleSearchSubmit: formValues => {
-        const { createtime } = formValues;
-        const params = Object.assign(formValues, {
-          // createtime: createtime ? createtime.format("YYYY-MM-DD") : ""
-        });
+      handleSearchSubmit: queryValues => {
+        const params = Object.assign({}, queryValues, {});
         const payload = formaterObjectValue(params);
+
         this.setState({
           queryValues: payload
         });
@@ -64,7 +94,7 @@ export default class Index extends PureComponent {
       },
       handleFormReset: () => {
         this.setState({
-          formValues: {}
+          queryValues: {}
         });
         dispatch({
           type: "systemlog/fetch",
@@ -101,55 +131,7 @@ export default class Index extends PureComponent {
     };
     return <TableList {...tableProps} />;
   };
-  queryParamsFormater = (fields, type) => {
-    // type 1:查询  2:update|delete  3:save  4:分页
-    const { data: { pagination } } = this.props.systemlog;
-    delete pagination.total;
-    const params = {
-      form: {},
-      query: {},
-      pagination: {
-        current: 1,
-        pageSize: 10
-      }
-    };
-    switch (type) {
-      case 1:
-        Object.assign(params, {
-          query: { ...fields },
-          pagination
-        });
-        break;
-      case 2:
-        Object.assign(params, {
-          query: { ...this.state.queryValues },
-          form: { ...fields },
-          pagination
-        });
-        break;
-      case 3:
-        Object.assign(params, {
-          form: { ...fields }
-        });
-        break;
-      case 4:
-        Object.assign(params, {
-          query: { ...this.state.queryValues },
-          pagination: { current: fields.page, pageSize: fields.pageSize }
-        });
-        break;
-      default:
-        Object.assign(params, {});
-    }
-    return params;
-  };
   render() {
-    const modalWidth = document.documentElement.clientWidth - 300;
-    const {
-      form: { getFieldDecorator },
-      currentUser: { btnAuth = [] }
-    } = this.props;
-
     return (
       <PageHeaderLayout>
         <Card bordered={false}>

@@ -1,6 +1,6 @@
 export function getCookie(name) {
-  let arr,
-    reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`);
+  let arr;
+  const reg = new RegExp(`(^| )${name}=([^;]*)(;|$)`);
   if ((arr = document.cookie.match(reg))) {
     return unescape(arr[2]);
   } else {
@@ -10,7 +10,7 @@ export function getCookie(name) {
 export function setCookie(name, value) {
   const Days = 30;
   const exp = new Date();
-  exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+  exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000); // eslint-disable-line
   document.cookie = `${name}=${escape(value)};expires=${exp.toGMTString()}`;
 }
 export function delCookie(name) {

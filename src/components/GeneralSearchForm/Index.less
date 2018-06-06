@@ -2,25 +2,23 @@
 @import "../../utils/utils.less";
 
 .searchForms {
-    :global {
-        
+  :global {
+  }
+}
+
+@media screen and (max-width: @screen-lg) {
+  .searchForms :global(.ant-form-item) {
+    margin-right: 24px;
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .searchForms :global {
+    .ant-form-item {
+      margin-right: 8px;
+    }
+    .ant-form-item-label {
+      width: auto;
     }
   }
-  
-  @media screen and (max-width: @screen-lg) {
-    .searchForms :global(.ant-form-item) {
-      margin-right: 24px;
-    }
-  }
-  
-  @media screen and (max-width: @screen-md) {
-    .searchForms :global {
-        .ant-form-item{
-            margin-right: 8px;
-        }
-        .ant-form-item-label{
-            width: auto;
-        }
-      
-    }
-  }
+}

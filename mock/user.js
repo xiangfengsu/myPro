@@ -61,7 +61,7 @@ module.exports = {
   },
   "POST /sys/doLogin": (req, res) => {
     // validateCode 200: 登录成功    100: 验证码错误 101: 用户名或密码错误
-    const { password, username, code, remember } = req.body;
+    const { password, username, code } = req.body;
     if (code === "123") {
       if (password === "admin" && username === "admin") {
         res.send({

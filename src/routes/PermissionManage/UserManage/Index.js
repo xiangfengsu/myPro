@@ -1,24 +1,16 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
 import { connect } from "dva";
-import { Form, Row, Col, Card, Modal, Button, Input, Popconfirm } from "antd";
+import { Form, Card, Modal, Button, Popconfirm } from "antd";
 import cloneDeep from "lodash/cloneDeep";
-
-import styles from "./Index.less";
-
 import TableList from "components/GeneralTableList/Index";
-import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
-
 import SearchForms from "components/GeneralSearchForm/Index";
-
-import { PageConfig } from "./pageConfig.js";
-
-import DetailFormInfo from "./ModalDetailForm";
-
 import MenuTree from "components/TreeSelectModal/Index";
 import { formaterObjectValue, formItemAddInitValue } from "utils/utils";
 
-const FormItem = Form.Item;
+import PageHeaderLayout from "../../../layouts/PageHeaderLayout";
+import DetailFormInfo from "./ModalDetailForm";
+import { PageConfig } from "./pageConfig.js";
+import styles from "./Index.less";
 
 @connect(({ user, loading, usermanage, dictionary }) => ({
   currentUser: user.currentUser,
@@ -33,13 +25,8 @@ export default class Index extends PureComponent {
     formValues: {},
     queryValues: {},
     currentItem: {},
-    selectedNode: [],
     isShowMenuTree: false,
     detailFormItems: PageConfig.detailFormItems
-  };
-  static childContextTypes = {
-    currentItem: PropTypes.object,
-    form: PropTypes.object
   };
   componentDidMount() {
     const { dispatch } = this.props;
@@ -48,10 +35,10 @@ export default class Index extends PureComponent {
       payload: this.queryParamsFormater()
     });
   }
-  updateFormItems = (type = "create", record = {}) => {
+  updateFormItems = (record = {}) => {
     const detailFormItems = cloneDeep(PageConfig.detailFormItems);
     const newDetailFormItems = formItemAddInitValue(detailFormItems, record);
-    this.setState({ detailFormItems });
+    this.setState({ detailFormItems: newDetailFormItems });
   };
   changeModalVisibel = flag => {
     this.props.dispatch({
@@ -63,7 +50,7 @@ export default class Index extends PureComponent {
   };
   showModalVisibel = (type, record, isShowMenuTree = false) => {
     if (!isShowMenuTree) {
-      this.updateFormItems(type, record);
+      this.updateFormItems(record);
       this.changeModalVisibel(true);
       this.setState({
         showModalType: type,
@@ -135,72 +122,6 @@ export default class Index extends PureComponent {
       }
     });
   };
-  renderSearchForm = () => {
-    const { form, dispatch } = this.props;
-    const { searchForms } = PageConfig;
-    const props = {
-      form,
-      formInfo: {
-        layout: "inline",
-        formItems: searchForms
-      },
-      handleSearchSubmit: formValues => {
-        const { createtime, channeltype } = formValues;
-        const params = Object.assign(formValues, {});
-        const payload = formaterObjectValue(params);
-        this.setState({
-          queryValues: payload
-        });
-        dispatch({
-          type: "usermanage/fetch",
-          payload: this.queryParamsFormater(payload, 1)
-        });
-      },
-      handleFormReset: () => {
-        this.setState({
-          queryValues: {}
-        });
-        dispatch({
-          type: "usermanage/fetch",
-          payload: this.queryParamsFormater()
-        });
-      }
-    };
-    return <SearchForms {...props} />;
-  };
-  renderTable = () => {
-    const { usermanage, loading } = this.props;
-    const { tableColumns } = PageConfig;
-    const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
-    const { data: { list, pagination } } = usermanage;
-    const tableProps = {
-      loading,
-      bordered: false,
-      dataSource: list,
-      pagination: Object.assign(pagination, { pageSize: 10 }),
-      columns: newTableColumns,
-      handleTableChange: ({ current }) => {
-        const { dispatch } = this.props;
-        const { formValues } = this.state;
-        const payload = {
-          page: current,
-          pageSize: 10,
-          ...formValues
-        };
-        dispatch({
-          type: "usermanage/fetch",
-          payload: this.queryParamsFormater(payload, 4)
-        });
-      },
-      bordered: false
-    };
-    return <TableList {...tableProps} />;
-  };
-  getChildContext() {
-    return {
-      currentItem: this.state.currentItem
-    };
-  }
   modalOkHandle = () => {
     const { isShowMenuTree } = this.state;
     if (!isShowMenuTree) {
@@ -245,8 +166,7 @@ export default class Index extends PureComponent {
     switch (type) {
       case 1:
         Object.assign(params, {
-          query: { ...fields },
-          pagination
+          query: { ...fields }
         });
         break;
       case 2:
@@ -272,17 +192,68 @@ export default class Index extends PureComponent {
     }
     return params;
   };
-  render() {
-    const {
-      // modalVisible,
-      detailFormItems,
-      isShowMenuTree,
-      currentItem
-    } = this.state;
-    const {
-      form: { getFieldDecorator },
-      currentUser: { btnAuth = [] },
+  renderSearchForm = () => {
+    const { form, dispatch } = this.props;
+    const { searchForms } = PageConfig;
+    const props = {
+      form,
+      formInfo: {
+        layout: "inline",
+        formItems: searchForms
+      },
+      handleSearchSubmit: formValues => {
+        const params = Object.assign({}, formValues, {});
+        const payload = formaterObjectValue(params);
+        this.setState({
+          queryValues: payload
+        });
+        dispatch({
+          type: "usermanage/fetch",
+          payload: this.queryParamsFormater(payload, 1)
+        });
+      },
+      handleFormReset: () => {
+        this.setState({
+          queryValues: {}
+        });
+        dispatch({
+          type: "usermanage/fetch",
+          payload: this.queryParamsFormater()
+        });
+      }
+    };
+    return <SearchForms {...props} />;
+  };
+  renderTable = () => {
+    const { usermanage, loading } = this.props;
+    const { tableColumns } = PageConfig;
+    const newTableColumns = [...tableColumns, ...this.extraTableColumnRender()];
+    const { data: { list, pagination } } = usermanage;
+    const tableProps = {
       loading,
+      bordered: false,
+      dataSource: list,
+      pagination: Object.assign(pagination, { pageSize: 10 }),
+      columns: newTableColumns,
+      handleTableChange: ({ current }) => {
+        const { dispatch } = this.props;
+        const { formValues } = this.state;
+        const payload = {
+          page: current,
+          pageSize: 10,
+          ...formValues
+        };
+        dispatch({
+          type: "usermanage/fetch",
+          payload: this.queryParamsFormater(payload, 4)
+        });
+      }
+    };
+    return <TableList {...tableProps} />;
+  };
+  render() {
+    const { detailFormItems, isShowMenuTree, currentItem } = this.state;
+    const {
       usermanage: { modalVisible, confirmLoading },
       dictionary
     } = this.props;
@@ -306,7 +277,6 @@ export default class Index extends PureComponent {
           </div>
         </Card>
         <Modal
-          // width={modalWidth}
           destroyOnClose
           confirmLoading={confirmLoading}
           visible={modalVisible}

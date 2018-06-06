@@ -1,14 +1,9 @@
 import React, { PureComponent } from "react";
 import ReactDOM from "react-dom";
 import { routerRedux } from "dva/router";
-import classNames from "classnames";
 import { Tag, Menu, Dropdown, Icon, Button } from "antd";
-import { Link } from "dva/router";
 
-import config from "../../config";
 import styles from "./index.less";
-
-const { CheckableTag } = Tag;
 
 const tagStyle = {
   height: "32px",
@@ -44,10 +39,10 @@ export default class TagsPageOpend extends PureComponent {
   }
   componentDidUpdate() {
     if (!this.props.isWheel) {
-      const { pageOpenedList, currentPagePath } = this.props;
-      const currentTagRef = this.refs[`tagsPageOpened_${currentPagePath}`];
-      const domNode = ReactDOM.findDOMNode(currentTagRef);
-      domNode && this.moveToView(domNode);
+      const { currentPagePath } = this.props;
+      const currentTagRef = this.refs[`tagsPageOpened_${currentPagePath}`]; // eslint-disable-line
+      const domNode = ReactDOM.findDOMNode(currentTagRef); // eslint-disable-line
+      domNode && this.moveToView(domNode); // eslint-disable-line
     }
   }
   linkTo = item => {
@@ -63,6 +58,7 @@ export default class TagsPageOpend extends PureComponent {
     let lastPageObj = pageOpenedList[0];
     if (currentPagePath === item.path) {
       const len = pageOpenedList.length;
+      /* eslint-disable-next-line */
       for (let i = 1; i < len; i++) {
         if (pageOpenedList[i].path === item.path) {
           if (i < len - 1) {
@@ -88,8 +84,7 @@ export default class TagsPageOpend extends PureComponent {
       this.linkTo(lastPageObj);
     }
   };
-  tagOptionsHandle = ({ item, key, keyPath }) => {
-    const { currentPagePath } = this.props;
+  tagOptionsHandle = ({ key }) => {
     if (key === "clearAllTags") {
       this.props.dispatch({
         type: "global/removeAllPageOpendTags"
@@ -109,7 +104,7 @@ export default class TagsPageOpend extends PureComponent {
       type: "global/changeMouseWheelStatus"
     });
     const e = event.nativeEvent;
-    const type = e.type;
+    const { type } = e;
     let delta = 0;
     if (type === "DOMMouseScroll" || type === "wheel") {
       delta = e.wheelDelta ? e.wheelDelta : -(e.detail || 0) * 40;
@@ -120,7 +115,11 @@ export default class TagsPageOpend extends PureComponent {
     } else if (this.scrollCon.offsetWidth - 100 < this.scrollBody.offsetWidth) {
       if (
         this.state.tagBodyLeft <
-        -(this.scrollBody.offsetWidth - this.scrollCon.offsetWidth + 100)
+        -(
+          this.scrollBody.offsetWidth -
+          this.scrollCon.offsetWidth +
+          100
+        ) /* eslint-disable-line */
       ) {
         left = this.state.tagBodyLeft;
       } else {
@@ -133,6 +132,41 @@ export default class TagsPageOpend extends PureComponent {
       this.setState({ tagBodyLeft: 0 });
     }
     this.setState({ tagBodyLeft: left });
+  };
+
+  moveToView = tag => {
+    if (tag.offsetLeft < -this.state.tagBodyLeft) {
+      // 标签在可视区域左侧
+      this.setState({
+        tagBodyLeft: -tag.offsetLeft + 10
+      });
+    } else if (
+      tag.offsetLeft + 10 > -this.state.tagBodyLeft &&
+      tag.offsetLeft + tag.offsetWidth <
+        -this.state.tagBodyLeft + this.scrollCon.offsetWidth - 100 //eslint-disable-line
+    ) {
+      // 标签在可视区域
+      this.setState({
+        tagBodyLeft: Math.min(
+          0,
+          this.scrollCon.offsetWidth -
+            100 -
+            tag.offsetWidth -
+            tag.offsetLeft -
+            20
+        )
+      });
+    } else {
+      // 标签在可视区域右侧
+      this.setState({
+        tagBodyLeft: -//eslint-disable-line
+        (
+          tag.offsetLeft - //eslint-disable-line
+          (this.scrollCon.offsetWidth - 100 - tag.offsetWidth) + //eslint-disable-line
+          20
+        )
+      });
+    }
   };
   renderTagsList = () => {
     const { currentPagePath = "", pageOpenedList = [] } = this.props;
@@ -164,39 +198,6 @@ export default class TagsPageOpend extends PureComponent {
         </Tag>
       );
     });
-  };
-  moveToView = tag => {
-    if (tag.offsetLeft < -this.state.tagBodyLeft) {
-      // 标签在可视区域左侧
-      this.setState({
-        tagBodyLeft: -tag.offsetLeft + 10
-      });
-    } else if (
-      tag.offsetLeft + 10 > -this.state.tagBodyLeft &&
-      tag.offsetLeft + tag.offsetWidth <
-        -this.state.tagBodyLeft + this.scrollCon.offsetWidth - 100
-    ) {
-      // 标签在可视区域
-      this.setState({
-        tagBodyLeft: Math.min(
-          0,
-          this.scrollCon.offsetWidth -
-            100 -
-            tag.offsetWidth -
-            tag.offsetLeft -
-            20
-        )
-      });
-    } else {
-      // 标签在可视区域右侧
-      this.setState({
-        tagBodyLeft: -(
-          tag.offsetLeft -
-          (this.scrollCon.offsetWidth - 100 - tag.offsetWidth) +
-          20
-        )
-      });
-    }
   };
   render() {
     const { tagBodyLeft } = this.state;

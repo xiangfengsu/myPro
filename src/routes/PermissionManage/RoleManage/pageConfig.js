@@ -1,5 +1,5 @@
-import { Icon, Tag } from "antd";
-import Ellipsis from "../../../components/Ellipsis/";
+import React from "react";
+import { Tag } from "antd";
 
 export const PageConfig = {
   name: "角色管理",
@@ -13,7 +13,7 @@ export const PageConfig = {
       title: "角色ID",
       dataIndex: "menuids",
       colSpan: 0,
-      render: (text, row, index) => {
+      render: text => {
         return {
           children: <a href="#">{text}</a>,
           props: {
@@ -33,8 +33,9 @@ export const PageConfig = {
     {
       title: "状态",
       dataIndex: "status",
-      render: (text, record, index) => {
+      render: text => {
         if (text == 1) {
+          // eslint-disable-line
           return <Tag color="#52c41a">通过</Tag>;
         } else {
           return <Tag color="#f5222d">拒绝</Tag>;

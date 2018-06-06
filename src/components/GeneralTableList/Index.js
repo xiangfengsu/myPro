@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Table, Pagination } from "antd";
+import { Table } from "antd";
 
 import styles from "./Index.less";
 
@@ -19,9 +19,6 @@ export default class TableList extends PureComponent {
     size: "default",
     handleTableChange: () => {}
   };
-  constructor(props) {
-    super(props);
-  }
   render() {
     const {
       size,

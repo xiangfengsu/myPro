@@ -1,11 +1,5 @@
-import {
-  create,
-  query,
-  queryPost,
-  update,
-  remove
-} from "../services/generalApi";
-import { message } from "antd";
+import { queryPost } from "../services/generalApi";
+import { showStautsMessageHandle } from "../utils/statusCode";
 
 export default {
   namespace: "systemlog",
@@ -20,11 +14,16 @@ export default {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryPost, payload, "/sys/log/list");
       if (response) {
-        const { status, body, errorMes = "" } = response;
+        const { code = 200, body } = response;
         yield put({
           type: "save",
-          payload: body
+          payload: {
+            data: body,
+            statusCode: code
+          }
         });
+      } else {
+        showStautsMessageHandle("error");
       }
     }
   },
@@ -33,7 +32,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data: action.payload
+        data: action.payload.data
       };
     }
   }

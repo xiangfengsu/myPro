@@ -1,8 +1,6 @@
 const qs = require("qs");
-const mockjs = require("mockjs");
 
-const Random = mockjs.Random;
-const createData = function(status = 200, pageNum = 1, pageSize = 10) {
+const createData = (code = 200, pageNum = 1, pageSize = 10) => {
   return {
     body: {
       dictionary: {
@@ -116,30 +114,34 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
         }
       ],
       pagination: {
-        current: 1,
-        pageSize: 10,
+        current: pageNum,
+        pageSize,
         total: 3
       }
     },
-    code: 200,
+    code,
     message: ""
   };
 };
 module.exports = {
-  "POST /sys/user/list": function(req, res) {
-    const mockData = createData();
+  "POST /sys/user/list": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   },
-  "POST /sys/user/save": function(req, res) {
-    const mockData = createData();
+  "POST /sys/user/save": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   },
-  "POST /sys/user/update": function(req, res) {
-    const mockData = createData();
+  "POST /sys/user/update": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   },
-  "POST /sys/user/del": function(req, res) {
-    const mockData = createData();
+  "POST /sys/user/del": (req, res) => {
+    const { pagination: { pageSize = 10, current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current, pageSize);
     res.json(mockData);
   }
 };

@@ -1,4 +1,5 @@
-import { Icon, Tag } from "antd";
+import React from "react";
+import { Tag } from "antd";
 
 export const PageConfig = {
   name: "部门管理",
@@ -29,8 +30,9 @@ export const PageConfig = {
     {
       title: "状态",
       dataIndex: "status",
-      render: (text, record, index) => {
+      render: text => {
         if (text == 1) {
+          // eslint-disable-line
           return <Tag color="#52c41a">正常</Tag>;
         } else {
           return <Tag color="#f5222d">删除</Tag>;

@@ -1,8 +1,4 @@
-const qs = require("qs");
-const mockjs = require("mockjs");
-
-const Random = mockjs.Random;
-const createData = function(status = 200, pageNum = 1, pageSize = 10) {
+const createData = () => {
   return {
     body: {
       dictionary: {
@@ -43,19 +39,19 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
   };
 };
 module.exports = {
-  "POST /sys/role/list": function(req, res) {
+  "POST /sys/role/list": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/role/save": function(req, res) {
+  "POST /sys/role/save": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/role/update": function(req, res) {
+  "POST /sys/role/update": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/role/del": function(req, res) {
+  "POST /sys/role/del": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   }

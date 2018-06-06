@@ -1,7 +1,6 @@
 const qs = require("qs");
-const mockjs = require("mockjs");
 
-const createData = function(status = 200, pageNum = 1, pageSize = 10) {
+const createData = (code = 200, pageNum = 1) => {
   return {
     body: {
       dictionary: {
@@ -144,18 +143,19 @@ const createData = function(status = 200, pageNum = 1, pageSize = 10) {
         }
       ],
       pagination: {
-        current: 1,
+        current: pageNum,
         pageSize: 10,
         total: 294
       }
     },
-    code: 200,
+    code,
     message: ""
   };
 };
 module.exports = {
-  "POST /sys/log/list": function(req, res) {
-    const mockData = createData();
+  "POST /sys/log/list": (req, res) => {
+    const { pagination: { current = 1 } } = qs.parse(req.body);
+    const mockData = createData(200, current);
     res.json(mockData);
   }
 };

@@ -30,9 +30,9 @@ export function getTimeDistance(type) {
       day -= 1;
     }
 
-    const beginTime = now.getTime() - day * oneDay;
+    const beginTime = now.getTime() - day * oneDay; // eslint-disable-line
 
-    return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))];
+    return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))]; // eslint-disable-line
   }
 
   if (type === "month") {
@@ -84,6 +84,7 @@ export function digitUppercase(n) {
   let num = Math.abs(n);
   let s = "";
   fraction.forEach((item, index) => {
+    // eslint-disable-next-line
     s += (digit[Math.floor(num * 10 * 10 ** index) % 10] + item).replace(
       /零./,
       ""
@@ -173,8 +174,8 @@ export function formatter(data = [], parentPath = "", parentAuthority) {
 export function menuDataPathFormater(menuData) {
   const list = [];
   const exceptionPath = ["/exception/403", "/exception/404", "/exception/500"];
-  (function dataFormater(menuData) {
-    menuData.forEach(item => {
+  (function dataFormater(menuDatas) {
+    menuDatas.forEach(item => {
       list.push(`/${item.path}`);
       if (item.children) {
         dataFormater(item.children);
@@ -207,8 +208,8 @@ export function menuDataPathToArray(menuData) {
       menutype: 2
     }
   ];
-  (function dataFormater(menuData, parentPath = "/") {
-    menuData.forEach(item => {
+  (function dataFormater(menuDatas, parentPath = "/") {
+    menuDatas.forEach(item => {
       list.push({
         path: `${parentPath}${item.path}`,
         name: item.name,
@@ -238,6 +239,7 @@ export function formaterObjectValue(obj) {
   }
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
+      // eslint-disable-line
       newObj[key] = obj[key] === undefined ? "" : obj[key];
     }
   }
@@ -257,7 +259,7 @@ export function formItemAddInitValue(formItems, currentItem) {
       const index = currItemKeys.indexOf(item.key);
       if (index > -1) {
         newFormItems.push(
-          Object.assign(item, {
+          Object.assign({}, item, {
             initialValue: currentItem[currItemKeys[index]]
           })
         );
@@ -282,7 +284,7 @@ export function isUrl(path) {
 }
 export function cleanArray(arr) {
   if (!(arr instanceof Array)) {
-    arr = [];
+    arr = []; // eslint-disable-line
   }
   return arr.filter(e => {
     return e !== undefined && e !== null && e !== "";

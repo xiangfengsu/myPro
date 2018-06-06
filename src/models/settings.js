@@ -1,6 +1,5 @@
 import { update } from "../services/generalApi";
 import { showStautsMessageHandle } from "../utils/statusCode";
-import { message } from "antd";
 
 export default {
   namespace: "settings",
@@ -18,7 +17,7 @@ export default {
       delete formValue.cb;
       const response = yield call(update, formValue, "/sys/modify/password");
       if (response) {
-        const { code = 200, body, message = "" } = response;
+        const { code = 200, body } = response;
         if (code === 200) {
           yield put({
             type: "save",
@@ -36,7 +35,7 @@ export default {
           });
         }
         showStautsMessageHandle("settings", "update", code);
-        payload.cb && payload.cb(code);
+        payload.cb && payload.cb(code); // eslint-disable-line
       }
     }
   },

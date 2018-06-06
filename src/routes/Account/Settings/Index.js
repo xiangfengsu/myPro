@@ -1,12 +1,11 @@
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "dva";
-import { Form, Button, Card, Tag, Modal } from "antd";
+import { Card, Tag, Modal } from "antd";
 
 import PageHeaderLayout from "layouts/PageHeaderLayout";
 import DescriptionList from "components/DescriptionList";
 
 import DetailFormInfo from "./ModalDetailForm";
-import styles from "./Index.less";
 
 const { Description } = DescriptionList;
 @connect(({ user, loading, settings }) => ({
@@ -31,8 +30,8 @@ export default class BaseSetting extends PureComponent {
   modalOkHandle = () => {
     this.modalForm.validateFields((err, fieldsValue) => {
       if (err) return;
-      logs("fieldsValue", fieldsValue);
-      delete fieldsValue.confirm;
+      // logs('fieldsValue', fieldsValue);
+      delete fieldsValue.confirm; // eslint-disable-line
       this.props.dispatch({
         type: "settings/update",
         payload: {

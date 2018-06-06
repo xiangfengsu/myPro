@@ -1,18 +1,15 @@
-import React from 'react';
-import { Link, Redirect, Switch, Route } from 'dva/router';
-import DocumentTitle from 'react-document-title';
-import { Icon } from 'antd';
-import GlobalFooter from '../components/GlobalFooter';
-import styles from './UserLayout.less';
-import logo from '../assets/logo.svg';
-import { getRoutes } from '../utils/utils';
-import config from '../config';
+import React from "react";
+import { Redirect, Switch, Route } from "dva/router";
+import DocumentTitle from "react-document-title";
+import styles from "./UserLayout.less";
+import { getRoutes } from "../utils/utils";
+import config from "../config";
 
 class UserLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = config.title;
+    let { title } = config;
     if (routerData[pathname] && routerData[pathname].name) {
       title = `${routerData[pathname].name} - ${config.title}`;
     }
@@ -30,20 +27,17 @@ class UserLayout extends React.PureComponent {
               </div>
             </div>
             <Switch>
-              {getRoutes(match.path, routerData).map(item =>
-                (
-                  <Route
-                    key={item.key}
-                    path={item.path}
-                    component={item.component}
-                    exact={item.exact}
-                  />
-                )
-              )}
+              {getRoutes(match.path, routerData).map(item => (
+                <Route
+                  key={item.key}
+                  path={item.path}
+                  component={item.component}
+                  exact={item.exact}
+                />
+              ))}
               <Redirect exact from="/user" to="/user/login" />
             </Switch>
           </div>
-
         </div>
       </DocumentTitle>
     );

@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Modal, Carousel, Icon } from "antd";
+import { Row, Col, Icon } from "antd";
 
 import CustomCarouser from "./Carouser";
 
@@ -12,7 +12,7 @@ export default class Index extends PureComponent {
       PropTypes.shape({
         src: PropTypes.string.isRequired
       })
-    ).isRequired
+    )
   };
   static defaultProps = {
     images: [
@@ -65,7 +65,7 @@ export default class Index extends PureComponent {
       currentIndex: index
     });
   };
-  hideModal = currentIndex => {
+  hideModal = () => {
     this.setState({
       modalVisible: false
     });
@@ -79,7 +79,7 @@ export default class Index extends PureComponent {
           {images.map((image, i) => {
             return (
               <Col
-                key={`img_${i}`}
+                key={`img_${i}`} /* eslint-disable-line */
                 xs={12}
                 sm={8}
                 md={6}
@@ -93,7 +93,7 @@ export default class Index extends PureComponent {
                   }}
                 >
                   <div className={styles.imgBox}>
-                    <img src={image.src} />
+                    <img src={image.src} alt="" />
                     <span className={styles.listItemAction}>
                       <Icon
                         type="eye-o"

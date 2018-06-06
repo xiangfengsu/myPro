@@ -18,5 +18,5 @@ const noProxyAddress = {
   "PUT /*": "http://192.168.1.60:3000/mock/26/",
   "DELETE /*": "http://192.168.1.60:3000/mock/26/"
 };
-// export default (noProxy ? {} : delay(proxy, 500));
-export default noProxyAddress;
+export default (noProxy ? {} : delay(proxy, 500));
+// export default noProxyAddress;

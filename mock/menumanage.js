@@ -1,8 +1,4 @@
-const qs = require("qs");
-const mockjs = require("mockjs");
-
-const Random = mockjs.Random;
-const createData = function(status = 200, pageNum = 1, pageSize = 2) {
+const createData = () => {
   return {
     body: [
       {
@@ -402,19 +398,19 @@ const createData = function(status = 200, pageNum = 1, pageSize = 2) {
   };
 };
 module.exports = {
-  "GET /sys/menu/tree": function(req, res) {
+  "GET /sys/menu/tree": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/menu/save": function(req, res) {
+  "POST /sys/menu/save": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/menu/update": function(req, res) {
+  "POST /sys/menu/update": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   },
-  "POST /sys/menu/del": function(req, res) {
+  "POST /sys/menu/del": (req, res) => {
     const mockData = createData();
     res.json(mockData);
   }

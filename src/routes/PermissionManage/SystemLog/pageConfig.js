@@ -1,5 +1,3 @@
-import { Icon } from "antd";
-
 export const PageConfig = {
   name: "系统日志",
   path: "systemlog",

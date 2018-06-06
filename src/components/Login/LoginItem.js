@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Form, Button, Row, Col } from "antd";
-import QRcode from "../../components/QRcode/index";
 import omit from "omit.js";
+import QRcode from "../../components/QRcode/index";
 import styles from "./index.less";
 import map from "./map";
 

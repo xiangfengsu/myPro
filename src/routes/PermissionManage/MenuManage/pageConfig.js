@@ -1,3 +1,4 @@
+import React from "react";
 import { Icon, Tag } from "antd";
 import Ellipsis from "../../../components/Ellipsis/";
 
@@ -16,7 +17,7 @@ export const PageConfig = {
     {
       title: "类型",
       dataIndex: "menutype",
-      render: (text, record, index) => {
+      render: text => {
         if (text === 1) {
           return <Tag color="#f50">目录</Tag>;
         } else if (text === 2) {
@@ -33,7 +34,7 @@ export const PageConfig = {
     {
       title: "授权标识",
       dataIndex: "permission",
-      render: (text, record, index) => {
+      render: text => {
         return (
           <Ellipsis length={100} tooltip>
             {text}
@@ -52,7 +53,7 @@ export const PageConfig = {
     {
       title: "图标",
       dataIndex: "icon",
-      render: (text, record, index) => {
+      render: text => {
         return <Icon type={text} style={{ fontSize: 16, color: "#08c" }} />;
       }
     }

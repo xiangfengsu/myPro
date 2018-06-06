@@ -1,9 +1,7 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { connect } from "dva";
-import { Tree, Card, Icon, Tag } from "antd";
+import { Tree, Card, Tag } from "antd";
 
-const TreeNode = Tree.TreeNode;
+const { TreeNode } = Tree;
 
 export default class Index extends PureComponent {
   state = {
@@ -18,6 +16,7 @@ export default class Index extends PureComponent {
         title: parentName
       });
     }
+    /* eslint-disable-next-line */
     this.setState({
       selectedNode
     });
@@ -27,7 +26,7 @@ export default class Index extends PureComponent {
     // console.log('selected', selectedKeys, info);
     const selectedNode = [];
     if (selected) {
-      logs(typeof selectedNodes[0].props.dataRef.value);
+      // logs(typeof selectedNodes[0].props.dataRef.value);
       selectedNode.push({
         key: selectedKeys[0],
         title: selectedNodes[0].props.dataRef.value
@@ -38,8 +37,8 @@ export default class Index extends PureComponent {
     });
   };
 
-  onCheck = (checkedKeys, info) => {
-    console.log("onCheck", checkedKeys, info);
+  onCheck = () => {
+    // console.log('onCheck', checkedKeys, info);
   };
   getSelectedKey = () => {
     const { selectedNode } = this.state;
@@ -51,7 +50,7 @@ export default class Index extends PureComponent {
       ? currentItem.menutype
       : selectMenuTypeValue;
     const obj = {};
-    console.log("selectType", selectType);
+    // console.log('selectType', selectType);
     switch (selectType) {
       case 1:
       case 2:
@@ -68,6 +67,7 @@ export default class Index extends PureComponent {
         }
         break;
       case 3:
+      default:
         if (menuType === 1) {
           Object.assign(obj, {
             disabled: false,

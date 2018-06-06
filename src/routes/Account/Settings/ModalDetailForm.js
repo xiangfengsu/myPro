@@ -1,14 +1,7 @@
 import React, { PureComponent } from "react";
-import { connect } from "dva";
-import { Form, Row, Col, Card, Button, Input, Tabs } from "antd";
-
-import { renderFormItem } from "common/formItem";
-import styles from "./Index.less";
-
-import { FormItems } from "./pageConfig";
+import { Form, Row, Col, Card, Input } from "antd";
 
 const FormItem = Form.Item;
-const TabPane = Tabs.TabPane;
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -23,7 +16,7 @@ export default class DetailFormInfo extends PureComponent {
     confirmDirty: false
   };
   compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
+    const { form } = this.props;
     if (value && value !== form.getFieldValue("newpassword")) {
       callback("两次输入密码不一致");
     } else {
@@ -31,14 +24,14 @@ export default class DetailFormInfo extends PureComponent {
     }
   };
   validateToNextPassword = (rule, value, callback) => {
-    const form = this.props.form;
+    const { form } = this.props;
     if (value && this.state.confirmDirty) {
       form.validateFields(["confirm"], { force: true });
     }
     callback();
   };
   handleConfirmBlur = e => {
-    const value = e.target.value;
+    const { value } = e.target;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
   render() {

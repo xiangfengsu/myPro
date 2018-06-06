@@ -1,20 +1,17 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
 import { connect } from "dva";
 
-import { TreeSelect, Tag, Card } from "antd";
+import { TreeSelect, Tag } from "antd";
 
-const TreeNode = TreeSelect.TreeNode;
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
-const SHOW_CHILD = TreeSelect.SHOW_CHILD;
+const { TreeNode } = TreeSelect;
+const { SHOW_PARENT, SHOW_CHILD } = TreeSelect;
 @connect(state => ({
   dictionary: state.dictionary
 }))
 export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
-    const value = this.props.value;
+    const { value } = this.props;
     this.state = {
       selectValue: value === undefined ? undefined : `${value}`.split(",")
     };
@@ -31,9 +28,8 @@ export default class DynamicSelect extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if ("value" in nextProps) {
-      const value = nextProps.value;
       if ("value" in nextProps) {
-        const value = nextProps.value;
+        const { value } = nextProps;
         this.setState({
           selectValue: value === undefined ? undefined : `${value}`.split(",")
         });
@@ -48,8 +44,8 @@ export default class DynamicSelect extends Component {
     this.triggerChange(selectValue);
   };
   triggerChange = changedValue => {
-    const onChange = this.props.onChange;
-    logs("changedValue", changedValue);
+    const { onChange } = this.props;
+    // logs('changedValue', changedValue);
     if (onChange) {
       onChange(changedValue);
     }
@@ -104,7 +100,7 @@ export default class DynamicSelect extends Component {
   renderTreeNodes = data => {
     return data.map(item => {
       let iconType = null;
-      const menutype = item.menutype;
+      const { menutype } = item;
       const { disabled, selectable } = this.renderNodeDisabledSelectable(
         menutype
       );
@@ -166,12 +162,11 @@ export default class DynamicSelect extends Component {
     });
   };
   render() {
-    const state = this.state;
+    const { state } = this;
     const {
       dictionary = {},
       dictionaryKey,
       placeholder,
-      popupContainer,
       disabled,
       multiple,
       showCheckedStrategy

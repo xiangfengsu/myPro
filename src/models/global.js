@@ -1,24 +1,4 @@
-import { formatter } from "../utils/utils";
-import { menuData } from "../common/menu";
-import config from "../config";
 import pathToRegexp from "path-to-regexp";
-
-function menuDataPathFormater(menuData) {
-  const list = [];
-  (function dataFormater(menuData) {
-    menuData.forEach(item => {
-      if (item.children && item.children.length > 0) {
-        dataFormater(item.children);
-      } else {
-        list.push({
-          path: `/${item.path}`,
-          name: item.name
-        });
-      }
-    });
-  })(menuData);
-  return list;
-}
 
 export default {
   namespace: "global",
@@ -32,17 +12,6 @@ export default {
   },
 
   effects: {
-    *fetchNotices(_, { call, put }) {
-      const data = yield call(queryNotices);
-      yield put({
-        type: "saveNotices",
-        payload: data
-      });
-      yield put({
-        type: "user/changeNotifyCount",
-        payload: data.length
-      });
-    },
     *clearNotices({ payload }, { put, select }) {
       yield put({
         type: "saveClearedNotices",
@@ -54,7 +23,7 @@ export default {
         payload: count
       });
     },
-    *changePageOpenedListGeneral({ payload }, { put, select }) {
+    *changePageOpenedListGeneral({ payload }, { put }) {
       const { pathname, menuData } = payload;
       const currentPathList = menuData.filter(item =>
         pathToRegexp(item.path).test(pathname)
@@ -78,7 +47,7 @@ export default {
       };
     },
     removePageOpenedTag(state, { payload }) {
-      const pageOpenedList = state.pageOpenedList.filter((pageTag, index) => {
+      const pageOpenedList = state.pageOpenedList.filter(pageTag => {
         return pageTag.path !== payload;
       });
       return {
@@ -86,8 +55,7 @@ export default {
         pageOpenedList
       };
     },
-    removeAllPageOpendTags(state, { payload }) {
-      const { pageOpenedList } = state;
+    removeAllPageOpendTags(state) {
       return {
         ...state,
         pageOpenedList: [],
@@ -128,7 +96,7 @@ export default {
         isWheel: false
       };
     },
-    changeMouseWheelStatus(state, { payload }) {
+    changeMouseWheelStatus(state) {
       return {
         ...state,
         isWheel: true
@@ -137,8 +105,8 @@ export default {
   },
 
   subscriptions: {
-    setup({ history, dispatch }) {
-      return history.listen(({ pathname, search }) => {});
+    setup({ history }) {
+      return history.listen(() => {});
     }
   }
 };

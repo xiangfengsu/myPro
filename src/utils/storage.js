@@ -1,4 +1,4 @@
-import { encodeHandle, decodeHandle } from "./base64.js";
+import { encodeHandle } from "./base64.js";
 
 const storage = {
   save({ type = "localStorage", key, data, value }) {
@@ -12,11 +12,11 @@ const storage = {
       };
       window[type].setItem(keys, JSON.stringify(obj));
     } catch (e) {
-      console.error("storageSaveError", e);
+      console.error("storageSaveError", e); // eslint-disable-line
     }
   },
   load({ type = "localStorage", key, resolve, reject }) {
-    const _self = this;
+    const self = this;
     try {
       const keys = encodeHandle(key);
       const obj = JSON.parse(window[type].getItem(keys));
@@ -30,15 +30,15 @@ const storage = {
             3600
           ).toFixed(0);
           if (currTime >= cacheTime) {
-            _self.remove(type, key);
+            self.remove(type, key);
           }
         }
-        resolve && resolve(value);
+        resolve && resolve(value); // eslint-disable-line
       } else {
-        reject && reject();
+        reject && reject(); // eslint-disable-line
       }
     } catch (e) {
-      console.error("storageLoadError", e);
+      console.error("storageLoadError", e); // eslint-disable-line
     }
   },
   remove(type = "localStorage", key) {
@@ -46,14 +46,14 @@ const storage = {
       const keys = encodeHandle(key);
       window[type].removeItem(keys);
     } catch (e) {
-      console.error("storageRemoveError", e);
+      console.error("storageRemoveError", e); // eslint-disable-line
     }
   },
   clear(type = "localStorage") {
     try {
       window[type].clear();
     } catch (e) {
-      console.error("storageClearError", e);
+      console.error("storageClearError", e); // eslint-disable-line
     }
   }
 };

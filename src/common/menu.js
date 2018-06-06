@@ -42,12 +42,12 @@ export const menuData = [
   {
     name: "通用查询页",
     icon: "search",
-    path: "generaltable",
+    path: "TableList",
     menutype: 1,
     children: [
       {
         name: "标准列表页",
-        path: "channel",
+        path: "TableList",
         menutype: 2
       }
     ]

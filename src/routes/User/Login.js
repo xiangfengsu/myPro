@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "dva";
-import { Link } from "dva/router";
-import { Checkbox, Alert, Icon } from "antd";
+import { Alert } from "antd";
 import Login from "components/Login";
 import styles from "./Login.less";
 
-const { Tab, UserName, Password, Mobile, Captcha, ImgCaptcha, Submit } = Login;
+const { UserName, Password, ImgCaptcha, Submit } = Login;
 
 @connect(({ login, loading }) => ({
   login,
@@ -13,8 +12,7 @@ const { Tab, UserName, Password, Mobile, Captcha, ImgCaptcha, Submit } = Login;
 }))
 export default class LoginPage extends Component {
   state = {
-    type: "account",
-    autoLogin: true
+    type: "account"
   };
 
   onTabChange = type => {
@@ -32,12 +30,6 @@ export default class LoginPage extends Component {
         }
       });
     }
-  };
-
-  changeAutoLogin = e => {
-    this.setState({
-      autoLogin: e.target.checked
-    });
   };
 
   renderMessage = content => {

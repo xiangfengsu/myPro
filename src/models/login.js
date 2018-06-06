@@ -33,7 +33,8 @@ export default {
         }
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { call, put, select }) {
+      yield call(accountLoginOut, "/sys/logout");
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);

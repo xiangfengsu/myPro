@@ -1,9 +1,6 @@
 import { createElement } from "react";
 import dynamic from "dva/dynamic";
-import { getMenuData } from "./menu";
-import config from "../config";
 
-const { hasPhoneLogin } = config;
 let routerDataCache;
 
 const modelNotExisted = (app, model) =>
@@ -57,19 +54,6 @@ const dynamicWrapper = (app, models, component) => {
   });
 };
 
-function getFlatMenuData(menus) {
-  let keys = {};
-  menus.forEach(item => {
-    if (item.children) {
-      keys[item.path] = { ...item };
-      keys = { ...keys, ...getFlatMenuData(item.children) };
-    } else {
-      keys[item.path] = { ...item };
-    }
-  });
-  return keys;
-}
-
 export const getRouterData = app => {
   const routerConfig = {
     "/": {
@@ -83,15 +67,15 @@ export const getRouterData = app => {
         import("../routes/FormItemType/Index")
       )
     },
-    "/generaltable/channel": {
+    "/TableList/TableList": {
       name: "标准列表页",
-      component: dynamicWrapper(app, ["channel", "dictionary"], () =>
+      component: dynamicWrapper(app, ["tablelist", "dictionary"], () =>
         import("../routes/TableList/Index")
       )
     },
     "/generaltable/channelDetail/:id": {
       name: "详情页",
-      component: dynamicWrapper(app, ["channel", "dictionary"], () =>
+      component: dynamicWrapper(app, ["tablelist", "dictionary"], () =>
         import("../routes/TableList/Index")
       )
     },
@@ -174,7 +158,7 @@ export const getRouterData = app => {
     }
   };
   // Get name from ./menu.js or just set it in the router data.
-  // const menuData = getFlatMenuData(getMenuData());
+
   const routerData = {};
   Object.keys(routerConfig).forEach(item => {
     // const menuItem = menuData[item.replace(/^\//, '')] || {};

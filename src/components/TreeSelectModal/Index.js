@@ -1,11 +1,7 @@
 import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { connect } from "dva";
-import { Tree, Card, Icon, Tag } from "antd";
+import { Tree, Card, Tag } from "antd";
 
-import styles from "./Index.less";
-
-const TreeNode = Tree.TreeNode;
+const { TreeNode } = Tree;
 
 export default class Index extends PureComponent {
   renderTreeNodes = data => {
@@ -78,7 +74,7 @@ export default class Index extends PureComponent {
       ? menuids.join(",").split(",")
       : menuids.split(",");
     const len = menuStructure.length;
-    console.log("parentdepartmentids", parentdepartmentids);
+    // console.log('parentdepartmentids', parentdepartmentids);
     return (
       <Card bordered={false} loading={len === 0}>
         {len > 0 ? (

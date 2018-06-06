@@ -4,6 +4,7 @@ module.exports = {
     body: [
       {
         label: "selectDynamicGroup1",
+        key: "selectDynamicGroup1",
         childrenOptions: [
           {
             key: "selectDynamicGroup1_1",
@@ -17,6 +18,7 @@ module.exports = {
       },
       {
         label: "selectDynamicGroup2",
+        key: "selectDynamicGroup2",
         childrenOptions: [
           {
             key: "selectDynamicGroup2_1",

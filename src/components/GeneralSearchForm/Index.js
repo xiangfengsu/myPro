@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 import { Form, Row, Button, Col, Icon, Tooltip } from "antd";
 import { renderFormItem } from "../../common/formItem";
@@ -40,53 +39,6 @@ export default class SearchForms extends React.PureComponent {
   state = {
     expandForm: false
   };
-  constructor(props) {
-    super(props);
-  }
-  handleSearch = e => {
-    e.preventDefault();
-    const { dispatch, form, handleSearchSubmit } = this.props;
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      logs("fieldsValue", fieldsValue);
-      handleSearchSubmit(fieldsValue);
-    });
-  };
-  handleFormReset = () => {
-    const { form, handleFormReset } = this.props;
-    form.resetFields();
-    handleFormReset();
-  };
-  renderFormItem = (formItems, count) => {
-    const { dispatch, form } = this.props;
-    return formItems.map((item, i) => {
-      const InputType = renderFormItem(item, form, dispatch);
-      return (
-        <Col
-          md={8}
-          sm={24}
-          key={`${item.key}_${i}`}
-          style={{ display: i < count ? "block" : "none" }}
-        >
-          <FormItem
-            {...formItemLayout}
-            label={
-              item.tooltip
-                ? `${item.label}&nbsp;${(
-                    <Tooltip title={item.tooltip}>
-                      <Icon type="question-circle-o" />
-                    </Tooltip>
-                  )}`
-                : item.label
-            }
-            // hasFeedback
-          >
-            {InputType}
-          </FormItem>
-        </Col>
-      );
-    });
-  };
   getFields = () => {
     const { expandForm } = this.state;
     const { formInfo: { formItems } } = this.props;
@@ -120,9 +72,53 @@ export default class SearchForms extends React.PureComponent {
     }
     return children;
   };
+  handleFormReset = () => {
+    const { form, handleFormReset } = this.props;
+    form.resetFields();
+    handleFormReset();
+  };
+  handleSearch = e => {
+    e.preventDefault();
+    const { form, handleSearchSubmit } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      // logs('fieldsValue', fieldsValue);
+      handleSearchSubmit(fieldsValue);
+    });
+  };
   toggleForm = () => {
     this.setState({
       expandForm: !this.state.expandForm
+    });
+  };
+  renderFormItem = (formItems, count) => {
+    const { dispatch, form } = this.props;
+    return formItems.map((item, i) => {
+      const InputType = renderFormItem(item, form, dispatch);
+      return (
+        <Col
+          md={8}
+          sm={24}
+          key={`${item.key}`}
+          style={{ display: i < count ? "block" : "none" }}
+        >
+          <FormItem
+            {...formItemLayout}
+            label={
+              item.tooltip
+                ? `${item.label}&nbsp;${(
+                    <Tooltip title={item.tooltip}>
+                      <Icon type="question-circle-o" />
+                    </Tooltip>
+                  )}`
+                : item.label
+            }
+            // hasFeedback
+          >
+            {InputType}
+          </FormItem>
+        </Col>
+      );
     });
   };
   render() {

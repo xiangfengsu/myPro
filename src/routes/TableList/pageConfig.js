@@ -1,3 +1,4 @@
+import React from "react";
 import { Icon } from "antd";
 
 export const PageConfig = {
@@ -31,8 +32,8 @@ export const PageConfig = {
     {
       title: "渠道性质",
       dataIndex: "channelnature",
-      render: (text, record, index) => {
-        if (text == 0) {
+      render: text => {
+        if (text === 0) {
           return "直营";
         } else {
           return "非直营";
@@ -42,8 +43,8 @@ export const PageConfig = {
     {
       title: "状态",
       dataIndex: "status",
-      render: (text, record, index) => {
-        if (text == 1) {
+      render: text => {
+        if (text === 1) {
           return <Icon type="check-circle" style={{ color: "#52c41a" }} />;
         } else {
           return <Icon type="close-circle" style={{ color: "#f5222d" }} />;
@@ -70,7 +71,6 @@ export const PageConfig = {
       isRequired: false,
       key: "cooperationstatus",
       label: "合作状态",
-      placeholder: "合作状态",
       dataType: "static",
       selectOptions: [
         {

@@ -6,9 +6,9 @@ export default {
   effects: {
     *query({ payload }, { call, put }) {
       const { dictionaryKey } = payload;
-      delete payload.dictionaryKey;
+      delete payload.dictionaryKey; // eslint-disable-line
       const response = yield call(query, payload);
-      const { status = -1, errorMessage = "", body = [] } = response;
+      const { body = [] } = response;
       yield put({
         type: "querySuccess",
         payload: {
