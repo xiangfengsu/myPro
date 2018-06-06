@@ -93,16 +93,15 @@ export default class UploadImg extends Component {
     } else if (status === 'error') {
       message.error(`${file.name} 上传失败`);
     }
-    fileList = fileList.filter((f) => {
-      //eslint-disable-line
+
+    fileList = fileList.filter((f) => { // eslint-disable-line
       if (f.status) {
         return f.status !== 'error';
       }
       return true;
     });
     if (listType === 'text') {
-      fileList = fileList.map((file) => {
-        // eslint-disable-line
+      fileList = fileList.map((file) => { // eslint-disable-line
         if (file.response) {
           file.url = file.response.url; // eslint-disable-line
         }
@@ -125,14 +124,13 @@ export default class UploadImg extends Component {
     }
     const { fileList } = this.state;
     const carouserImages = fileList
-      .filter((file) => {
-        // eslint-disable-line
+      .filter((file) => { // eslint-disable-line
         return (
           file.status === 'done' && /^image\/(gif|png|jpe?g)$/.test(file.type)
         );
       })
-      .map((file) => {
-        // eslint-disable-line
+      .map((file) => { // eslint-disable-line
+
         return {
           src: file.url || file.thumbUrl,
           uid: file.uid,

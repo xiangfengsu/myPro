@@ -113,20 +113,10 @@ export default class TagsPageOpend extends PureComponent {
     if (delta > 0) {
       left = Math.min(0, this.state.tagBodyLeft + delta);
     } else if (this.scrollCon.offsetWidth - 100 < this.scrollBody.offsetWidth) {
-      if (
-        this.state.tagBodyLeft <
-        -(
-          this.scrollBody.offsetWidth -
-          this.scrollCon.offsetWidth +
-          100
-        ) /* eslint-disable-line */
-      ) {
+      if (this.state.tagBodyLeft < -(this.scrollBody.offsetWidth - this.scrollCon.offsetWidth + 100)) { // eslint-disable-line
         left = this.state.tagBodyLeft;
       } else {
-        left = Math.max(
-          this.state.tagBodyLeft + delta,
-          this.scrollCon.offsetWidth - this.scrollBody.offsetWidth - 100
-        );
+        left = Math.max(this.state.tagBodyLeft + delta, this.scrollCon.offsetWidth - this.scrollBody.offsetWidth - 100) ;// eslint-disable-line
       }
     } else {
       this.setState({ tagBodyLeft: 0 });
