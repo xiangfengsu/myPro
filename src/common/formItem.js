@@ -1,6 +1,5 @@
 import React from 'react';
-import { Input, InputNumber, Select, TimePicker, DatePicker } from 'antd';
-// import CheckboxGroup from '../components/CheckBox/Index';
+import {Row,Col, Input, InputNumber, Select, TimePicker, DatePicker,Checkbox,Radio } from 'antd';
 import UploadImg from '../components/UploadImg/Index';
 import DynamicSelect from '../components/DynamicSelect/Index';
 import DynamicSelectTree from '../components/DynamicSelectTree/Index';
@@ -8,6 +7,8 @@ import DynamicSelectGroup from '../components/DynamicSelectGroup/Index';
 import DynamicSelectMenuTree from '../components/MenuDynamicTree/Index';
 
 const { MonthPicker, RangePicker } = DatePicker;
+const CheckboxGroup = Checkbox.Group;
+const RadioGroup = Radio.Group;
 const validateNumber = (value, prevValue) => {
   if (!value) {
     return value;
@@ -472,8 +473,54 @@ export const renderFormItem = (item, form, dispatch) => {
           listType={item.listType}
         />
       );
-      break;
-    default:
+        break;
+      case 'checkboxGroup':
+        InputType = getFieldDecorator(item.key, {
+          initialValue: item.initialValue,
+          rules: [{
+            required: item.isRequired,
+            message: `${item.label}不能为空`
+          }]
+        })(
+          <CheckboxGroup style={{ width: '100%',lineHeight:'unset' }} >
+            <Row>
+              {
+                item.options && item.options.map((checkitem) => {
+                  return (
+                    <Col lg={item.itemColSpan || 6} key={checkitem.value} xs={12}>
+                      <Checkbox value={checkitem.value}>{checkitem.label}</Checkbox>
+                    </Col>
+                  );
+                })
+              }
+            </Row>
+          </CheckboxGroup>
+          )
+        break;
+        case 'radioGroup':
+          InputType = getFieldDecorator(item.key, {
+            initialValue: item.initialValue,
+            rules: [{
+              required: item.isRequired,
+              message: `${item.label}不能为空`
+            }]
+          })(
+            <RadioGroup style={{ width: '100%' }} >
+              <Row>
+                {
+                  item.options && item.options.map((checkitem) => {
+                    return (
+                      <Col lg={item.itemColSpan || 6} key={checkitem.value} xs={12}>
+                        <Radio value={checkitem.value}>{checkitem.label}</Radio>
+                      </Col>
+                    );
+                  })
+                }
+              </Row>
+            </RadioGroup>
+            )
+          break;
+      default:
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
         rules: [
