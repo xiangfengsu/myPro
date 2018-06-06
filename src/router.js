@@ -14,8 +14,9 @@ dynamic.setDefaultLoadingComponent(() => {
 });
 // eslint-disable-next-line
 const checkAuthority = () => {
+  // eslint-disable-next-line
   return new Promise((resolve, reject) => {
-    // eslint-disable-line
+    // eslint-disable-next-line
     setTimeout(() => {
       resolve();
     }, 1000);

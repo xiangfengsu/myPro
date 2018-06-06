@@ -106,8 +106,9 @@ class BasicLayout extends React.PureComponent {
       let redirectPath = '';
       if (menuDatas && menuDatas.length > 0) {
         const formaterMenuDatas = menuDataPathToArray(menuDatas);
+        // eslint-disable-next-line
         for (let i = 0; i < formaterMenuDatas.length; i++) {
-          // eslint-disable-line
+
           if (formaterMenuDatas[i].menutype === 2) {
             redirectPath = formaterMenuDatas[i].path;
             break;

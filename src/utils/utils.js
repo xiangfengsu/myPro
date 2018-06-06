@@ -238,8 +238,9 @@ export function formaterObjectValue(obj) {
     return newObj;
   }
   for (const key in obj) {
+    // eslint-disable-next-line
     if (obj.hasOwnProperty(key)) {
-      // eslint-disable-line
+
       newObj[key] = obj[key] === undefined ? '' : obj[key];
     }
   }

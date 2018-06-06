@@ -31,8 +31,7 @@ export const PageConfig = {
       title: '状态',
       dataIndex: 'status',
       render: (text) => {
-        if (text == 1) {
-          // eslint-disable-line
+        if (text === 1) {
           return <Tag color="#52c41a">正常</Tag>;
         } else {
           return <Tag color="#f5222d">删除</Tag>;
