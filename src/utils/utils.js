@@ -171,24 +171,7 @@ export function formatter(data = [], parentPath = '', parentAuthority) {
     return result;
   });
 }
-export function menuDataPathFormater(menuData) {
-  const list = [];
-  const exceptionPath = ['/exception/403', '/exception/404', '/exception/500'];
-  (function dataFormater(menuDatas) {
-    menuDatas.forEach((item) => {
-      list.push(`/${item.path}`);
-      if (item.children) {
-        dataFormater(item.children);
-      }
-    });
-  }(menuData));
-  // 添加白名单页面访问权限
-  const newWhiteListPath = whiteListPath.map((info) => {
-    return info.path;
-  });
-  list.push(...newWhiteListPath);
-  return [...list, ...exceptionPath];
-}
+
 export function menuDataPathToArray(menuData) {
   const list = [];
   const exceptionPath = [
@@ -208,15 +191,15 @@ export function menuDataPathToArray(menuData) {
       menutype: 2,
     },
   ];
-  (function dataFormater(menuDatas, parentPath = '/') {
+  (function dataFormater(menuDatas) {
     menuDatas.forEach((item) => {
       list.push({
-        path: `${parentPath}${item.path}`,
+        path: `/${item.path}`,
         name: item.name,
         menutype: item.menutype,
       });
       if (item.children) {
-        dataFormater(item.children, `/${item.path}/`);
+        dataFormater(item.children);
       }
     });
   }(menuData));
@@ -224,12 +207,11 @@ export function menuDataPathToArray(menuData) {
   return [...list, ...exceptionPath, ...whiteListPath];
 }
 export function menuAuthority(menuDatas, path) {
-  // logs('menuDatas', menuDatas);
-  let isAuthority = true;
-  // logs('len', menuDatas.length);
-  if (menuDatas.length > 4) {
-    isAuthority = menuDatas.indexOf(path) !== -1;
-  }
+  let isAuthority = false;
+  const index = menuDatas.findIndex(item=>{
+    return item.path === path;
+  });
+  isAuthority = index!==-1;
   return isAuthority;
 }
 export function formaterObjectValue(obj) {

@@ -15,7 +15,6 @@ import SiderMenu from 'components/SiderMenu';
 import {
   getRoutes,
   formatter,
-  menuDataPathFormater,
   menuDataPathToArray,
   menuAuthority,
 } from 'utils/utils';
@@ -90,7 +89,7 @@ class BasicLayout extends React.PureComponent {
   getBashRedirect = () => {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
-    const urlParams = new URL(window.location.href);
+    const urlParams = new URL(window.location.href); // eslint-disable-line
 
     const redirect = urlParams.searchParams.get('redirect');
     // Remove the parameters in the url
@@ -103,8 +102,10 @@ class BasicLayout extends React.PureComponent {
       const menuDatas = config.isLocalMenus
         ? config.localMenus
         : currentUser.menuData;
+      
       if (menuDatas && menuDatas.length > 0) {
         const formaterMenuDatas = menuDataPathToArray(menuDatas);
+        
         return formaterMenuDatas[0].path;
       }
     }
@@ -199,7 +200,9 @@ class BasicLayout extends React.PureComponent {
       ? config.localMenus
       : currentUser.menuData;
     const menuDatas = formatter(menusList);
-    const formaterMenuDatas = menuDataPathFormater(menuDatas);
+    const formaterMenuDatas = menuDataPathToArray(menuDatas);
+    // logs('formaterMenuDatas',formaterMenuDatas);
+    // console.log('formaterMenuDatas',formaterMenuDatas);
     const layout = (
       <Layout>
         <SiderMenu
@@ -236,7 +239,7 @@ class BasicLayout extends React.PureComponent {
               <TagsPageOpend
                 isWheel={this.props.isWheel}
                 dispatch={this.props.dispatch}
-                menuData={menuDataPathToArray(menusList)}
+                menuData={menuDataPathToArray(menuDatas)}
                 location={location}
                 pageOpenedList={this.props.pageOpenedList}
                 currentPagePath={this.props.currentPagePath}
