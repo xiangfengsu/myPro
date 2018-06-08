@@ -26,7 +26,7 @@ export default {
     *changePageOpenedListGeneral({ payload }, { put }) {
       const { pathname, menuData } = payload;
       const currentPathList = menuData.filter(item =>
-        pathToRegexp(item.path).test(pathname)
+        item.menutype === 2&&pathToRegexp(item.path).test(pathname)
       );
       if (currentPathList.length > 0) {
         yield put({

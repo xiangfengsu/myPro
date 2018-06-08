@@ -102,10 +102,10 @@ class BasicLayout extends React.PureComponent {
       const menuDatas = config.isLocalMenus
         ? config.localMenus
         : currentUser.menuData;
-      
+
       if (menuDatas && menuDatas.length > 0) {
         const formaterMenuDatas = menuDataPathToArray(menuDatas);
-        
+
         return formaterMenuDatas[0].path;
       }
     }

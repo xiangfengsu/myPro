@@ -208,10 +208,10 @@ export function menuDataPathToArray(menuData) {
 }
 export function menuAuthority(menuDatas, path) {
   let isAuthority = false;
-  const index = menuDatas.findIndex(item=>{
+  const index = menuDatas.findIndex((item) => {
     return item.path === path;
   });
-  isAuthority = index!==-1;
+  isAuthority = index !== -1;
   return isAuthority;
 }
 export function formaterObjectValue(obj) {
