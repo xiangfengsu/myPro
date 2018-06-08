@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'dva';
 import { Card, Modal, Button, Popconfirm } from 'antd';
 
@@ -18,17 +19,25 @@ import styles from './Index.less';
   dictionary,
 }))
 export default class Index extends PureComponent {
+  static childContextTypes = {
+    updateFormItems: PropTypes.func,
+  };
   state = {
     showModalType: '',
     detailFormItems: [],
   };
-
+  getChildContext() {
+    return {
+      updateFormItems: this.updateFormItems,
+    };
+  }
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'menumanage/fetch',
     });
   }
+  
   updateFormItems = (id = 1, type = 'create', record = {}) => {
     const detailForm = cloneDeep(PageConfig.detailFormItems);
     const detailFormItems = [

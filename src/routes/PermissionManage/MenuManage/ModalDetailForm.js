@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Form, Row, Col, Card, Icon, Tooltip } from 'antd';
-
+import PropTypes from 'prop-types';
 import { renderFormItem } from '../../../common/formItem';
 
 const FormItem = Form.Item;
@@ -14,9 +14,32 @@ const formItemLayout = {
 };
 @Form.create()
 export default class DetailFormInfo extends PureComponent {
+  static contextTypes = {
+    updateFormItems: PropTypes.func,
+  };
+  state = {
+    selectMenuTypeValue: 1,
+  };
+  selectMenuType = (value) => {
+    this.context.updateFormItems(value);
+    this.setState({
+      selectMenuTypeValue: value,
+    });
+    this.props.form.resetFields();
+  };
+
   renderFormItem = () => {
     const { formItems, form } = this.props;
+    const { selectMenuTypeValue } = this.state;
     return formItems.map((item) => {
+      if (item.formType === 'selectDynamicTree') {
+        Object.assign(item, {
+          extraProp: { selectMenuTypeValue },
+        });
+      }
+      if (item.key === 'menutype') {
+        item.onSelect = this.selectMenuType; // eslint-disable-line
+      }
       const InputType = renderFormItem(item, form);
       return (
         <Col
