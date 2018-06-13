@@ -5,13 +5,11 @@ import CustomCarouser from '../LightBox/Carouser';
 export default class UploadImg extends Component {
   constructor(props) {
     super(props);
-    const { value } = this.props;
-    // const value = this.props.value || {};
-    // logs(value);
+    const { value=[] } = this.props;
     this.state = {
       previewVisible: false,
-      fileList: value || [],
-      carouserImages: [],
+      fileList: value ,
+      carouserImages:value,
       carouserFirstIndex: 0,
     };
     this.uploadTotalCounts = 0;
@@ -111,23 +109,24 @@ export default class UploadImg extends Component {
     this.triggerChange(fileList);
   };
   handlePreview = (file) => {
-    // logs('currFile', file);
+    const regpHandle = (text)=>{
+      return /^http.*(gif|png|jpe?g|GIF|PNG|JPE?G)$/.test(text);
+    }
     if (!file.thumbUrl) return;
-    if (!/^image\/(gif|png|jpe?g)$/.test(file.type)) {
+    if (!regpHandle(file.response?file.response.url:file.url)) {
       message.error('该文件不是图片类型，无法预览');
       return;
     }
     const { fileList } = this.state;
     const carouserImages = fileList
-      .filter((file) => { // eslint-disable-line
+      .filter((fl) => { // eslint-disable-line
         return (
-          file.status === 'done' && /^image\/(gif|png|jpe?g)$/.test(file.type)
+          fl.status === 'done' && regpHandle(fl.response?fl.response.url:fl.url)
         );
       })
       .map((file) => { // eslint-disable-line
-
         return {
-          src: file.url || file.thumbUrl,
+          url: file.url || file.thumbUrl,
           uid: file.uid,
         };
       });
@@ -185,6 +184,7 @@ export default class UploadImg extends Component {
       carouserImages,
       carouserFirstIndex,
     } = this.state;
+    
     const {
       action,
       maxFileCounts,

@@ -46,7 +46,7 @@ export default class CustomCarouser extends PureComponent {
   static propTypes = {
     images: PropTypes.arrayOf(
       PropTypes.shape({
-        src: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
       })
     ).isRequired,
     visible: PropTypes.bool,
@@ -56,39 +56,39 @@ export default class CustomCarouser extends PureComponent {
   static defaultProps = {
     images: [
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1453550486481-aa4175b013ea?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
       {
-        src:
+        url:
           'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
       },
     ],
@@ -123,7 +123,7 @@ export default class CustomCarouser extends PureComponent {
               /* eslint-disable-next-line */
               <div key={i}>
                 <div className="image-modal-container">
-                  <img src={img.src} style={{ width: '100%' }} alt="" />
+                  <img src={img.url} style={{ width: '100%' }} alt="" />
                 </div>
               </div>
             ))}
