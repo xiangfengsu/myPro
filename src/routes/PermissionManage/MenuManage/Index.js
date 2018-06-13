@@ -6,7 +6,7 @@ import { Card, Modal, Button, Popconfirm } from 'antd';
 import cloneDeep from 'lodash/cloneDeep';
 import TreeTable from 'components/TreeTable/Index';
 import { formaterObjectValue, formItemAddInitValue } from 'utils/utils';
-import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import PageHeaderLayout from 'layouts/PageHeaderLayout';
 
 import { PageConfig } from './pageConfig.js';
 import DetailFormInfo from './ModalDetailForm';
@@ -37,7 +37,7 @@ export default class Index extends PureComponent {
       type: 'menumanage/fetch',
     });
   }
-  
+
   updateFormItems = (id = 1, type = 'create', record = {}) => {
     const detailForm = cloneDeep(PageConfig.detailFormItems);
     const detailFormItems = [

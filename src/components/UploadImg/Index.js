@@ -5,10 +5,12 @@ import CustomCarouser from '../LightBox/Carouser';
 export default class UploadImg extends Component {
   constructor(props) {
     super(props);
-    const value = this.props.value || {};
+    const { value } = this.props;
+    // const value = this.props.value || {};
+    // logs(value);
     this.state = {
       previewVisible: false,
-      fileList: value.fileList || [],
+      fileList: value || [],
       carouserImages: [],
       carouserFirstIndex: 0,
     };
@@ -17,12 +19,8 @@ export default class UploadImg extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const { value } = nextProps;
-      if (value) {
-        this.setState(value);
-      } else {
-        this.setState({ fileList: [] });
-      }
+      const { value=[] } = nextProps;
+      this.setState({ fileList: value });
     }
   }
   onRemove = (file) => {
@@ -36,7 +34,7 @@ export default class UploadImg extends Component {
           const index = fileList.indexOf(file);
           const newFileList = fileList.slice();
           newFileList.splice(index, 1);
-          this.triggerChange({ fileList: newFileList });
+          this.triggerChange(newFileList);
           return {
             fileList: newFileList,
           };
@@ -48,10 +46,9 @@ export default class UploadImg extends Component {
     return false;
   };
   triggerChange = (changedValue) => {
-    // logs('changedValue', changedValue);
     const { onChange } = this.props;
     if (onChange) {
-      onChange(Object.assign({}, changedValue));
+      onChange(changedValue);
     }
   };
   beforeUpload = (file, fileList) => {
@@ -108,12 +105,10 @@ export default class UploadImg extends Component {
         return file;
       });
     }
-
-    // logs(fileList);
     if (!('value' in this.props)) {
       this.setState({ fileList });
     }
-    this.triggerChange({ fileList });
+    this.triggerChange(fileList);
   };
   handlePreview = (file) => {
     // logs('currFile', file);
