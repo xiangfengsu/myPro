@@ -180,7 +180,7 @@ class BasicLayout extends React.PureComponent {
       location,
       isFetched,
     } = this.props;
-    if (!isFetched) {
+    if (!isFetched || (isFetched && isFetched.length) <= 0) {
       return (
         <div
           style={{
