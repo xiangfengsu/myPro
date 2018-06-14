@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from 'components/Login';
 import styles from './Login.less';
+import config from 'src/config.js'
 
 const { UserName, Password, ImgCaptcha, Submit } = Login;
 
@@ -57,12 +58,12 @@ export default class LoginPage extends Component {
             login.type === 'account' &&
             !login.submitting &&
             this.renderMessage(login.errorMessage)}
-          <UserName name="username" placeholder="admin/user" />
-          <Password name="password" placeholder="888888/123456" />
+          <UserName name="username" placeholder="admin" />
+          <Password name="password" placeholder="admin" />
           <ImgCaptcha
             name="code"
             placeholder="123"
-            captcha="http://newfhmcar.chunlvbank.com/FHM_car300/code.do"
+            captcha={config.vcodeUrl}
           />
           {/* <div>
             <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
