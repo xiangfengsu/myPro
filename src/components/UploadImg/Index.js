@@ -5,11 +5,11 @@ import CustomCarouser from '../LightBox/Carouser';
 export default class UploadImg extends Component {
   constructor(props) {
     super(props);
-    const { value=[] } = this.props;
+    const { value = [] } = this.props;
     this.state = {
       previewVisible: false,
-      fileList: value ,
-      carouserImages:value,
+      fileList: value,
+      carouserImages: value,
       carouserFirstIndex: 0,
     };
     this.uploadTotalCounts = 0;
@@ -17,7 +17,7 @@ export default class UploadImg extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const { value=[] } = nextProps;
+      const { value = [] } = nextProps;
       this.setState({ fileList: value });
     }
   }
@@ -109,11 +109,11 @@ export default class UploadImg extends Component {
     this.triggerChange(fileList);
   };
   handlePreview = (file) => {
-    const regpHandle = (text)=>{
+    const regpHandle = (text) => {
       return /^http.*(gif|png|jpe?g|GIF|PNG|JPE?G)$/.test(text);
-    }
+    };
     if (!file.thumbUrl) return;
-    if (!regpHandle(file.response?file.response.url:file.url)) {
+    if (!regpHandle(file.response ? file.response.url : file.url)) {
       message.error('该文件不是图片类型，无法预览');
       return;
     }
@@ -121,7 +121,7 @@ export default class UploadImg extends Component {
     const carouserImages = fileList
       .filter((fl) => { // eslint-disable-line
         return (
-          fl.status === 'done' && regpHandle(fl.response?fl.response.url:fl.url)
+          fl.status === 'done' && regpHandle(fl.response ? fl.response.url : fl.url)
         );
       })
       .map((file) => { // eslint-disable-line
@@ -184,7 +184,7 @@ export default class UploadImg extends Component {
       carouserImages,
       carouserFirstIndex,
     } = this.state;
-    
+
     const {
       action,
       maxFileCounts,
