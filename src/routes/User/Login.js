@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Alert } from 'antd';
+import config from 'src/config.js';
 import Login from 'components/Login';
 import styles from './Login.less';
-import config from 'src/config.js'
+
 
 const { UserName, Password, ImgCaptcha, Submit } = Login;
 
