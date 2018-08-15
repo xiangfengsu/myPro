@@ -13,7 +13,7 @@ import GlobalFooter from 'components/GlobalFooter';
 import SiderMenu from 'components/SiderMenu';
 import { getRoutes, formatter, menuDataPathToArray, menuAuthority } from 'core/utils/utils';
 import Authorized from 'core/utils/Authorized';
-import NotFound from 'pages/sys/Exception/route/404';
+import NotFound from 'pages/Sys/Exception/route/404';
 import logo from 'src/assets/logo.svg';
 import avatar from 'src/assets/avatar.png';
 import config from 'src/config';

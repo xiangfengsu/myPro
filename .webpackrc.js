@@ -18,7 +18,7 @@ export default {
     pages: path.resolve(__dirname, 'src/pages/'),
   },
   ignoreMomentLocale: true,
-  theme: './src/theme.js',
+  theme: './src/core/theme/theme.js',
   html: {
     template: './src/index.ejs',
   },

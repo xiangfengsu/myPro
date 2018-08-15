@@ -4,7 +4,7 @@ export default (dynamicWrapper, app) => {
       name: '标准列表页',
       component: dynamicWrapper(
         app,
-        ['TableList/model/tablelist', 'sys/Dictionary/model/dictionary'],
+        ['TableList/model/tablelist', 'Sys/Dictionary/model/dictionary'],
         () => import('../../pages/TableList/route/TableList')
       ),
     },
@@ -12,7 +12,7 @@ export default (dynamicWrapper, app) => {
       name: '详情页',
       component: dynamicWrapper(
         app,
-        ['TableList/model/tablelist', 'sys/Dictionary/model/dictionary'],
+        ['TableList/model/tablelist', 'Sys/Dictionary/model/dictionary'],
         () => import('../../pages/TableList/route/TableList')
       ),
     },
