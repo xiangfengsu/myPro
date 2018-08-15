@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Carousel, Icon } from 'antd';
 
-const SamplePrevArrow = (props) => {
+const SamplePrevArrow = props => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -21,7 +21,7 @@ const SamplePrevArrow = (props) => {
     </div>
   );
 };
-const SampleNextArrow = (props) => {
+const SampleNextArrow = props => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -53,45 +53,8 @@ export default class CustomCarouser extends PureComponent {
     currentIndex: PropTypes.number,
     hideCarouser: PropTypes.func,
   };
+
   static defaultProps = {
-    images: [
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1453550486481-aa4175b013ea?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-      {
-        url:
-          'https://images.unsplash.com/photo-1471127432458-65206be149c9?dpr=2&auto=format&crop=faces&fit=crop&w=240&h=159',
-      },
-    ],
     visible: false,
     currentIndex: 0,
     hideCarouser: () => {},

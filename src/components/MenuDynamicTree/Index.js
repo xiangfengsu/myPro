@@ -15,6 +15,7 @@ export default class DynamicSelect extends Component {
       selectValue: value === undefined ? undefined : `${value}`.split(','),
     };
   }
+
   componentDidMount() {
     const { dispatch, dictionaryKey, fetchUrl } = this.props;
     dispatch({
@@ -25,6 +26,7 @@ export default class DynamicSelect extends Component {
       },
     });
   }
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       const { value } = nextProps;
@@ -33,21 +35,26 @@ export default class DynamicSelect extends Component {
       });
     }
   }
-  handleChange = (selectValue) => {
+
+  handleChange = selectValue => {
     if (!('value' in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
   };
-  triggerChange = (changedValue) => {
+
+  triggerChange = changedValue => {
     const { onChange } = this.props;
     // logs('changedValue', changedValue);
     if (onChange) {
       onChange(changedValue);
     }
   };
+
   renderNodeDisabledSelectable = (menuType = 0) => {
-    const { extraProp: { selectMenuTypeValue = 0 } } = this.props;
+    const {
+      extraProp: { selectMenuTypeValue = 0 },
+    } = this.props;
     const obj = {};
     switch (selectMenuTypeValue) {
       case 1:
@@ -93,12 +100,11 @@ export default class DynamicSelect extends Component {
     }
     return obj;
   };
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
+
+  renderTreeNodes = data => {
+    return data.map(item => {
       let iconType = null;
-      const { disabled, selectable } = this.renderNodeDisabledSelectable(
-        item.menuType
-      );
+      const { disabled, selectable } = this.renderNodeDisabledSelectable(item.menuType);
       if (item.menuType === 1) {
         iconType = (
           <span>
@@ -149,15 +155,10 @@ export default class DynamicSelect extends Component {
       );
     });
   };
+
   render() {
     const { state } = this;
-    const {
-      dictionary = {},
-      dictionaryKey,
-      placeholder,
-      disabled,
-      multiple,
-    } = this.props;
+    const { dictionary = {}, dictionaryKey, placeholder, disabled, multiple } = this.props;
     const len = dictionary[dictionaryKey] && dictionary[dictionaryKey].length;
     // logs('this.props', this.props);
     return (

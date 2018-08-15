@@ -16,6 +16,7 @@ export default class DynamicSelect extends Component {
       selectValue: value === undefined ? undefined : `${value}`.split(','),
     };
   }
+
   componentDidMount() {
     const { dispatch, dictionaryKey, fetchUrl } = this.props;
     dispatch({
@@ -26,6 +27,7 @@ export default class DynamicSelect extends Component {
       },
     });
   }
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       if ('value' in nextProps) {
@@ -36,22 +38,27 @@ export default class DynamicSelect extends Component {
       }
     }
   }
-  handleChange = (selectValue) => {
+
+  handleChange = selectValue => {
     // console.log('label',label);
     if (!('value' in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
   };
-  triggerChange = (changedValue) => {
+
+  triggerChange = changedValue => {
     const { onChange } = this.props;
     // logs('changedValue', changedValue);
     if (onChange) {
       onChange(changedValue);
     }
   };
+
   renderNodeDisabledSelectable = (menuType = 0) => {
-    const { extraProp: { selectMenuTypeValue = 0 } } = this.props;
+    const {
+      extraProp: { selectMenuTypeValue = 0 },
+    } = this.props;
     const obj = {};
     switch (selectMenuTypeValue) {
       case 1:
@@ -97,13 +104,12 @@ export default class DynamicSelect extends Component {
     }
     return obj;
   };
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
+
+  renderTreeNodes = data => {
+    return data.map(item => {
       let iconType = null;
       const { menutype } = item;
-      const { disabled, selectable } = this.renderNodeDisabledSelectable(
-        menutype
-      );
+      const { disabled, selectable } = this.renderNodeDisabledSelectable(menutype);
       if (menutype === 1) {
         iconType = (
           <span>
@@ -161,6 +167,7 @@ export default class DynamicSelect extends Component {
       );
     });
   };
+
   render() {
     const { state } = this;
     const {

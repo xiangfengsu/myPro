@@ -4,11 +4,11 @@ import { connect } from 'dva';
 import { Select } from 'antd';
 
 const { Option } = Select;
-const cleanArray = (arr) => {
+const cleanArray = arr => {
   if (!(arr instanceof Array)) {
     arr = []; /* eslint-disable-line */
   }
-  return arr.filter((e) => {
+  return arr.filter(e => {
     return e !== undefined && e !== null && e !== '';
   });
 };
@@ -30,6 +30,7 @@ export default class DynamicSelect extends Component {
       };
     }
   }
+
   componentDidMount() {
     const { dispatch, fetchUrl, dictionaryKey } = this.props;
     dispatch({
@@ -40,6 +41,7 @@ export default class DynamicSelect extends Component {
       },
     });
   }
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       const { value, multiple } = nextProps;
@@ -48,9 +50,7 @@ export default class DynamicSelect extends Component {
         const arrValue = `${value}`.split(',');
         // logs('arrValue', arrValue);
         this.setState({
-          selectValue: multiple
-            ? arrValue === '' ? undefined : arrValue
-            : value,
+          selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value,
         });
       } else {
         this.setState({
@@ -59,27 +59,24 @@ export default class DynamicSelect extends Component {
       }
     }
   }
-  handleChange = (selectValue) => {
+
+  handleChange = selectValue => {
     if (!('value' in this.props)) {
       this.setState({ selectValue });
     }
     this.triggerChange(selectValue);
   };
-  triggerChange = (changedValue) => {
+
+  triggerChange = changedValue => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(changedValue);
     }
   };
+
   render() {
     const { state } = this;
-    const {
-      dictionary = {},
-      dictionaryKey,
-      placeholder,
-      popupContainer,
-      multiple,
-    } = this.props;
+    const { dictionary = {}, dictionaryKey, placeholder, popupContainer, multiple } = this.props;
     return (
       <Select
         value={multiple ? cleanArray(state.selectValue) : state.selectValue}
@@ -90,10 +87,10 @@ export default class DynamicSelect extends Component {
         getPopupContainer={() => popupContainer}
       >
         {dictionary[dictionaryKey] &&
-          dictionary[dictionaryKey].map((option) => {
+          dictionary[dictionaryKey].map(option => {
             return (
               <Select.OptGroup label={option.label} key={option.key}>
-                {option.childrenOptions.map((v) => {
+                {option.childrenOptions.map(v => {
                   return (
                     <Option value={v.key} key={v.key}>
                       {v.value}

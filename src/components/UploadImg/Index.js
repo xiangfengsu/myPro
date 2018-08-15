@@ -21,7 +21,8 @@ export default class UploadImg extends Component {
       this.setState({ fileList: value });
     }
   }
-  onRemove = (file) => {
+
+  onRemove = file => {
     Modal.confirm({
       title: '删除',
       content: '确认要删除该文件吗？',
@@ -43,12 +44,14 @@ export default class UploadImg extends Component {
 
     return false;
   };
-  triggerChange = (changedValue) => {
+
+  triggerChange = changedValue => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(changedValue);
     }
   };
+
   beforeUpload = (file, fileList) => {
     const { size } = file;
     const { maxFileSize, maxFileCounts } = this.props;
@@ -88,15 +91,18 @@ export default class UploadImg extends Component {
     } else if (status === 'error') {
       message.error(`${file.name} 上传失败`);
     }
-
-    fileList = fileList.filter((f) => { // eslint-disable-line
+    // eslint-disable-next-line
+    fileList = fileList.filter(f => {
+      // eslint-disable-line
       if (f.status) {
         return f.status !== 'error';
       }
       return true;
     });
     if (listType === 'text') {
-      fileList = fileList.map((file) => { // eslint-disable-line
+      // eslint-disable-next-line
+      fileList = fileList.map(file => {
+        // eslint-disable-line
         if (file.response) {
           file.url = file.response.url; // eslint-disable-line
         }
@@ -108,8 +114,9 @@ export default class UploadImg extends Component {
     }
     this.triggerChange(fileList);
   };
-  handlePreview = (file) => {
-    const regpHandle = (text) => {
+
+  handlePreview = file => {
+    const regpHandle = text => {
       return /^http.*(gif|png|jpe?g|GIF|PNG|JPE?G)$/.test(text);
     };
     if (!file.thumbUrl) return;
@@ -119,18 +126,17 @@ export default class UploadImg extends Component {
     }
     const { fileList } = this.state;
     const carouserImages = fileList
-      .filter((fl) => { // eslint-disable-line
-        return (
-          fl.status === 'done' && regpHandle(fl.response ? fl.response.url : fl.url)
-        );
+      .filter(fl => {
+        // eslint-disable-line
+        return fl.status === 'done' && regpHandle(fl.response ? fl.response.url : fl.url);
       })
-      .map((file) => { // eslint-disable-line
+      .map(f => {
         return {
-          url: file.url || file.thumbUrl,
-          uid: file.uid,
+          url: f.url || f.thumbUrl,
+          uid: f.uid,
         };
       });
-    const carouserFirstIndex = carouserImages.findIndex((cfile) => {
+    const carouserFirstIndex = carouserImages.findIndex(cfile => {
       return cfile.uid === file.uid;
     });
     this.setState({
@@ -140,7 +146,9 @@ export default class UploadImg extends Component {
       carouserFirstIndex: carouserFirstIndex === -1 ? 0 : carouserFirstIndex,
     });
   };
+
   handleCancel = () => this.setState({ previewVisible: false });
+
   renderUploadBtn = () => {
     // 1:text  2:picture 3:picture-card
     const { listType } = this.props;
@@ -177,21 +185,11 @@ export default class UploadImg extends Component {
     }
     return content;
   };
-  render() {
-    const {
-      previewVisible,
-      fileList,
-      carouserImages,
-      carouserFirstIndex,
-    } = this.state;
 
-    const {
-      action,
-      maxFileCounts,
-      multiple,
-      acceptType,
-      listType,
-    } = this.props;
+  render() {
+    const { previewVisible, fileList, carouserImages, carouserFirstIndex } = this.state;
+
+    const { action, maxFileCounts, multiple, acceptType, listType } = this.props;
     return (
       <div className="clearfix">
         <Upload

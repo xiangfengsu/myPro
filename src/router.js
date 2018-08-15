@@ -1,17 +1,17 @@
 import React from 'react';
 import { routerRedux, Route, Switch } from 'dva/router';
-import { LocaleProvider, Spin } from 'antd';
+import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import dynamic from 'dva/dynamic';
-import { getRouterData } from './common/router';
-import Authorized from './utils/Authorized';
-import styles from './index.less';
+// import UserLayout from 'core/layouts/UserLayout';
+// import BasicLayout from 'core/layouts/BasicLayout';
+import { getRouterData } from 'core/common/router';
+import Authorized from 'core/utils/Authorized';
 
 const { ConnectedRouter } = routerRedux;
 const { AuthorizedRoute } = Authorized;
-dynamic.setDefaultLoadingComponent(() => {
-  return <Spin size="large" className={styles.globalSpin} />;
-});
+// dynamic.setDefaultLoadingComponent(() => {
+//   return <Spin size="large" className={styles.globalSpin} />;
+// });
 // eslint-disable-next-line
 const checkAuthority = () => {
   // eslint-disable-next-line

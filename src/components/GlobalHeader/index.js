@@ -13,12 +13,13 @@ export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
+
   getNoticeData() {
     const { notices = [] } = this.props;
     if (notices.length === 0) {
       return {};
     }
-    const newNotices = notices.map((notice) => {
+    const newNotices = notices.map(notice => {
       const newNotice = { ...notice };
       if (newNotice.datetime) {
         newNotice.datetime = moment(notice.datetime).fromNow();
@@ -44,31 +45,36 @@ export default class GlobalHeader extends PureComponent {
     });
     return groupBy(newNotices, 'type');
   }
+
   toggle = () => {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
     this.triggerResizeEvent();
   };
+
   @Debounce(600)
   // eslint-disable-next-line
   triggerResizeEvent() {
     // eslint-disable-next-line
-    const event = document.createEvent("HTMLEvents");
+    const event = document.createEvent('HTMLEvents');
     event.initEvent('resize', true, false);
     window.dispatchEvent(event);
   }
+
   render() {
     const { currentUser, collapsed, isMobile, logo, onMenuClick } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="setting">
-          <Icon type="user" />个人中心
+          <Icon type="user" />
+          个人中心
         </Menu.Item>
         {/* <Menu.Item key="setting"><Icon type="setting" />设置</Menu.Item> */}
         {/* <Menu.Item key="triggerError"><Icon type="close-circle" />触发报错</Menu.Item> */}
         <Menu.Divider />
         <Menu.Item key="logout">
-          <Icon type="logout" />退出登录
+          <Icon type="logout" />
+          退出登录
         </Menu.Item>
       </Menu>
     );

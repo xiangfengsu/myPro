@@ -8,44 +8,53 @@ import LoginSubmit from './LoginSubmit';
 import styles from './index.less';
 
 class Login extends Component {
-  static defaultProps = {
-    className: '',
-    defaultActiveKey: '',
-    onTabChange: () => {},
-    onSubmit: () => {},
-  };
   static propTypes = {
     className: PropTypes.string,
     defaultActiveKey: PropTypes.string,
     onTabChange: PropTypes.func,
     onSubmit: PropTypes.func,
   };
+
   static childContextTypes = {
     tabUtil: PropTypes.object,
     form: PropTypes.object,
     updateActive: PropTypes.func,
   };
-  state = {
-    type: this.props.defaultActiveKey,
-    tabs: [],
-    active: {},
+
+  static defaultProps = {
+    className: '',
+    defaultActiveKey: '',
+    onTabChange: () => {},
+    onSubmit: () => {},
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      type: props.defaultActiveKey,
+      tabs: [],
+      active: {},
+    };
+  }
+
   getChildContext() {
+    const { tabs } = this.state;
+    const { form } = this.props;
     return {
       tabUtil: {
-        addTab: (id) => {
+        addTab: id => {
           this.setState({
-            tabs: [...this.state.tabs, id],
+            tabs: [...tabs, id],
           });
         },
-        removeTab: (id) => {
+        removeTab: id => {
           this.setState({
-            tabs: this.state.tabs.filter(currentId => currentId !== id),
+            tabs: tabs.filter(currentId => currentId !== id),
           });
         },
       },
-      form: this.props.form,
-      updateActive: (activeItem) => {
+      form,
+      updateActive: activeItem => {
         const { type, active } = this.state;
         if (active[type]) {
           active[type].push(activeItem);
@@ -58,30 +67,31 @@ class Login extends Component {
       },
     };
   }
-  onSwitch = (type) => {
+
+  onSwitch = type => {
+    const { onTabChange } = this.props;
     this.setState({
       type,
     });
-    this.props.onTabChange(type);
+    onTabChange(type);
   };
-  handleSubmit = (e) => {
+
+  handleSubmit = e => {
     e.preventDefault();
     const { active, type } = this.state;
+    const { form, onSubmit } = this.props;
     const activeFileds = active[type];
-    this.props.form.validateFields(
-      activeFileds,
-      { force: true },
-      (err, values) => {
-        this.props.onSubmit(err, values);
-      }
-    );
+    form.validateFields(activeFileds, { force: true }, (err, values) => {
+      onSubmit(err, values);
+    });
   };
+
   render() {
     const { className, children } = this.props;
     const { type, tabs } = this.state;
     const TabChildren = [];
     const otherChildren = [];
-    React.Children.forEach(children, (item) => {
+    React.Children.forEach(children, item => {
       if (!item) {
         return;
       }
@@ -118,7 +128,7 @@ class Login extends Component {
 
 Login.Tab = LoginTab;
 Login.Submit = LoginSubmit;
-Object.keys(LoginItem).forEach((item) => {
+Object.keys(LoginItem).forEach(item => {
   Login[item] = LoginItem[item];
 });
 

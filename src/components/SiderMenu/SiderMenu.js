@@ -10,7 +10,7 @@ const { SubMenu } = Menu;
 //   icon: 'setting',
 //   icon: 'http://demo.com/icon.png',
 //   icon: <Icon type="setting" />,
-const getIcon = (icon) => {
+const getIcon = icon => {
   if (typeof icon === 'string' && icon.indexOf('http') === 0) {
     return <img src={icon} alt="icon" className={styles.icon} />;
   }
@@ -28,6 +28,7 @@ export default class SiderMenu extends PureComponent {
       openKeys: this.getDefaultCollapsedSubMenus(props),
     };
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.setState({
@@ -35,27 +36,30 @@ export default class SiderMenu extends PureComponent {
       });
     }
   }
+
   getDefaultCollapsedSubMenus(props) {
-    const { location: { pathname } } = props || this.props;
+    const {
+      location: { pathname },
+    } =
+      props || this.props;
     const snippets = pathname.split('/').slice(1, -1);
     const currentPathSnippets = snippets.map((item, index) => {
       const arr = snippets.filter((_, i) => i <= index);
       return arr.join('/');
     });
     let currentMenuSelectedKeys = [];
-    currentPathSnippets.forEach((item) => {
-      currentMenuSelectedKeys = currentMenuSelectedKeys.concat(
-        this.getSelectedMenuKeys(item)
-      );
+    currentPathSnippets.forEach(item => {
+      currentMenuSelectedKeys = currentMenuSelectedKeys.concat(this.getSelectedMenuKeys(item));
     });
     // if (currentMenuSelectedKeys.length === 0) {
     //   return [defaultCollapsedSubMenu];
     // }
     return currentMenuSelectedKeys;
   }
+
   getFlatMenuKeys(menus) {
     let keys = [];
-    menus.forEach((item) => {
+    menus.forEach(item => {
       if (item.children) {
         keys.push(item.path);
         keys = keys.concat(this.getFlatMenuKeys(item.children));
@@ -65,7 +69,8 @@ export default class SiderMenu extends PureComponent {
     });
     return keys;
   }
-  getSelectedMenuKeys = (path) => {
+
+  getSelectedMenuKeys = path => {
     const flatMenuKeys = this.getFlatMenuKeys(this.props.menuData);
     if (flatMenuKeys.indexOf(path.replace(/^\//, '')) > -1) {
       return [path.replace(/^\//, '')];
@@ -73,18 +78,19 @@ export default class SiderMenu extends PureComponent {
     if (flatMenuKeys.indexOf(path.replace(/^\//, '').replace(/\/$/, '')) > -1) {
       return [path.replace(/^\//, '').replace(/\/$/, '')];
     }
-    return flatMenuKeys.filter((item) => {
+    return flatMenuKeys.filter(item => {
       const itemRegExpStr = `^${item.replace(/:[\w-]+/g, '[\\w-]+')}$`;
       const itemRegExp = new RegExp(itemRegExpStr);
       return itemRegExp.test(path.replace(/^\//, '').replace(/\/$/, ''));
     });
   };
+
   /**
    * 判断是否是http链接.返回 Link 或 a
    * Judge whether it is http link.return a or Link
    * @memberof SiderMenu
    */
-  getMenuItemPath = (item) => {
+  getMenuItemPath = item => {
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
     const { target, name } = item;
@@ -115,10 +121,11 @@ export default class SiderMenu extends PureComponent {
       </Link>
     );
   };
+
   /**
    * get SubMenu or Item
    */
-  getSubMenuOrItem = (item) => {
+  getSubMenuOrItem = item => {
     if (item.children && item.children.some(child => child.name)) {
       return (
         <SubMenu
@@ -138,39 +145,38 @@ export default class SiderMenu extends PureComponent {
         </SubMenu>
       );
     } else {
-      return (
-        <Menu.Item key={item.key || item.path}>
-          {this.getMenuItemPath(item)}
-        </Menu.Item>
-      );
+      return <Menu.Item key={item.key || item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
     }
   };
+
   /**
    * 获得菜单子节点
    * @memberof SiderMenu
    */
-  getNavMenuItems = (menusData) => {
+  getNavMenuItems = menusData => {
     if (!menusData) {
       return [];
     }
     return menusData
       .filter(item => item.name && !item.hideInMenu)
-      .map((item) => {
+      .map(item => {
         const ItemDom = this.getSubMenuOrItem(item);
         // return this.checkPermissionItem(item.authority, ItemDom);
         return ItemDom;
       })
       .filter(item => !!item);
   };
+
   // conversion Path
   // 转化路径
-  conversionPath = (path) => {
+  conversionPath = path => {
     if (path && path.indexOf('http') === 0) {
       return path;
     } else {
       return `/${path || ''}`.replace(/\/+/g, '/');
     }
   };
+
   // permission to check
   checkPermissionItem = (authority, ItemDom) => {
     if (this.props.Authorized && this.props.Authorized.check) {
@@ -179,16 +185,17 @@ export default class SiderMenu extends PureComponent {
     }
     return ItemDom;
   };
-  handleOpenChange = (openKeys) => {
+
+  handleOpenChange = openKeys => {
     const lastOpenKey = openKeys[openKeys.length - 1];
     const isMainMenu = this.menus.some(
-      item =>
-        lastOpenKey && (item.key === lastOpenKey || item.path === lastOpenKey)
+      item => lastOpenKey && (item.key === lastOpenKey || item.path === lastOpenKey)
     );
     this.setState({
       openKeys: isMainMenu ? [lastOpenKey] : [...openKeys],
     });
   };
+
   render() {
     const {
       logo,
@@ -202,8 +209,8 @@ export default class SiderMenu extends PureComponent {
     const menuProps = collapsed
       ? {}
       : {
-        openKeys,
-      };
+          openKeys,
+        };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys(pathname);
     if (!selectedKeys.length) {

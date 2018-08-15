@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Form, Row, Button, Col, Icon, Tooltip } from 'antd';
-import { renderFormItem } from '../../common/formItem';
+import { renderFormItem } from 'core/common/formItem';
 
 import styles from './Index.less';
 
@@ -26,6 +26,7 @@ export default class SearchForms extends React.PureComponent {
     handleSearchSubmit: PropTypes.func,
     handleFormReset: PropTypes.func,
   };
+
   static defaultProps = {
     formInfo: {
       layout: 'inline',
@@ -36,16 +37,20 @@ export default class SearchForms extends React.PureComponent {
     handleSearchSubmit: () => {},
     handleFormReset: () => {},
   };
+
   state = {
     expandForm: false,
   };
+
   getFields = () => {
     const { expandForm } = this.state;
-    const { formInfo: { formItems } } = this.props;
+    const {
+      formInfo: { formItems },
+    } = this.props;
     const count = expandForm ? formItems.length : 2;
     const children = this.renderFormItem(formItems, count);
     const buttonText = expandForm ? '收起' : '展开';
-    if (!this.state.expandForm) {
+    if (!expandForm) {
       children.push(
         <Col md={8} sm={24} key={children.length}>
           <div
@@ -72,12 +77,14 @@ export default class SearchForms extends React.PureComponent {
     }
     return children;
   };
+
   handleFormReset = () => {
     const { form, handleFormReset } = this.props;
     form.resetFields();
     handleFormReset();
   };
-  handleSearch = (e) => {
+
+  handleSearch = e => {
     e.preventDefault();
     const { form, handleSearchSubmit } = this.props;
     form.validateFields((err, fieldsValue) => {
@@ -86,33 +93,29 @@ export default class SearchForms extends React.PureComponent {
       handleSearchSubmit(fieldsValue);
     });
   };
+
   toggleForm = () => {
-    this.setState({
-      expandForm: !this.state.expandForm,
+    this.setState(({ expandForm }) => {
+      return {
+        expandForm: !expandForm,
+      };
     });
   };
+
   renderFormItem = (formItems, count) => {
     const { dispatch, form } = this.props;
     return formItems.map((item, i) => {
       const InputType = renderFormItem(item, form, dispatch);
+      const Tip = (
+        <Tooltip title={item.tooltip}>
+          <Icon type="question-circle-o" />
+        </Tooltip>
+      );
       return (
-        <Col
-          md={8}
-          sm={24}
-          key={`${item.key}`}
-          style={{ display: i < count ? 'block' : 'none' }}
-        >
+        <Col md={8} sm={24} key={`${item.key}`} style={{ display: i < count ? 'block' : 'none' }}>
           <FormItem
             {...formItemLayout}
-            label={
-              item.tooltip
-                ? `${item.label}&nbsp;${(
-                  <Tooltip title={item.tooltip}>
-                    <Icon type="question-circle-o" />
-                  </Tooltip>
-                  )}`
-                : item.label
-            }
+            label={item.tooltip ? `${item.label}&nbsp;${Tip}` : item.label}
             // hasFeedback
           >
             {InputType}
@@ -121,8 +124,11 @@ export default class SearchForms extends React.PureComponent {
       );
     });
   };
+
   render() {
-    const { formInfo: { layout, formItems } } = this.props;
+    const {
+      formInfo: { layout, formItems },
+    } = this.props;
     const { expandForm } = this.state;
     const buttonText = expandForm ? '收起' : '展开';
     return (
@@ -139,10 +145,7 @@ export default class SearchForms extends React.PureComponent {
                 <Button type="primary" htmlType="submit">
                   查询
                 </Button>
-                <Button
-                  style={{ marginLeft: 8 }}
-                  onClick={this.handleFormReset}
-                >
+                <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                   重置
                 </Button>
                 {formItems.length > 2 ? (

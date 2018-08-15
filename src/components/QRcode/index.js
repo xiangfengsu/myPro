@@ -5,9 +5,11 @@ class QRcode extends Component {
   static propTypes = {
     captcha: PropTypes.string,
   };
+
   static defaultProps = {
     captcha: '',
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,12 +17,14 @@ class QRcode extends Component {
     };
     this.refreshCode = this.refreshCode.bind(this);
   }
+
   refreshCode() {
     const { codeUrl } = this.state;
     this.setState({
       codeUrl: `${codeUrl}?num=${new Date().getTime()}`,
     });
   }
+
   render() {
     const { codeUrl } = this.state;
     return (

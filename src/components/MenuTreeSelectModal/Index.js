@@ -7,6 +7,7 @@ export default class Index extends PureComponent {
   state = {
     selectedNode: [],
   };
+
   componentDidMount() {
     const { parentId, parentName } = this.props;
     const selectedNode = [];
@@ -21,6 +22,7 @@ export default class Index extends PureComponent {
       selectedNode,
     });
   }
+
   onSelect = (selectedKeys, info) => {
     const { selected, selectedNodes } = info;
     // console.log('selected', selectedKeys, info);
@@ -40,15 +42,15 @@ export default class Index extends PureComponent {
   onCheck = () => {
     // console.log('onCheck', checkedKeys, info);
   };
+
   getSelectedKey = () => {
     const { selectedNode } = this.state;
     return selectedNode;
   };
-  renderNodeDisabledSelectable = (menuType) => {
+
+  renderNodeDisabledSelectable = menuType => {
     const { selectMenuTypeValue, currentItem } = this.props;
-    const selectType = currentItem.menutype
-      ? currentItem.menutype
-      : selectMenuTypeValue;
+    const selectType = currentItem.menutype ? currentItem.menutype : selectMenuTypeValue;
     const obj = {};
     // console.log('selectType', selectType);
     switch (selectType) {
@@ -90,11 +92,10 @@ export default class Index extends PureComponent {
     }
     return obj;
   };
-  renderTreeNodes = (data) => {
-    return data.map((item) => {
-      const { disabled, selectable } = this.renderNodeDisabledSelectable(
-        item.menuType
-      );
+
+  renderTreeNodes = data => {
+    return data.map(item => {
+      const { disabled, selectable } = this.renderNodeDisabledSelectable(item.menuType);
       let iconType = null;
       if (item.menuType === 1) {
         iconType = (
@@ -144,6 +145,7 @@ export default class Index extends PureComponent {
       );
     });
   };
+
   render() {
     const { parentId, treeNodes = [] } = this.props;
     const len = treeNodes.length;

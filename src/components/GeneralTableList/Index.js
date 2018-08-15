@@ -12,6 +12,7 @@ export default class TableList extends PureComponent {
     size: PropTypes.oneOf(['default', 'small']),
     handleTableChange: PropTypes.func,
   };
+
   static defaultProps = {
     dataSource: [],
     columns: [],
@@ -19,6 +20,7 @@ export default class TableList extends PureComponent {
     size: 'default',
     handleTableChange: () => {},
   };
+
   render() {
     const {
       size,
