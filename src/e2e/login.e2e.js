@@ -11,17 +11,14 @@ describe('Login', () => {
   beforeEach(async () => {
     page = await browser.newPage();
     await page.goto('http://localhost:8000/#/user/login');
-    await page.evaluate(() =>
-      window.localStorage.setItem('antd-pro-authority', 'guest')
-    );
   });
 
   afterEach(() => page.close());
 
   it('should login with failure', async () => {
-    await page.type('#username', 'mockuser');
+    await page.type('#username', 'admin');
     await page.type('#password', 'wrong_password');
-    await page.type('#code', '111');
+    await page.type('#code', '123');
     await page.click('button[type="submit"]');
     await page.waitForSelector('.ant-alert-error'); // should display error
   });
