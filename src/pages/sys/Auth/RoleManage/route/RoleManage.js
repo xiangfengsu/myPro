@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import SearchForms from 'components/GeneralSearchForm/Index';
 import TableList from 'components/GeneralTableList/Index';
 import MenuTree from 'components/TreeSelectModal/Index';
-import { formaterObjectValue, formItemAddInitValue } from 'utils/utils';
+import { formaterObjectValue, formItemAddInitValue } from 'core/utils/utils';
 
 import PageHeaderLayout from 'core/layouts/PageHeaderLayout';
 import { PageConfig } from './pageConfig.js';

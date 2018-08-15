@@ -5,7 +5,7 @@ import { Card, Modal, Button, Popconfirm } from 'antd';
 
 import cloneDeep from 'lodash/cloneDeep';
 import TreeTable from 'components/TreeTable/Index';
-import { formaterObjectValue, formItemAddInitValue } from 'utils/utils';
+import { formaterObjectValue, formItemAddInitValue } from 'core/utils/utils';
 import PageHeaderLayout from 'core/layouts/PageHeaderLayout';
 
 import { PageConfig } from './pageConfig.js';

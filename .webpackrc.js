@@ -25,4 +25,7 @@ export default {
   disableDynamicImport: true,
   publicPath: '/',
   hash: true,
+  proxy: {
+    '/': 'http://118.190.154.11:3000/mock/34',
+  },
 };

@@ -19,4 +19,4 @@ const noProxyAddress = {
   'DELETE /*': 'http://118.190.154.11:3000/mock/34/',
 };
 // export default (true ? {} : delay(proxy, 500));
-export default noProxyAddress;
+export default {};

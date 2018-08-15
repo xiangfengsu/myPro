@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Card } from 'antd';
 
-import { formaterObjectValue } from 'utils/utils';
+import { formaterObjectValue } from 'core/utils/utils';
 import SearchForms from 'components/GeneralSearchForm/Index';
 import TableList from 'components/GeneralTableList/Index';
 import PageHeaderLayout from 'core/layouts/PageHeaderLayout';
