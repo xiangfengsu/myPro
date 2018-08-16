@@ -41,11 +41,12 @@ const validatePlusNumber = (value, prevValue) => {
     return prevValue;
   }
 };
-
+const noop = () => {};
 export const renderFormItem = (item, form, dispatch) => {
   const { getFieldDecorator } = form;
+  const { formType, props = {} } = item;
   let InputType = null;
-  switch (item.formType) {
+  switch (formType) {
     case 'input':
       InputType = getFieldDecorator(item.key, {
         initialValue: item.initialValue,
@@ -61,7 +62,8 @@ export const renderFormItem = (item, form, dispatch) => {
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
           readOnly={item.isReadOnly}
-          onClick={item.onClick ? item.onClick : () => {}}
+          onClick={item.onClick ? item.onClick : noop}
+          {...props}
         />
       );
       break;
@@ -81,7 +83,8 @@ export const renderFormItem = (item, form, dispatch) => {
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
           readOnly={item.isReadOnly}
-          onClick={item.onClick ? item.onClick : () => {}}
+          onClick={item.onClick ? item.onClick : noop}
+          {...props}
         />
       );
       break;
@@ -102,6 +105,7 @@ export const renderFormItem = (item, form, dispatch) => {
           style={{ width: '100%' }}
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
+          {...props}
         />
       );
       break;
@@ -125,6 +129,7 @@ export const renderFormItem = (item, form, dispatch) => {
           addonAfter="元"
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
+          {...props}
         />
       );
       break;
@@ -147,6 +152,7 @@ export const renderFormItem = (item, form, dispatch) => {
           maxLength="11"
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
+          {...props}
         />
       );
       break;
@@ -165,6 +171,7 @@ export const renderFormItem = (item, form, dispatch) => {
           autosize={item.autosize || { minRows: 5, maxRows: 10 }}
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
+          {...props}
         />
       );
       break;
@@ -184,6 +191,7 @@ export const renderFormItem = (item, form, dispatch) => {
           getPopupContainer={() =>
             (item.popupContainer && document.getElementById(item.popupContainer)) || document.body
           }
+          {...props}
         >
           {item.selectOptions.map(option => {
             return (
@@ -214,6 +222,7 @@ export const renderFormItem = (item, form, dispatch) => {
           popupContainer={
             (item.popupContainer && document.getElementById(item.popupContainer)) || document.body
           }
+          props={props}
         />
       );
       break;
@@ -232,6 +241,7 @@ export const renderFormItem = (item, form, dispatch) => {
           getPopupContainer={() =>
             (item.popupContainer && document.getElementById(item.popupContainer)) || document.body
           }
+          {...props}
         >
           {item.selectOptions.map(option => {
             return (
@@ -267,6 +277,7 @@ export const renderFormItem = (item, form, dispatch) => {
           popupContainer={
             (item.popupContainer && document.getElementById(item.popupContainer)) || document.body
           }
+          props={props}
         />
       );
       break;
@@ -298,6 +309,7 @@ export const renderFormItem = (item, form, dispatch) => {
           multiple={item.multiple}
           showCheckedStrategy={item.showCheckedStrategy}
           extraProp={item.extraProp || {}}
+          props={props}
         />
       );
       break;
@@ -503,6 +515,7 @@ export const renderFormItem = (item, form, dispatch) => {
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
           readOnly={item.isReadOnly}
           onClick={item.onClick ? item.onClick : () => {}}
+          props={props}
         />
       );
   }

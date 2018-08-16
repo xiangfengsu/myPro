@@ -8,6 +8,10 @@ export const FormItems = [
     colSpan: 8,
     placeholder: 'input',
     hasFeedback: true,
+    props: {
+      size: 'large',
+      placeholder: 'admin',
+    },
   },
   {
     formType: 'inputNumber',
