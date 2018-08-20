@@ -40,28 +40,12 @@ export default class Index extends PureComponent {
       }
       if (item.children && item.children.length > 0) {
         return (
-          <TreeNode
-            title={iconType}
-            value={`${item.key}`}
-            key={item.key}
-            dataRef={item}
-            disableCheckbox
-            selectable={false}
-          >
+          <TreeNode title={iconType} value={`${item.key}`} key={item.key} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return (
-        <TreeNode
-          title={iconType}
-          value={`${item.key}`}
-          key={item.key}
-          dataRef={item}
-          disableCheckbox
-          selectable={false}
-        />
-      );
+      return <TreeNode title={iconType} value={`${item.key}`} key={item.key} dataRef={item} />;
     });
   };
 
@@ -76,14 +60,12 @@ export default class Index extends PureComponent {
     const len = menuStructure.length;
     // console.log('parentdepartmentids', parentdepartmentids);
     return (
-      <Card bordered={false} loading={len === 0}>
+      <Card bordered={false} loading={len === 0} style={{ pointerEvents: 'none' }}>
         {len > 0 ? (
           <div className="menuTreeBox">
             <Tree
               showLine
               checkable
-              checkStrictly
-              onSelect={this.onSelect}
               defaultExpandedKeys={parentdepartmentids}
               defaultCheckedKeys={parentdepartmentids}
             >
