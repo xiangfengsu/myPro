@@ -6,16 +6,16 @@ import { atomDark } from 'react-syntax-highlighter/styles/prism';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { renderFormItem } from 'core/common/formItem';
-
+import { formItemRemoveInitValue } from 'core/utils/utils';
 import { FormItems } from './pageConfig';
 
 const FormItem = Form.Item;
-
 @Form.create()
 export default class Index extends PureComponent {
   state = {
     modalVisible: false,
     currentItem: {},
+    currentFormItems: FormItems,
   };
 
   showModalVisibel = item => {
@@ -42,6 +42,11 @@ export default class Index extends PureComponent {
 
   handleReset = e => {
     e.preventDefault();
+    this.setState(preState => {
+      return {
+        currentFormItems: formItemRemoveInitValue(preState.currentFormItems),
+      };
+    });
     this.props.form.resetFields();
   };
 
@@ -56,7 +61,8 @@ export default class Index extends PureComponent {
 
   renderFormItem = () => {
     const { form } = this.props;
-    return FormItems.map(item => {
+    const { currentFormItems } = this.state;
+    return currentFormItems.map(item => {
       const InputType = renderFormItem(item, form);
       return (
         <Col lg={item.colSpan || 8} md={12} sm={24} key={item.key} style={{ marginBottom: 24 }}>
