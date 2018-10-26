@@ -9,8 +9,10 @@ import {
   DatePicker,
   Checkbox,
   Radio,
+  Cascader,
 } from 'antd';
 import UploadImg from 'components/UploadImg/Index';
+import DynamicCascader from 'components/DynamicCascader/Index';
 import DynamicSelect from 'components/DynamicSelect/Index';
 import DynamicSelectTree from 'components/DynamicSelectTree/Index';
 import DynamicSelectGroup from 'components/DynamicSelectGroup/Index';
@@ -172,6 +174,47 @@ export const renderFormItem = (item, form, dispatch) => {
           disabled={item.disabled}
           placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
           {...props}
+        />
+      );
+      break;
+    case 'cascader':
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [
+          {
+            required: item.isRequired,
+            message: `${item.label}不能为空`,
+          },
+        ],
+      })(
+        <Cascader
+          options={item.options || []}
+          disabled={item.disabled}
+          placeholder={item.placeholder ? item.placeholder : `请输入${item.label}`}
+          {...props}
+        />
+      );
+      break;
+    case 'cascaderDynamic':
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [
+          {
+            required: item.isRequired,
+            message: `${item.label}不能为空`,
+          },
+        ],
+      })(
+        <DynamicCascader
+          dispatch={dispatch}
+          cache={item.cache}
+          dictionaryKey={item.dictionaryKey}
+          placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
+          fetchUrl={item.fetchUrl}
+          popupContainer={
+            (item.popupContainer && document.getElementById(item.popupContainer)) || document.body
+          }
+          props={props}
         />
       );
       break;

@@ -1,6 +1,7 @@
 export const FormItems = [
   {
     formType: 'input',
+    // initialValue: '123',
     disabled: false,
     isRequired: false,
     key: 'channelname',
@@ -9,8 +10,8 @@ export const FormItems = [
     placeholder: 'input',
     hasFeedback: true,
     props: {
-      size: 'large',
-      placeholder: 'admin',
+      // size: 'large',
+      // placeholder: 'admin',
     },
   },
   {
@@ -41,6 +42,65 @@ export const FormItems = [
     label: 'inputPhone',
     placeholder: 'inputPhone',
     colSpan: 8,
+    hasFeedback: true,
+  },
+  {
+    formType: 'cascader',
+    initialValue: ['jiangsu', 'nanjing', 'zhonghuamen'],
+    disabled: false,
+    isRequired: false,
+    key: 'cascader',
+    label: 'cascader',
+    placeholder: '省/市/区',
+    options: [
+      {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+          {
+            value: 'hangzhou',
+            label: 'Hangzhou',
+            children: [
+              {
+                value: 'xihu',
+                label: 'West Lake',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [
+          {
+            value: 'nanjing',
+            label: 'Nanjing',
+            children: [
+              {
+                value: 'zhonghuamen',
+                label: 'Zhong Hua Men',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    colSpan: 8,
+    hasFeedback: true,
+  },
+  {
+    formType: 'cascaderDynamic',
+    disabled: false,
+    isRequired: false,
+    multiple: true,
+    key: 'cascaderDynamic',
+    label: 'cascaderDynamic',
+    placeholder: '省/市/区',
+    dictionaryKey: 'cascaderDynamic',
+    fetchUrl: '/api/cascaderDynamicList',
+    cache: true,
+    initialValue: ['3500003', '3508001', '3508231'],
     hasFeedback: true,
   },
   {
