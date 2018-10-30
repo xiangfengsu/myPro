@@ -19,16 +19,17 @@ export default class DynamicSelect extends Component {
   constructor(props) {
     super(props);
     const { value, multiple } = this.props;
+    let selectValue;
     if (value !== undefined) {
       const arrValue = Array.isArray(value) ? value : `${value}`.split(',');
-      this.state = {
-        selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value,
-      };
+      selectValue = multiple ? (arrValue === '' ? undefined : arrValue) : value;
     } else {
-      this.state = {
-        selectValue: value,
-      };
+      selectValue = value;
     }
+    this.state = {
+      selectValue,
+      isCheckFirst: props.isCheckFirst,
+    };
   }
 
   componentDidMount() {
@@ -44,18 +45,25 @@ export default class DynamicSelect extends Component {
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      const { value, multiple } = nextProps;
-      // logs('value22', value);
+      const { value, multiple, dictionary, dictionaryKey } = nextProps;
+      const { isCheckFirst } = this.state;
+      let selectValue;
+      let flag = isCheckFirst;
       if (value !== undefined) {
         const arrValue = Array.isArray(value) ? value : `${value}`.split(',');
-        this.setState({
-          selectValue: multiple ? (arrValue === '' ? undefined : arrValue) : value,
-        });
+        selectValue = multiple ? (arrValue === '' ? undefined : arrValue) : value;
       } else {
-        this.setState({
-          selectValue: value,
-        });
+        const dic = dictionary[dictionaryKey];
+        if (flag && !!dic) {
+          selectValue = dic.length > 0 ? dic[0].key : undefined;
+          flag = false;
+          this.triggerChange(selectValue);
+        }
       }
+      this.setState({
+        selectValue,
+        isCheckFirst: flag,
+      });
     }
   }
 
@@ -67,7 +75,11 @@ export default class DynamicSelect extends Component {
   };
 
   triggerChange = changedValue => {
-    const { onChange } = this.props;
+    const { dispatch, form, onChange, props = {} } = this.props;
+    // 自定义onChange
+    if (props.onChange) {
+      props.onChange({ form, dispatch, changedValue });
+    }
     if (onChange) {
       onChange(changedValue);
     }

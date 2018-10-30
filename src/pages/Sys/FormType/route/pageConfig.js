@@ -1,7 +1,7 @@
 export const FormItems = [
   {
     formType: 'input',
-    // initialValue: '123',
+    initialValue: '123',
     disabled: false,
     isRequired: false,
     key: 'channelname',
@@ -11,7 +11,7 @@ export const FormItems = [
     hasFeedback: true,
     props: {
       // size: 'large',
-      // placeholder: 'admin',
+      placeholder: 'admin',
     },
   },
   {
@@ -167,7 +167,75 @@ export const FormItems = [
     placeholder: 'selectDynamic',
     dictionaryKey: 'selectDynamic1',
     fetchUrl: '/api/selectLists2',
+    isCheckFirst: false,
     // initialValue: '其他',
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
+  },
+  {
+    formType: 'inputDynamic',
+    // initialValue: 'vvvv',
+    isReadOnly: true,
+    disabled: false,
+    isRequired: false,
+    key: 'inputDynamicText',
+    label: 'inputDynamicText',
+    colSpan: 8,
+    // placeholder: 'input',
+    dictionaryKey: 'inputDynamicText',
+    // fetchUrl: '/api/dynamictext',
+    hasFeedback: true,
+    props: {
+      // size: 'large',
+      placeholder: 'admin',
+    },
+  },
+  {
+    formType: 'selectDynamic',
+    disabled: false,
+    isRequired: false,
+    key: 'selectDynamicLinkageParent',
+    label: '下拉联动Parent',
+    placeholder: 'selectDynamic',
+    dictionaryKey: 'selectDynamicLinkageParent',
+    fetchUrl: '/api/selectLists2',
+    isCheckFirst: false,
+    // initialValue: '其他',
+    popupContainer: 'scorllArea',
+    hasFeedback: true,
+    props: {
+      onChange: ({ dispatch, changedValue, form }) => {
+        form.setFieldsValue({
+          selectDynamicLinkageChild: undefined,
+          inputDynamicText: undefined,
+        });
+        dispatch({
+          type: 'dictionary/query',
+          payload: {
+            fetchUrl: `/api/linkage?${changedValue}`,
+            dictionaryKey: 'selectDynamicLinkageChild',
+          },
+        });
+
+        dispatch({
+          type: 'dictionary/query',
+          payload: {
+            fetchUrl: `/api/dynamictext?${changedValue}`,
+            dictionaryKey: 'inputDynamicText',
+          },
+        });
+      },
+    },
+  },
+  {
+    formType: 'selectDynamic',
+    disabled: false,
+    isRequired: false,
+    key: 'selectDynamicLinkageChild',
+    label: '下拉联动Child',
+    placeholder: 'selectDynamic',
+    dictionaryKey: 'selectDynamicLinkageChild',
+    isCheckFirst: false,
     popupContainer: 'scorllArea',
     hasFeedback: true,
   },
@@ -278,6 +346,7 @@ export const FormItems = [
     label: 'timePicker',
     popupContainer: 'scorllArea',
   },
+
   {
     formType: 'checkboxGroup',
     disabled: false,

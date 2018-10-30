@@ -12,6 +12,7 @@ import {
   Cascader,
 } from 'antd';
 import UploadImg from 'components/UploadImg/Index';
+import DynamicInput from 'components/DynamicInput/Index';
 import DynamicCascader from 'components/DynamicCascader/Index';
 import DynamicSelect from 'components/DynamicSelect/Index';
 import DynamicSelectTree from 'components/DynamicSelectTree/Index';
@@ -66,6 +67,27 @@ export const renderFormItem = (item, form, dispatch) => {
           readOnly={item.isReadOnly}
           onClick={item.onClick ? item.onClick : noop}
           {...props}
+        />
+      );
+      break;
+    case 'inputDynamic':
+      InputType = getFieldDecorator(item.key, {
+        initialValue: item.initialValue,
+        rules: [
+          {
+            required: item.isRequired,
+            message: `${item.label}不能为空`,
+          },
+        ],
+      })(
+        <DynamicInput
+          form={form}
+          isReadOnly={item.isReadOnly}
+          dispatch={dispatch}
+          dictionaryKey={item.dictionaryKey}
+          placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
+          fetchUrl={item.fetchUrl}
+          props={props}
         />
       );
       break;
@@ -229,6 +251,7 @@ export const renderFormItem = (item, form, dispatch) => {
         ],
       })(
         <Select
+          mode={item.multiple ? 'multiple' : ''}
           onSelect={item.onSelect ? item.onSelect : () => {}}
           placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
           getPopupContainer={() =>
@@ -257,11 +280,13 @@ export const renderFormItem = (item, form, dispatch) => {
         ],
       })(
         <DynamicSelect
+          form={form}
           dispatch={dispatch}
           dictionaryKey={item.dictionaryKey}
           placeholder={item.placeholder ? item.placeholder : `请选择${item.label}`}
           multiple={item.multiple}
           fetchUrl={item.fetchUrl}
+          isCheckFirst={item.isCheckFirst}
           popupContainer={
             (item.popupContainer && document.getElementById(item.popupContainer)) || document.body
           }
